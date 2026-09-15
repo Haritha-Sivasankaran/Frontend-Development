@@ -1,0 +1,235 @@
+/* ==========================================================================
+   DAY 6: CSS INTRODUCTION AND BASIC STYLING
+   Project: Professional Profile Card
+   ========================================================================== */
+
+/* 1. Universal Reset and Box Model Setup */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Body and Page Canvas */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #1f2937; /* Neutral charcoal */
+    background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+    min-height: 100vh;
+    padding: 3rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 3. Profile Card Container (Centering, Box Shadow, Borders) */
+.profile-card {
+    background-color: #ffffff;
+    max-width: 480px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+}
+
+/* 4. Card Header & Banner Accent */
+.card-banner {
+    height: 110px;
+    background: linear-gradient(90deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
+    position: relative;
+}
+
+.card-header {
+    text-align: center;
+    padding: 0 2rem 1.5rem 2rem;
+    margin-top: -55px; /* Pulls profile picture up over banner */
+}
+
+/* 5. Circular Profile Avatar */
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.profile-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    object-fit: cover;
+    display: block;
+}
+
+.online-status {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+    background-color: #10b981; /* Green status */
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
+/* 6. Text Styling & Hierarchy */
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.25rem;
+}
+
+.profile-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4f46e5; /* Indigo accent */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.profile-location {
+    font-size: 0.85rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+/* 7. Card Body & Content Sections */
+.card-body {
+    padding: 0 2rem 2rem 2rem;
+}
+
+.profile-bio {
+    font-size: 0.95rem;
+    color: #4b5563;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+/* 8. Skill Badges (Lists without Default Bullets) */
+.skills-list {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.skill-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px; /* Pill shape */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.skill-pill:hover {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    border-color: #c7d2fe;
+}
+
+/* 9. Action Buttons & Links */
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+/* 10. Social Links & SVG Icons */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f3f4f6;
+    list-style: none;
+}
+
+.social-icon-link {
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f9fafb;
+}
+
+.social-icon-link:hover {
+    color: #4f46e5;
+    background-color: #eef2ff;
+    transform: translateY(-2px);
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
