@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechVault Store | Interactive Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="cart-app-container">
+
+        <header class="app-header">
+            <h1>TechVault Gear Checkout</h1>
+            <p>JavaScript Objects, Arrays, and Function Architecture Demo</p>
+        </header>
+
+        <div class="cart-layout">
+
+            <!-- Left Column: Available Products Catalog -->
+            <section class="catalog-section">
+                <h2 class="section-title">
+                    <span>Available Equipment</span>
+                    <span style="font-size: 0.8rem; font-weight: normal; color: #64748b;">Live Hardware Stock</span>
+                </h2>
+
+                <!-- Injected dynamically via renderCatalog() -->
+                <div class="products-grid" id="products-grid"></div>
+            </section>
+
+            <!-- Right Column: Shopping Cart & Order Financials -->
+            <section class="cart-section">
+                <h2 class="section-title">
+                    <span>Your Cart</span>
+                    <span class="badge-count" id="cart-count-badge">0 items</span>
+                </h2>
+
+                <!-- Cart Items Container (Injected dynamically via renderCart()) -->
+                <div class="cart-items-list" id="cart-items-list">
+                    <p class="empty-cart-msg">Your shopping cart is empty.</p>
+                </div>
+
+                <!-- Promo Code Form -->
+                <div class="promo-box">
+                    <input type="text" id="promo-input" class="promo-input" placeholder="Promo code (SAVE10, TECH20)">
+                    <button type="button" id="apply-promo-btn" class="btn-apply-promo">Apply</button>
+                </div>
+
+                <!-- Financial Summary Box -->
+                <div class="summary-rows">
+                    <div class="summary-row">
+                        <span>Cart Subtotal:</span>
+                        <strong id="summary-subtotal">$0.00</strong>
+                    </div>
+                    <div class="summary-row discount-row" id="summary-discount-row" style="display: none;">
+                        <span>Promotional Discount:</span>
+                        <strong id="summary-discount">−$0.00</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Standard Shipping:</span>
+                        <strong style="color: #10b981;">FREE</strong>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Final Amount:</span>
+                        <strong id="summary-total">$0.00</strong>
+                    </div>
+                </div>
+
+                <button type="button" id="checkout-btn" class="btn-checkout" disabled>Proceed to Secure Checkout</button>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- External JavaScript Application File -->
+    <script src="app.js"></script>
+</body>
+</html>
