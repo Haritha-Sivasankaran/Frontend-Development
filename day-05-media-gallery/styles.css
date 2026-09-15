@@ -1,0 +1,113 @@
+/* Clean, responsive layout for multimedia showcase */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #2c3e50;
+    background-color: #f4f7f9;
+    margin: 0;
+    padding: 0;
+}
+
+header.gallery-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #ffffff;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-container {
+    max-width: 1080px;
+    margin: 2rem auto;
+    padding: 0 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.media-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.media-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.media-card h2 {
+    color: #1e3c72;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    border-bottom: 2px solid #eef2f6;
+    padding-bottom: 0.5rem;
+}
+
+.media-card p {
+    color: #555555;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+/* Media sizing */
+video, audio, iframe, embed {
+    width: 100%;
+    border-radius: 6px;
+}
+
+video {
+    max-height: 320px;
+    background-color: #000000;
+}
+
+iframe {
+    height: 320px;
+    border: none;
+}
+
+embed {
+    height: 280px;
+    border: 1px solid #cbd5e1;
+}
+
+/* SVG Demo Area */
+.svg-canvas-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8fafc;
+    border: 1px dashed #94a3b8;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+footer.site-footer {
+    text-align: center;
+    background-color: #1e3c72;
+    color: #ffffff;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+    .gallery-container {
+        grid-template-columns: 1fr;
+    }
+}

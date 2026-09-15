@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMedia | Online Learning Multimedia Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header with Inline SVG Logo -->
+    <header class="gallery-header">
+        <div class="brand-wrapper">
+            <!-- SVG Logo: Scalable Vector Graphics composed of rect, circle, and text -->
+            <svg width="60" height="60" viewBox="0 0 100 100" aria-label="EduMedia Brand Logo" role="img">
+                <title>EduMedia Logo</title>
+                <!-- Background rounded rectangle -->
+                <rect x="5" y="5" width="90" height="90" rx="20" ry="20" fill="#f4d35e" stroke="#ffffff" stroke-width="4" />
+                <!-- Center decorative circle -->
+                <circle cx="50" cy="50" r="30" fill="#1e3c72" />
+                <!-- Play triangle icon -->
+                <polygon points="45,38 45,62 65,50" fill="#ffffff" />
+            </svg>
+            <h1>EduMedia Learning Portal</h1>
+        </div>
+        <p>Interactive HTML5 Multimedia Showcase &amp; Scalable Vector Graphics Gallery</p>
+    </header>
+
+    <main class="gallery-container">
+
+        <!-- 1. HTML5 Video Player -->
+        <article class="media-card">
+            <h2>1. HTML5 Educational Video</h2>
+            <p>
+                Native video playback using <code>&lt;video&gt;</code> with custom poster, 
+                on-screen controls, and preloading configuration.
+            </p>
+            <video controls poster="https://placehold.co/640x360/1e3c72/ffffff?text=Web+Architecture+Lecture" preload="metadata">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+                <p>Your browser does not support the HTML5 video tag. Please upgrade your browser.</p>
+            </video>
+        </article>
+
+        <!-- 2. HTML5 Audio Lecture Player -->
+        <article class="media-card">
+            <h2>2. HTML5 Audio Podcast</h2>
+            <p>
+                Self-contained audio stream player using <code>&lt;audio&gt;</code> with 
+                multi-format fallback sources.
+            </p>
+            <audio controls preload="none">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" type="audio/mpeg">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.ogg" type="audio/ogg">
+                <p>Your browser does not support the HTML5 audio element.</p>
+            </audio>
+            <p><small>Track: <em>"Episode 01: Foundations of Modern Web Protocols"</em> (Audio Clip)</small></p>
+        </article>
+
+        <!-- 3. YouTube Embed using iframe -->
+        <article class="media-card">
+            <h2>3. YouTube Video Embed</h2>
+            <p>
+                Embedded video stream using an <code>&lt;iframe&gt;</code> with responsive 
+                allow attributes and fullscreen authorization.
+            </p>
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/dD2EISBDjWM" 
+                title="HTML5 Full Tutorial Video" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+        </article>
+
+        <!-- 4. HTML5 Embed Tag for External Resource -->
+        <article class="media-card">
+            <h2>4. HTML5 &lt;embed&gt; Container</h2>
+            <p>
+                Integration of an external plugin or vector document using the self-closing 
+                <code>&lt;embed&gt;</code> element.
+            </p>
+            <embed 
+                type="image/svg+xml" 
+                src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" 
+                title="W3C HTML5 Official Specification Document Preview"
+            >
+        </article>
+
+        <!-- 5. SVG Graphics Playground: Circle and Rectangle -->
+        <article class="media-card full-width">
+            <h2>5. Scalable Vector Graphics (SVG): Circle &amp; Rectangle</h2>
+            <p>
+                SVG elements are resolution-independent vector shapes drawn mathematically. 
+                Below are pure SVG shapes demonstrating coordinates, radii, and corner rounding:
+            </p>
+
+            <div class="svg-canvas-box">
+                <svg width="100%" height="240" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SVG Shapes Demonstration">
+                    <title>Demonstration of SVG Rectangles and Circles</title>
+
+                    <!-- Background Grid Guide -->
+                    <rect x="0" y="0" width="700" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" rx="10" />
+
+                    <!-- SVG Rectangle 1: Standard Rectangle -->
+                    <rect 
+                        x="40" 
+                        y="40" 
+                        width="160" 
+                        height="120" 
+                        fill="#3b82f6" 
+                        stroke="#1d4ed8" 
+                        stroke-width="4" 
+                    />
+                    <text x="120" y="105" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Standard &lt;rect&gt;</text>
+
+                    <!-- SVG Rectangle 2: Rounded Corners (rx, ry) -->
+                    <rect 
+                        x="240" 
+                        y="40" 
+                        width="160" 
+                        height="120" 
+                        rx="25" 
+                        ry="25" 
+                        fill="#10b981" 
+                        stroke="#047857" 
+                        stroke-width="4" 
+                    />
+                    <text x="320" y="105" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Rounded &lt;rect&gt;</text>
+
+                    <!-- SVG Circle 1: Solid Circle (cx, cy, r) -->
+                    <circle 
+                        cx="480" 
+                        cy="100" 
+                        r="55" 
+                        fill="#f59e0b" 
+                        stroke="#b45309" 
+                        stroke-width="5" 
+                    />
+                    <text x="480" y="105" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">&lt;circle&gt;</text>
+
+                    <!-- SVG Circle 2: Outlined Target Circle -->
+                    <circle 
+                        cx="610" 
+                        cy="100" 
+                        r="50" 
+                        fill="none" 
+                        stroke="#ef4444" 
+                        stroke-width="6" 
+                        stroke-dasharray="6 4" 
+                    />
+                    <circle 
+                        cx="610" 
+                        cy="100" 
+                        r="22" 
+                        fill="#ef4444" 
+                    />
+                    <text x="610" y="175" fill="#333333" font-size="12" text-anchor="middle">Dashed &lt;circle&gt;</text>
+                </svg>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Semantic Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 EduMedia Gallery. Developed for Springfield Institute of Technology.</p>
+        <p><small>All media complies with HTML5 W3C Standards &amp; Open Web Formats.</small></p>
+    </footer>
+
+</body>
+</html>
