@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 15 - JavaScript Concept Playground</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="playground-container">
+        <!-- Header -->
+        <header class="playground-header">
+            <h1>JavaScript Scope & Hoisting Playground</h1>
+            <p>Interactive workbench demonstrating Scope, Temporal Dead Zone, and Hoisting behaviors.</p>
+        </header>
+
+        <!-- Group 1: Scopes -->
+        <section class="concept-group">
+            <h2 class="group-title">1. Variable Scopes (Global, Function & Block)</h2>
+            <div class="cards-grid">
+                
+                <!-- Card 1: Global vs Function Scope -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-scope">Function Scope</span>
+                        <h3 class="card-title">Global vs. Function Scope</h3>
+                        <p class="card-desc">Functions shield internal variables from outer scopes while accessing outer variables freely.</p>
+                        <pre class="code-box"><code><span class="keyword">const</span> globalAppTitle = <span class="string-val">"Global System 1.0"</span>;
+
+<span class="keyword">function</span> <span class="func-name">authModule</span>() {
+    <span class="keyword">const</span> localSecretToken = <span class="string-val">"TOKEN_XYZ_987"</span>;
+    <span class="keyword">return</span> localSecretToken;
+}
+<span class="comment">// Trying to access localSecretToken outside...</span></code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-scope-func" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-scope-func" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Block Scope (var vs let) -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-scope">Block Scope</span>
+                        <h3 class="card-title">Block Scope: 'var' vs. 'let'</h3>
+                        <p class="card-desc">Code blocks <code>{ ... }</code> isolate <code>let</code> & <code>const</code>, but <code>var</code> leaks outside!</p>
+                        <pre class="code-box"><code><span class="keyword">if</span> (<span class="keyword">true</span>) {
+    <span class="keyword">var</span> leakedVar = <span class="string-val">"I am var"</span>;
+    <span class="keyword">let</span> trappedLet = <span class="string-val">"I am let"</span>;
+}
+<span class="comment">// Access outside block:</span>
+console.log(leakedVar);  <span class="comment">// Works!</span>
+console.log(trappedLet); <span class="comment">// ReferenceError!</span></code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-scope-block" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-scope-block" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Group 2: Variable Hoisting & TDZ -->
+        <section class="concept-group">
+            <h2 class="group-title">2. Variable Hoisting & Temporal Dead Zone (TDZ)</h2>
+            <div class="cards-grid">
+                
+                <!-- Card 3: var Hoisting -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-hoist">Variable Hoisting</span>
+                        <h3 class="card-title">Hoisting with 'var'</h3>
+                        <p class="card-desc">'var' declarations are hoisted and initialized to <code>undefined</code> before line execution.</p>
+                        <pre class="code-box"><code>console.log(hoistedItem); <span class="comment">// undefined</span>
+<span class="keyword">var</span> hoistedItem = <span class="string-val">"Laptop Pro"</span>;
+console.log(hoistedItem); <span class="comment">// "Laptop Pro"</span></code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-hoist-var" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-hoist-var" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: let & TDZ -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-hoist">Temporal Dead Zone</span>
+                        <h3 class="card-title">Hoisting with 'let' (TDZ)</h3>
+                        <p class="card-desc">'let' & 'const' are hoisted into the Temporal Dead Zone without initialization.</p>
+                        <pre class="code-box"><code><span class="comment">// Accessing before declaration line throws:</span>
+console.log(tdzItem); 
+<span class="keyword">let</span> tdzItem = <span class="string-val">"Mechanical Keyboard"</span>;
+<span class="comment">// Throws Uncaught ReferenceError</span></code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-hoist-tdz" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-hoist-tdz" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Group 3: Function Hoisting -->
+        <section class="concept-group">
+            <h2 class="group-title">3. Function Hoisting (Declaration vs Expression)</h2>
+            <div class="cards-grid">
+                
+                <!-- Card 5: Function Declaration Hoisting -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-func">Function Hoisting</span>
+                        <h3 class="card-title">Function Declaration Hoisting</h3>
+                        <p class="card-desc">Function declarations are fully hoisted with their implementation and can be called anywhere.</p>
+                        <pre class="code-box"><code><span class="comment">// Invoking function BEFORE definition:</span>
+<span class="keyword">const</span> discount = <span class="func-name">getDiscount</span>(150); <span class="comment">// Works!</span>
+
+<span class="keyword">function</span> <span class="func-name">getDiscount</span>(price) {
+    <span class="keyword">return</span> price * 0.15;
+}</code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-func-decl" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-func-decl" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: Function Expression Hoisting -->
+                <div class="experiment-card">
+                    <div class="card-top">
+                        <span class="card-badge badge-func">Function Expression</span>
+                        <h3 class="card-title">Function Expression Hoisting</h3>
+                        <p class="card-desc">Function expressions stored in <code>const</code> / <code>let</code> variables stay in TDZ until assigned.</p>
+                        <pre class="code-box"><code><span class="comment">// Invoking variable before assignment:</span>
+<span class="keyword">const</span> tax = <span class="func-name">calculateTax</span>(100); 
+
+<span class="keyword">const</span> calculateTax = <span class="keyword">function</span>(amt) {
+    <span class="keyword">return</span> amt * 0.08;
+};</code></pre>
+                    </div>
+                    <div>
+                        <button id="btn-run-func-expr" class="btn-run">Run Experiment</button>
+                        <div class="output-screen">
+                            <span class="output-label">Live Output:</span>
+                            <div id="output-func-expr" class="output-content">Click "Run Experiment" to observe behavior</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

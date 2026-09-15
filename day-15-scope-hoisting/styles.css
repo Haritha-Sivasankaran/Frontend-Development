@@ -1,0 +1,205 @@
+/* ==========================================================================
+   DAY 15: JAVASCRIPT SCOPE AND HOISTING
+   Project: JavaScript Concept Playground
+   ========================================================================== */
+
+/* 1. Global Reset & Theme */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1e293b;
+    background-color: #0f172a; /* Slate 900 */
+    padding: 2.5rem 1rem;
+    min-height: 100vh;
+}
+
+.playground-container {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+/* 2. Header */
+.playground-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.playground-header h1 {
+    font-size: 2.2rem;
+    color: #f8fafc;
+    margin-bottom: 0.5rem;
+}
+
+.playground-header p {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* 3. Category Sections */
+.concept-group {
+    margin-bottom: 2.5rem;
+}
+
+.group-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.5rem;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 1.5rem;
+}
+
+/* 4. Interactive Experiment Card */
+.experiment-card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.card-top {
+    margin-bottom: 1rem;
+}
+
+.card-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.badge-scope {
+    background-color: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+}
+
+.badge-hoist {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+}
+
+.badge-func {
+    background-color: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+/* Code Snippet Box */
+.code-box {
+    background-color: #090d16;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.keyword { color: #f43f5e; font-weight: bold; }
+.func-name { color: #38bdf8; }
+.string-val { color: #a3e635; }
+.comment { color: #64748b; font-style: italic; }
+
+/* Run Button */
+.btn-run {
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.btn-run:hover {
+    background-color: #0369a1;
+}
+
+.btn-run:active {
+    transform: scale(0.99);
+}
+
+/* 5. Live Output Screen */
+.output-screen {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 0.85rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.output-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+}
+
+.output-content {
+    color: #38bdf8;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.output-error {
+    color: #f87171; /* Red error */
+    font-weight: bold;
+}
+
+.output-success {
+    color: #4ade80; /* Green success */
+    font-weight: bold;
+}
+
+@media (max-width: 640px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
