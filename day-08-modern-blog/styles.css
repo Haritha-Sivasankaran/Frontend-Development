@@ -1,0 +1,385 @@
+/* ==========================================================================
+   DAY 8: ADVANCED CSS STYLING
+   Project: Modern Tech & Engineering Blog
+   ========================================================================== */
+
+/* 1. Global Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #1e293b;
+    background-color: #0f172a; /* Deep dark slate background */
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   2. Hero Section: Layered Backgrounds, Gradients & Text-Shadow
+   ========================================================================== */
+.hero-section {
+    /* Layered Background: Radial glow on top of multi-stop linear gradient */
+    background: 
+        radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+        linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+    padding: 4rem 1.5rem 3rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Child Combinator (>) */
+.hero-section > .hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-tagline {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #818cf8;
+    margin-bottom: 0.75rem;
+}
+
+/* Text-Shadow: Creates a neon ambient glow and sharp dimensional depth */
+.hero-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-shadow: 
+        0 0 20px rgba(99, 102, 241, 0.6),
+        0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Pseudo-element: ::first-letter on lead paragraph */
+.hero-lead::first-letter {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.hero-lead {
+    font-size: 1.15rem;
+    color: #94a3b8;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. Filter Bar & Combinators
+   ========================================================================== */
+.filter-container {
+    max-width: 1140px;
+    margin: 2.5rem auto 1.5rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Inset Box-Shadow on Search Input */
+.search-input {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    color: #f8fafc;
+    padding: 0.6rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    width: 260px;
+    outline: none;
+    /* Inset shadow simulates recessed depth */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease;
+}
+
+/* Pseudo-class :focus */
+.search-input:focus {
+    border-color: #6366f1;
+    background-color: #0f172a;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+        0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+/* Pseudo-element ::placeholder */
+.search-input::placeholder {
+    color: #64748b;
+    font-style: italic;
+}
+
+.tag-list {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.tag-item a {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #94a3b8;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+/* Pseudo-class :first-child */
+.tag-list li:first-child a {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Adjacent Sibling Combinator (+) */
+/* Adds extra spacing after any tag directly following the first */
+.tag-list li:first-child + li {
+    margin-left: 0.25rem;
+}
+
+.tag-item a:hover {
+    background-color: #334155;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   4. Blog Cards Grid (Descendant Combinators, Pseudo-Classes)
+   ========================================================================== */
+.blog-layout {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem 1.5rem;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/* ==========================================================================
+   5. Blog Card Architecture: Box-Shadows & Gradients
+   ========================================================================== */
+.blog-card {
+    background-color: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* Layered Box-Shadow: Ambient soft blur + crisp edge shadow */
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.3),
+        0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+/* Pseudo-class :hover on Blog Card with Enhanced Box-Shadow */
+.blog-card:hover {
+    transform: translateY(-6px);
+    /* High elevation glow on hover */
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.5),
+        0 8px 10px -6px rgba(99, 102, 241, 0.2),
+        0 0 0 1px rgba(99, 102, 241, 0.3);
+}
+
+/* Pseudo-class :nth-child(even) accent styling */
+.blog-grid .blog-card:nth-child(even) {
+    border-top: 3px solid #06b6d4; /* Cyan accent for even cards */
+}
+
+/* Pseudo-class :nth-child(odd) accent styling */
+.blog-grid .blog-card:nth-child(odd) {
+    border-top: 3px solid #8b5cf6; /* Violet accent for odd cards */
+}
+
+/* Card Media Header with Gradient Overlay */
+.card-media {
+    position: relative;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Gradient Overlay inside image container */
+.media-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    /* Gradient fade to seamlessly blend image into dark card */
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 30%, #1e293b 100%);
+}
+
+/* ==========================================================================
+   6. Pseudo-Elements (::before & ::after)
+   ========================================================================== */
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.category-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #38bdf8;
+}
+
+/* Pseudo-element ::before: Injects a glowing bullet dot before reading time */
+.read-time {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.read-time::before {
+    content: ""; /* Mandatory property for pseudo-elements */
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #10b981; /* Glowing green pulse */
+    border-radius: 50%;
+    box-shadow: 0 0 6px #10b981;
+}
+
+/* Title Styling with Animated Gradient Underline via ::after */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+    position: relative;
+    display: inline-block;
+}
+
+.card-title a {
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+}
+
+/* Pseudo-element ::after: Animated expandable underline */
+.card-title a::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8);
+    transition: width 0.3s ease;
+}
+
+.blog-card:hover .card-title a::after {
+    width: 100%; /* Stretches to 100% on card hover */
+}
+
+/* ==========================================================================
+   7. Text Truncation & Ellipsis (Single-Line & Multi-Line Clamping)
+   ========================================================================== */
+
+/* Single-Line Ellipsis Truncation */
+.author-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    max-width: 140px;
+    /* Mandatory trio for single-line ellipsis */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Multi-Line Ellipsis Truncation (Clamped to exactly 3 lines) */
+.card-excerpt {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    
+    /* Modern multi-line clamp */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   8. Footer, Author & Action Button
+   ========================================================================== */
+.card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.author-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #6366f1;
+}
+
+/* Styled Read More Button with Gradient Background & Hover Shadow */
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
+    transition: all 0.2s ease;
+}
+
+.read-more-btn:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+    transform: translateX(2px);
+}
+
+/* General Sibling Combinator (~) demonstration */
+/* Subtle dimmed opacity on siblings when one card is hovered */
+.blog-grid:hover > .blog-card:not(:hover) {
+    opacity: 0.7;
+    filter: grayscale(20%);
+    transition: opacity 0.3s, filter 0.3s;
+}

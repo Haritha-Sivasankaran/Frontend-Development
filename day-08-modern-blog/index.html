@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBytes | Modern Engineering &amp; Architecture Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Hero Header: Layered Backgrounds, Gradients, and Text-Shadow -->
+    <header class="hero-section">
+        <div class="hero-container">
+            <p class="hero-tagline">Architectural Insights &bull; Weekly Digest</p>
+            <h1 class="hero-title">DevBytes Engineering Journal</h1>
+            <p class="hero-lead">
+                Exploring modern web architectures, CSS rendering internals, design systems, 
+                and resilient frontend pipelines.
+            </p>
+        </div>
+    </header>
+
+    <!-- 2. Interactive Filter Bar: Inset Shadows & Combinators -->
+    <section class="filter-container">
+        <!-- Inset Box-Shadow Input -->
+        <input 
+            type="search" 
+            class="search-input" 
+            placeholder="Search engineering articles..." 
+            aria-label="Search articles"
+        >
+
+        <!-- Tag List with Combinators -->
+        <ul class="tag-list" aria-label="Article categories">
+            <li class="tag-item"><a href="#">All Articles</a></li>
+            <li class="tag-item"><a href="#">CSS Architecture</a></li>
+            <li class="tag-item"><a href="#">Performance</a></li>
+            <li class="tag-item"><a href="#">Accessibility</a></li>
+        </ul>
+    </section>
+
+    <!-- 3. Blog Cards Grid: Pseudo-Elements, Truncation, and Box-Shadows -->
+    <main class="blog-layout">
+        <div class="blog-grid">
+
+            <!-- Card 1 -->
+            <article class="blog-card">
+                <div class="card-media" style="background-image: url('https://placehold.co/600x400/1e1b4b/38bdf8?text=CSS+Internals');">
+                    <div class="media-gradient-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="category-tag">CSS Architecture</span>
+                        <span class="read-time">6 min read</span>
+                    </div>
+                    <h2 class="card-title">
+                        <a href="#">Demystifying the Browser Rendering Pipeline and CSS Triggers</a>
+                    </h2>
+                    <p class="card-excerpt">
+                        Understand how the browser converts raw HTML, CSS, and DOM trees into rasterized pixels 
+                        on screen. We examine layout, paint, and composite stages, and explore how to avoid costly 
+                        reflow penalties that compromise frame rates.
+                    </p>
+                    <div class="card-footer">
+                        <div class="author-info">
+                            <img src="https://placehold.co/64x64/38bdf8/ffffff?text=AM" alt="Alex Morgan" class="author-avatar">
+                            <span class="author-name" title="Alex Morgan, Senior Frontend Architect">Alex Morgan, Senior Frontend Architect</span>
+                        </div>
+                        <a href="#" class="read-more-btn">Read Article &rarr;</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="blog-card">
+                <div class="card-media" style="background-image: url('https://placehold.co/600x400/0f172a/818cf8?text=Box+Shadows');">
+                    <div class="media-gradient-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="category-tag">Design Systems</span>
+                        <span class="read-time">4 min read</span>
+                    </div>
+                    <h2 class="card-title">
+                        <a href="#">The Physics of Realistic Shadows and Smooth Ambient Light</a>
+                    </h2>
+                    <p class="card-excerpt">
+                        Elevate your UI components from flat cards to tangible surfaces. By layering multiple 
+                        box-shadows with varying blur and spread radii, you can recreate natural light diffusion 
+                        matching physical material design standards.
+                    </p>
+                    <div class="card-footer">
+                        <div class="author-info">
+                            <img src="https://placehold.co/64x64/818cf8/ffffff?text=SC" alt="Sarah Chen" class="author-avatar">
+                            <span class="author-name" title="Sarah Chen, Design Systems Lead">Sarah Chen, Design Systems Lead</span>
+                        </div>
+                        <a href="#" class="read-more-btn">Read Article &rarr;</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="blog-card">
+                <div class="card-media" style="background-image: url('https://placehold.co/600x400/172554/06b6d4?text=Web+Performance');">
+                    <div class="media-gradient-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="category-tag">Performance</span>
+                        <span class="read-time">8 min read</span>
+                    </div>
+                    <h2 class="card-title">
+                        <a href="#">Optimizing Core Web Vitals for Content-Heavy Web Publications</a>
+                    </h2>
+                    <p class="card-excerpt">
+                        A practical guide to diagnosing and mitigating Largest Contentful Paint (LCP) and 
+                        Cumulative Layout Shift (CLS). Learn how image sizing, lazy loading, and font display 
+                        swap can boost Google search rankings and customer retention.
+                    </p>
+                    <div class="card-footer">
+                        <div class="author-info">
+                            <img src="https://placehold.co/64x64/06b6d4/ffffff?text=MR" alt="Marcus Rodriguez" class="author-avatar">
+                            <span class="author-name" title="Marcus Rodriguez, Web Performance Specialist">Marcus Rodriguez, Web Performance Specialist</span>
+                        </div>
+                        <a href="#" class="read-more-btn">Read Article &rarr;</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+</body>
+</html>
