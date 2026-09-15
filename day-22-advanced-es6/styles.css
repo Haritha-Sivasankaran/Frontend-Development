@@ -1,0 +1,457 @@
+/* ==========================================================================
+   DAY 22: ADVANCED ES6
+   Project: Food Order Management System (BiteStream)
+   ========================================================================== */
+
+/* 1. Global Reset & Body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1e293b;
+    background: linear-gradient(135deg, #0f172a 0%, #1c1917 50%, #0f172a 100%);
+    min-height: 100vh;
+    padding: 2.5rem 1rem;
+}
+
+.app-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* 2. Header */
+.app-header {
+    background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    color: #ffffff;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-title h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.35rem;
+}
+
+.header-title p {
+    color: #ffedd5;
+    font-size: 0.95rem;
+}
+
+.badge-tag {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+}
+
+/* 3. Category Filter Tabs */
+.filter-tabs-bar {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.tabs-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #64748b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: #0f172a;
+    background-color: #f1f5f9;
+}
+
+.tab-btn.active {
+    background-color: #ea580c;
+    color: #ffffff;
+}
+
+.method-badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.method-tag {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.75rem;
+    background-color: #fef2f2;
+    color: #dc2626;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #fecaca;
+    font-weight: 700;
+}
+
+/* 4. Main Two-Column Layout (Menu & Cart/Order) */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Menu Section */
+.menu-section {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.menu-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+.card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.item-icon {
+    font-size: 2.2rem;
+}
+
+.class-type-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+}
+
+.type-food { background-color: #fed7aa; color: #9a3412; }
+.type-beverage { background-color: #cffafe; color: #0891b2; }
+
+.item-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.35rem;
+}
+
+.item-spec {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.85rem;
+    line-height: 1.4;
+}
+
+.card-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.85rem;
+}
+
+.item-price {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ea580c;
+}
+
+.btn-add-food {
+    background-color: #ea580c;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.btn-add-food:hover {
+    background-color: #c2410c;
+}
+
+/* 5. Right Column: Cart & Order Tracking */
+.sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card-panel {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Cart Items */
+.cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 1.25rem;
+}
+
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.cart-row-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.cart-row-price {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.btn-remove-item {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.2rem;
+}
+
+.empty-cart-text {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.cart-summary-box {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    color: #475569;
+}
+
+.summary-line.total-line {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.btn-place-order {
+    background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-place-order:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-place-order:disabled {
+    background: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* 6. Live Promise Tracking Flow */
+.tracker-panel {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.flow-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s;
+}
+
+.step-indicator {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    background-color: #e2e8f0;
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.step-time {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* Active & Complete States (Promise Chaining) */
+.flow-step.pending {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+}
+.flow-step.pending .step-indicator {
+    background-color: #f59e0b;
+    color: #ffffff;
+    animation: pulse 1.5s infinite;
+}
+
+.flow-step.resolved {
+    background-color: #ecfdf5;
+    border-color: #a7f3d0;
+}
+.flow-step.resolved .step-indicator {
+    background-color: #10b981;
+    color: #ffffff;
+}
+.flow-step.resolved .step-title {
+    color: #065f46;
+}
+
+.flow-step.rejected {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+.flow-step.rejected .step-indicator {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+/* Promise Console Logger */
+.promise-console {
+    background-color: #0f172a;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.78rem;
+    color: #a3e635;
+    margin-top: 1.25rem;
+    max-height: 120px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@media (max-width: 960px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}

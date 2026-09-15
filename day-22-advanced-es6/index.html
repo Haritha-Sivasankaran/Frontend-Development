@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 22 - Food Order Management (Advanced ES6)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-title">
+                <h1>BiteStream: Food Order Engine</h1>
+                <p>Advanced ES6 Array Iterators, OOP Classes &amp; Asynchronous Promise Chaining Pipeline</p>
+            </div>
+            <span class="badge-tag">Day 22 • Advanced ES6</span>
+        </header>
+
+        <!-- Category Filter & Method Badges -->
+        <section class="filter-tabs-bar">
+            <div class="tabs-group">
+                <button class="tab-btn active" data-category="all">All Items</button>
+                <button class="tab-btn" data-category="burgers">Burgers</button>
+                <button class="tab-btn" data-category="pizza">Pizzas</button>
+                <button class="tab-btn" data-category="drinks">Drinks</button>
+            </div>
+            <div class="method-badges">
+                <span class="method-tag">map()</span>
+                <span class="method-tag">filter()</span>
+                <span class="method-tag">reduce()</span>
+                <span class="method-tag">find()</span>
+                <span class="method-tag">class extends</span>
+                <span class="method-tag">new Promise()</span>
+                <span class="method-tag">.then().catch()</span>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+
+            <!-- Left: Restaurant Menu -->
+            <section class="menu-section">
+                <div class="section-title">
+                    <span>Chef's Kitchen Menu</span>
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Polymorphic Class Instances</span>
+                </div>
+                <div id="menu-grid" class="menu-grid">
+                    <!-- Dynamically populated via renderMenu() -->
+                </div>
+            </section>
+
+            <!-- Right: Cart & Promise Tracker Sidebar -->
+            <aside class="sidebar-panel">
+
+                <!-- Shopping Basket Panel -->
+                <div class="card-panel">
+                    <div class="section-title">
+                        <span>Your Order Basket</span>
+                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">reduce() Calculation</span>
+                    </div>
+
+                    <!-- Cart Item Rows -->
+                    <div id="cart-list" class="cart-list">
+                        <!-- Populated via updateCartUI() -->
+                    </div>
+
+                    <!-- Totals Breakdown -->
+                    <div class="cart-summary-box">
+                        <div class="summary-line">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-price">$0.00</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Tax (8.5%):</span>
+                            <span id="tax-price">$0.00</span>
+                        </div>
+                        <div class="summary-line total-line">
+                            <span>Total Due:</span>
+                            <span id="grand-total-price">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Place Order Button -->
+                    <button type="button" id="btn-place-order" class="btn-place-order" disabled>
+                        Place Food Order
+                    </button>
+                </div>
+
+                <!-- Live Promise Chaining Timeline -->
+                <div class="tracker-panel">
+                    <div class="section-title">
+                        <span>Order Pipeline (Promise Chain)</span>
+                        <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Asynchronous Stages</span>
+                    </div>
+
+                    <div class="flow-timeline">
+                        <!-- Stage 1: Accept -->
+                        <div id="step-accept" class="flow-step">
+                            <div class="step-indicator">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Restaurant Acceptance</div>
+                                <div class="step-time">Awaiting confirmation (~1.5s)</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 2: Prep -->
+                        <div id="step-prep" class="flow-step">
+                            <div class="step-indicator">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Kitchen Preparation</div>
+                                <div class="step-time">Cooking fresh ingredients (~2.5s)</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 3: Delivery -->
+                        <div id="step-deliver" class="flow-step">
+                            <div class="step-indicator">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Courier Out for Delivery</div>
+                                <div class="step-time">Driver en route (~2.0s)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Realtime Promise Stream Log -->
+                    <pre id="promise-console" class="promise-console">Select delicious food and click "Place Food Order" to initiate the Promise chain...</pre>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
