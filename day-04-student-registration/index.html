@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Admission Registration | Springfield Institute</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="form-container">
+
+        <header class="portal-header">
+            <h1>Springfield Institute of Technology</h1>
+            <p>Undergraduate &amp; Graduate Online Admission Portal — Academic Year 2026–2027</p>
+        </header>
+
+        <!-- Dynamic Portal Status Elements: Progress and Meter -->
+        <section class="portal-metrics" aria-label="Portal Metrics">
+            <div class="metric-group">
+                <label for="reg-progress">Registration Step Progress:</label>
+                <!-- progress represents completion status of a task -->
+                <progress id="reg-progress" value="75" max="100">75% Complete</progress>
+            </div>
+            <div class="metric-group">
+                <label for="seats-meter">Computer Science Seat Quota:</label>
+                <!-- meter represents a scalar measurement within a known range -->
+                <meter id="seats-meter" min="0" max="120" low="30" high="100" optimum="60" value="98">98 of 120 filled</meter>
+            </div>
+        </section>
+
+        <!-- HTML5 Form with Native Validation -->
+        <form action="https://httpbin.org/post" method="POST" enctype="multipart/form-data">
+
+            <!-- Fieldset 1: Personal Details -->
+            <fieldset>
+                <legend>1. Personal Identification</legend>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="first-name">First Name *</label>
+                        <input 
+                            type="text" 
+                            id="first-name" 
+                            name="firstName" 
+                            required 
+                            minlength="2" 
+                            maxlength="40" 
+                            placeholder="e.g., Jane"
+                            autocomplete="given-name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last-name">Last Name *</label>
+                        <input 
+                            type="text" 
+                            id="last-name" 
+                            name="lastName" 
+                            required 
+                            minlength="2" 
+                            maxlength="40" 
+                            placeholder="e.g., Doe"
+                            autocomplete="family-name"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth *</label>
+                        <input 
+                            type="date" 
+                            id="dob" 
+                            name="birthDate" 
+                            required 
+                            min="1995-01-01" 
+                            max="2010-12-31"
+                        >
+                        <span class="hint-text">Applicant must be born between 1995 and 2010</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender-group">Gender Identity *</label>
+                        <div class="options-group" id="gender-group">
+                            <label class="option-label">
+                                <input type="radio" name="gender" value="female" required> Female
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="gender" value="male"> Male
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="gender" value="non-binary"> Non-binary
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="city-input">State / Region *</label>
+                        <!-- datalist provides native autocomplete suggestions -->
+                        <input 
+                            type="text" 
+                            id="city-input" 
+                            name="stateRegion" 
+                            list="states-list" 
+                            required 
+                            placeholder="Type or pick state..."
+                        >
+                        <datalist id="states-list">
+                            <option value="California">
+                            <option value="New York">
+                            <option value="Texas">
+                            <option value="Washington">
+                            <option value="Massachusetts">
+                            <option value="Illinois">
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="photo-upload">Upload Passport Photo (JPEG/PNG) *</label>
+                        <input 
+                            type="file" 
+                            id="photo-upload" 
+                            name="applicantPhoto" 
+                            accept="image/jpeg,image/png" 
+                            required
+                        >
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Fieldset 2: Contact & Account Security -->
+            <fieldset>
+                <legend>2. Contact &amp; Security Credentials</legend>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="email-address">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email-address" 
+                            name="email" 
+                            required 
+                            placeholder="student@example.com"
+                            autocomplete="email"
+                        >
+                        <span class="hint-text">Official confirmation will be sent here</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number (10 Digits) *</label>
+                        <input 
+                            type="tel" 
+                            id="phone-number" 
+                            name="phoneNumber" 
+                            required 
+                            pattern="[0-9]{10}" 
+                            placeholder="9876543210" 
+                            title="Please provide exactly 10 digits without spaces or dashes."
+                        >
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="account-password">Portal Password *</label>
+                        <input 
+                            type="password" 
+                            id="account-password" 
+                            name="password" 
+                            required 
+                            minlength="8" 
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            placeholder="Min 8 chars, 1 uppercase, 1 number"
+                            title="Password must be at least 8 characters long and contain at least one uppercase letter and one digit."
+                            autocomplete="new-password"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portfolio-url">GitHub or Portfolio URL</label>
+                        <input 
+                            type="url" 
+                            id="portfolio-url" 
+                            name="portfolioUrl" 
+                            placeholder="https://github.com/username"
+                        >
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Fieldset 3: Academic Program & Interests -->
+            <fieldset>
+                <legend>3. Academic Preferences &amp; Assessment</legend>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="program-select">Intended Major / Specialization *</label>
+                        <select id="program-select" name="academicProgram" required>
+                            <option value="" disabled selected>-- Select a Department --</option>
+                            <optgroup label="School of Computing">
+                                <option value="btech-cse">B.Tech - Computer Science &amp; Engineering</option>
+                                <option value="btech-ai">B.Tech - Artificial Intelligence &amp; Data Science</option>
+                                <option value="btech-cyber">B.Tech - Cybersecurity</option>
+                            </optgroup>
+                            <optgroup label="School of Engineering">
+                                <option value="btech-ece">B.Tech - Electronics &amp; Communication</option>
+                                <option value="btech-mech">B.Tech - Mechanical &amp; Automation</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prev-score">High School / Qualifying Exam Score (%) *</label>
+                        <input 
+                            type="number" 
+                            id="prev-score" 
+                            name="qualifyingScore" 
+                            required 
+                            min="60" 
+                            max="100" 
+                            step="0.1" 
+                            placeholder="e.g., 88.5"
+                        >
+                        <span class="hint-text">Minimum eligibility threshold is 60.0%</span>
+                    </div>
+                </div>
+
+                <!-- Range Input with Connected Output -->
+                <div class="form-group">
+                    <label for="coding-rating">Self-Assessed Computer Programming Proficiency (1 - 10):</label>
+                    <div class="range-container">
+                        <input 
+                            type="range" 
+                            id="coding-rating" 
+                            name="codingProficiency" 
+                            min="1" 
+                            max="10" 
+                            value="5" 
+                            oninput="ratingOutput.value = codingRating.value"
+                        >
+                        <output id="ratingOutput" name="ratingOutput">5</output>
+                        <span>/ 10</span>
+                    </div>
+                </div>
+
+                <!-- Checkbox Group -->
+                <div class="form-group full-width">
+                    <label>Extracurricular Clubs of Interest:</label>
+                    <div class="options-group">
+                        <label class="option-label">
+                            <input type="checkbox" name="clubs" value="web-dev-club"> Web &amp; Open Source Club
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="clubs" value="robotics"> Robotics &amp; IoT
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="clubs" value="competitive-coding"> Competitive Coding
+                        </label>
+                        <label class="option-label">
+                            <input type="checkbox" name="clubs" value="music-arts"> Music &amp; Fine Arts
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Textarea -->
+                <div class="form-group full-width">
+                    <label for="statement-purpose">Statement of Purpose (Why do you want to join?) *</label>
+                    <textarea 
+                        id="statement-purpose" 
+                        name="statementOfPurpose" 
+                        rows="4" 
+                        required 
+                        minlength="30" 
+                        maxlength="600" 
+                        placeholder="Write a brief summary of your career aspirations and motivation (minimum 30 characters)..."
+                    ></textarea>
+                </div>
+            </fieldset>
+
+            <!-- Fieldset 4: Declaration & Legal Consent -->
+            <fieldset>
+                <legend>4. Consent &amp; Submission</legend>
+
+                <div class="form-group full-width">
+                    <label class="option-label">
+                        <input type="checkbox" id="terms-agree" name="termsAgreement" required>
+                        I certify that all information submitted is true and accurate to the best of my knowledge. *
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- Submission Actions -->
+            <div class="button-row">
+                <button type="reset">Reset Form</button>
+                <button type="submit">Submit Registration Application</button>
+            </div>
+
+        </form>
+
+    </main>
+
+</body>
+</html>
