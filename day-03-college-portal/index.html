@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Springfield Institute of Technology | Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Semantic Header -->
+    <header class="site-header">
+        <h1>Springfield Institute of Technology</h1>
+        <p>Department of Computer Science &amp; Engineering</p>
+        
+        <!-- Semantic Navigation -->
+        <nav class="main-nav" aria-label="Campus Portal Navigation">
+            <ul>
+                <li><a href="#news">Campus News</a></li>
+                <li><a href="#notices">Notice Board</a></li>
+                <li><a href="#timetable">Class Timetable</a></li>
+                <li><a href="#faq">Student FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="page-layout">
+
+        <!-- News & Announcements Section -->
+        <section id="news" class="portal-section">
+            <h2>Latest Campus News</h2>
+
+            <!-- Independent Article 1 -->
+            <article class="news-article">
+                <header>
+                    <h3>Annual Tech Symposium "InnoByte 2026" Announced</h3>
+                    <p><time datetime="2026-09-12" class="publish-date">Published on September 12, 2026</time> | By <em>Faculty Coordinator</em></p>
+                </header>
+                <p>
+                    Registrations are now open for InnoByte 2026, our flagship inter-college hackathon. 
+                    Teams of up to four members can participate in tracks including Artificial Intelligence, 
+                    Web3, and Green Cloud Computing.
+                </p>
+                <footer>
+                    <p><small>Tags: <mark>Hackathon</mark>, <mark>Symposium</mark>, <mark>Competitions</mark></small></p>
+                </footer>
+            </article>
+
+            <!-- Independent Article 2 -->
+            <article class="news-article">
+                <header>
+                    <h3>New High-Performance Cloud Lab Inauguration</h3>
+                    <p><time datetime="2026-09-10" class="publish-date">Published on September 10, 2026</time> | By <em>Head of Department</em></p>
+                </header>
+                <p>
+                    The department has inaugurated a cutting-edge 60-seat computing lab equipped with 
+                    dedicated GPU acceleration and fiber-optic gigabit uplinks for frontend architecture 
+                    and machine learning projects.
+                </p>
+                <footer>
+                    <p><small>Tags: <mark>Infrastructure</mark>, <mark>Lab Updates</mark></small></p>
+                </footer>
+            </article>
+
+            <!-- Semantic Sidebar / Tangential Content -->
+            <aside class="campus-notice-board" id="notices">
+                <h3>Campus Notice Board</h3>
+                <ul>
+                    <li><strong>Sep 20:</strong> Last day to submit semester project proposals.</li>
+                    <li><strong>Sep 24:</strong> Guest lecture on Modern Micro-Frontend Architecture.</li>
+                    <li><strong>Sep 28:</strong> Library closed for inventory reconciliation.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <!-- Student Timetable Section -->
+        <section id="timetable" class="portal-section">
+            <h2>Third-Year B.Tech CSE Class Timetable</h2>
+            <p>Academic Year 2026–2027 | Semester V | Section A</p>
+
+            <div class="table-container">
+                <table class="timetable">
+                    <caption>Official Weekly Lecture &amp; Practical Schedule</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Time / Day</th>
+                            <th scope="col">Monday</th>
+                            <th scope="col">Tuesday</th>
+                            <th scope="col">Wednesday</th>
+                            <th scope="col">Thursday</th>
+                            <th scope="col">Friday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">09:00 - 10:00</th>
+                            <td>HTML5 &amp; CSS3</td>
+                            <td>Operating Systems</td>
+                            <td>Database Systems</td>
+                            <td>HTML5 &amp; CSS3</td>
+                            <td>Computer Networks</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">10:00 - 11:00</th>
+                            <td>Data Structures</td>
+                            <td>Computer Networks</td>
+                            <td>Operating Systems</td>
+                            <td>Database Systems</td>
+                            <td>Data Structures</td>
+                        </tr>
+
+                        <!-- Colspan Example: Tea Break spans all 5 day columns -->
+                        <tr>
+                            <th scope="row">11:00 - 11:30</th>
+                            <td colspan="5" class="break-cell">TEA BREAK / MORNING RECESS</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">11:30 - 12:30</th>
+                            <td>Algorithms</td>
+                            <td>Software Engineering</td>
+                            <!-- Rowspan Example: Web Lab spans 2 hours (11:30 - 13:30) on Wednesday & Thursday -->
+                            <td rowspan="2" class="lab-cell">
+                                <strong>Web Development Lab</strong><br>
+                                <small>(Room CS-204)</small>
+                            </td>
+                            <td rowspan="2" class="lab-cell">
+                                <strong>Database Engineering Lab</strong><br>
+                                <small>(Room CS-108)</small>
+                            </td>
+                            <td>Software Engineering</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12:30 - 13:30</th>
+                            <td>Mathematics III</td>
+                            <td>Mathematics III</td>
+                            <td>Algorithms</td>
+                        </tr>
+
+                        <!-- Colspan Example: Lunch Break spans all 5 day columns -->
+                        <tr>
+                            <th scope="row">13:30 - 14:30</th>
+                            <td colspan="5" class="break-cell">LUNCH BREAK</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">14:30 - 15:30</th>
+                            <td>Library / Self Study</td>
+                            <td>Seminar Presentation</td>
+                            <td>Mentorship Hour</td>
+                            <td>Open Elective</td>
+                            <td>Sports / Physical Ed</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <em>Note: Practical lab attendance requires formal safety compliance and college badge.</em>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
+        <!-- Interactive FAQ Section using details and summary -->
+        <section id="faq" class="portal-section">
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <p>Click any question below to reveal the answer (built with pure semantic HTML, no JavaScript):</p>
+
+            <details class="faq-item" open>
+                <summary>What is the minimum attendance requirement for semester exams?</summary>
+                <p>
+                    Students must maintain a minimum of <strong>75% attendance</strong> across every registered 
+                    theory course and <strong>85% attendance</strong> in all laboratory practicals to qualify 
+                    for end-semester examinations.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How do I register for the upcoming InnoByte hackathon?</summary>
+                <p>
+                    Visit the Student Council office or register via the online portal using your student 
+                    identification credentials before the deadline on September 20, 2026.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Where can students access online library journals and IEEE papers?</summary>
+                <p>
+                    Digital subscriptions can be accessed through the campus Intranet proxy using your student 
+                    email credentials at <code>library.springfield.edu/portal</code>.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Who should I contact if there is a scheduling clash in elective subjects?</summary>
+                <p>
+                    Submit a formal change request to the Academic Registrar office located on the first floor 
+                    of the administrative block before the close of add/drop week.
+                </p>
+            </details>
+        </section>
+
+    </main>
+
+    <!-- Semantic Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Springfield Institute of Technology. All rights reserved.</p>
+        <p><small>Academic Portal maintained by the Department of Web Technologies.</small></p>
+    </footer>
+
+</body>
+</html>
