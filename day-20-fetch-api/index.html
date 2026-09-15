@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 20 - User Management Dashboard (Fetch API &amp; AJAX)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-title">
+                <h1>CloudUser Directory</h1>
+                <p>Real-time Client-Server Communication powered by JavaScript <code>fetch()</code>, AJAX &amp; RESTful APIs</p>
+            </div>
+            <div class="header-actions">
+                <button id="btn-refresh" class="btn-header btn-refresh">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6"/>
+                        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                    </svg>
+                    Fetch (GET)
+                </button>
+                <button id="btn-open-create-modal" class="btn-header btn-create-user">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Create User (POST)
+                </button>
+            </div>
+        </header>
+
+        <!-- Live Status Banner -->
+        <div id="status-banner" class="status-banner">
+            <span id="status-banner-text">Ready to communicate with REST API.</span>
+            <button type="button" id="btn-close-banner" class="btn-close-banner">&times;</button>
+        </div>
+
+        <!-- Controls & Filter Bar -->
+        <section class="controls-bar">
+            <div class="search-container">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Search users by name, email, or company in real time..."
+                >
+            </div>
+            <div class="api-endpoint-badge">
+                Endpoint: <code>GET https://jsonplaceholder.typicode.com/users</code>
+            </div>
+        </section>
+
+        <!-- Loading State Indicator -->
+        <div id="loading-wrapper" class="loading-wrapper">
+            <div class="spinner"></div>
+            <p style="font-weight: 600; font-size: 1.1rem;">Communicating with API Server...</p>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem;">Fetching JSON payload via HTTP GET</p>
+        </div>
+
+        <!-- Error State Card -->
+        <div id="error-card" class="error-card">
+            <div class="error-icon">⚠️</div>
+            <h3>Network / API Communication Error</h3>
+            <p id="error-message">Unable to contact the backend service. Check your internet connection or try again.</p>
+            <button id="btn-retry" class="btn-retry">Retry HTTP Request</button>
+        </div>
+
+        <!-- User Cards Grid (Dynamically Populated) -->
+        <main id="users-grid" class="users-grid">
+            <!-- Populated via renderUsers() -->
+        </main>
+
+        <!-- Live HTTP Inspector / Terminal Console -->
+        <section class="http-inspector">
+            <div class="inspector-header">
+                <span class="inspector-title">📡 Live HTTP Network Inspector (Request &amp; Response)</span>
+                <span style="font-size: 0.72rem; color: #94a3b8;">Asynchronous JSON Stream</span>
+            </div>
+            <pre id="http-inspector-log" class="inspector-body">Awaiting first HTTP network transaction...</pre>
+        </section>
+
+    </div>
+
+    <!-- Create User Modal (HTTP POST Form) -->
+    <div id="create-user-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Create New User Resource (HTTP POST)</h3>
+                <button type="button" id="btn-close-modal" class="btn-close-modal">&times;</button>
+            </div>
+
+            <form id="create-user-form" class="modal-form">
+                <div class="form-field">
+                    <label for="post-name">Full Name</label>
+                    <input type="text" id="post-name" class="form-input" placeholder="e.g., Sarah Connor" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="post-email">Email Address</label>
+                    <input type="email" id="post-email" class="form-input" placeholder="e.g., sarah.c@techcorp.io" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="post-phone">Phone Number</label>
+                    <input type="text" id="post-phone" class="form-input" placeholder="e.g., (555) 890-1234" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="post-company">Company Name</label>
+                    <input type="text" id="post-company" class="form-input" placeholder="e.g., Cyberdyne Systems">
+                </div>
+
+                <button type="submit" id="btn-submit-post" class="btn-submit-post">
+                    Transmit POST Request (JSON)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
