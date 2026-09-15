@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitLaunch Pro | Next-Generation Aerospace Propulsion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Header with Live Status Loading Animation -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <span class="logo-rocket">🚀</span> OrbitLaunch Pro
+            </a>
+
+            <!-- Loading Animation Demonstration -->
+            <div class="live-status-loader">
+                <div class="spinner" aria-label="Loading telemetry stream"></div>
+                <span class="status-text">Telemetry Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Hero Section: Animated Rocket & Dynamic CTA -->
+    <section class="hero">
+        <div class="hero-container">
+
+            <!-- Text Content with Staggered Entrance Animation -->
+            <div class="hero-content">
+                <span class="hero-badge">⚡ Commercial Space Propulsion 3.0</span>
+                <h1 class="hero-title">Pioneering Autonomous Orbital <span>Flight Mechanics</span>.</h1>
+                <p class="hero-desc">
+                    Engineered with next-gen ion propulsion, sub-millimeter thrust vectoring, 
+                    and automated satellite payload deployment capabilities.
+                </p>
+
+                <!-- Animated CTA Button Demonstration -->
+                <div class="cta-group">
+                    <a href="#features" class="btn-launch">
+                        <span>Deploy Mission</span>
+                        <span style="font-size: 1.2rem;">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Flying Rocket & Orbit Visual -->
+            <div class="hero-visual">
+                <div class="orbit-stage">
+                    <!-- Rotating Orbit Ring -->
+                    <div class="orbit-ring">
+                        <div class="orbit-satellite"></div>
+                    </div>
+
+                    <!-- Flying Rocket with Thruster Animation -->
+                    <div class="rocket-ship" aria-label="Flying rocket vessel">
+                        <svg viewBox="0 0 160 240" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                            <!-- Thruster Flame with Scaling Keyframe -->
+                            <g class="thruster-flame">
+                                <path d="M70 170 C70 210, 80 235, 80 235 C80 235, 90 210, 90 170 Z" fill="#f97316" />
+                                <path d="M74 170 C74 195, 80 210, 80 210 C80 210, 86 195, 86 170 Z" fill="#fde047" />
+                            </g>
+
+                            <!-- Rocket Hull -->
+                            <path d="M80 15 C60 55, 55 120, 55 160 L105 160 C105 120, 100 55, 80 15 Z" fill="#f8fafc" />
+                            
+                            <!-- Cockpit Porthole -->
+                            <circle cx="80" cy="85" r="14" fill="#0284c7" stroke="#e0f2fe" stroke-width="3" />
+                            <circle cx="83" cy="82" r="4" fill="#ffffff" />
+
+                            <!-- Fins -->
+                            <path d="M55 130 L30 165 L55 160 Z" fill="#ef4444" />
+                            <path d="M105 130 L130 165 L105 160 Z" fill="#ef4444" />
+                            <path d="M76 130 L80 160 L84 130 Z" fill="#94a3b8" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. Product Transformations Showcase: Translate, Scale, Rotate, Skew -->
+    <section class="features-section" id="features">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Aerospace Transformation Matrix</h2>
+            <p style="color: #94a3b8;">Hover each card to observe CSS transform primitives in action</p>
+        </div>
+
+        <div class="features-grid">
+
+            <!-- Card 1: Scale & Translate -->
+            <article class="feature-card card-scale">
+                <div class="card-icon-box icon-cyan">📐</div>
+                <h3 class="card-heading">1. Scale &amp; Translate</h3>
+                <p class="card-body-text">
+                    Demonstrates <code>transform: translateY(-10px) scale(1.04)</code>. 
+                    The card elevates smoothly along the Y-axis while expanding uniformly without layout reflow.
+                </p>
+            </article>
+
+            <!-- Card 2: Rotate & Translate -->
+            <article class="feature-card card-rotate">
+                <div class="card-icon-box icon-indigo">🔄</div>
+                <h3 class="card-heading">2. Rotate &amp; Spin</h3>
+                <p class="card-body-text">
+                    Demonstrates <code>transform: rotate(2deg)</code> on the card, and a complete 
+                    <code>rotate(360deg)</code> spin on the inner icon during hover.
+                </p>
+            </article>
+
+            <!-- Card 3: Skew & Angle -->
+            <article class="feature-card card-skew">
+                <div class="card-icon-box icon-pink">⚡</div>
+                <h3 class="card-heading">3. Skew &amp; Distort</h3>
+                <p class="card-body-text">
+                    Demonstrates <code>transform: skewX(-2deg)</code> to generate dynamic angular speed-lines 
+                    popular in high-energy gaming and aerospace design systems.
+                </p>
+            </article>
+
+        </div>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,474 @@
+/* ==========================================================================
+   DAY 11: CSS TRANSFORM AND ANIMATION
+   Project: Animated Product Landing Page (OrbitLaunch Pro)
+   ========================================================================== */
+
+/* 1. Reset and Design Tokens */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: #f8fafc;
+    background-color: #090d16; /* Deep space canvas */
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. Keyframes Definitions (Pure CSS Motion)
+   ========================================================================== */
+
+/* Rocket Floating & Flying Path */
+@keyframes rocketFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(15px, -25px) rotate(4deg);
+    }
+    50% {
+        transform: translate(30px, -10px) rotate(-2deg);
+    }
+    75% {
+        transform: translate(10px, -35px) rotate(5deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+}
+
+/* Rocket Thruster Flame Pulse */
+@keyframes flameThrust {
+    0%, 100% {
+        transform: scale(1) scaleY(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.2) scaleY(1.4);
+        opacity: 1;
+        filter: drop-shadow(0 0 12px #f97316);
+    }
+}
+
+/* Radar / Satellite Orbit Pulse */
+@keyframes orbitSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dual Ring Loading Spinner */
+@keyframes dualSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Breathing / Floating Soft Elevation */
+@keyframes floatGentle {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Staggered Fade In Up Entrance */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CTA Button Ambient Pulse Glow */
+@keyframes ctaPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 16px rgba(234, 88, 12, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
+    }
+}
+
+/* Shimmer Light Sweep on CTA */
+@keyframes shimmerSweep {
+    0% {
+        transform: translateX(-150%) skewX(-20deg);
+    }
+    100% {
+        transform: translateX(150%) skewX(-20deg);
+    }
+}
+
+/* ==========================================================================
+   3. Header & Navigation
+   ========================================================================== */
+.site-header {
+    background-color: rgba(9, 13, 22, 0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.brand-logo:hover .logo-rocket {
+    transform: rotate(-45deg) scale(1.2);
+}
+
+.logo-rocket {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Loader in Nav: Loading Animation Demonstration */
+.live-status-loader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(56, 189, 248, 0.2);
+    border-top-color: #38bdf8;
+    border-radius: 50%;
+    animation-name: dualSpin;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.status-text {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   4. Hero Section: Flying Rocket & Animated Elements
+   ========================================================================== */
+.hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 4rem 2rem;
+    background: radial-gradient(circle at 60% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 4rem;
+}
+
+/* Staggered entrance animations */
+.hero-content {
+    animation-name: fadeInUp;
+    animation-duration: 0.8s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(249, 115, 22, 0.1);
+    color: #fb923c;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    /* Skew demonstration */
+    transform: skewX(-8deg);
+}
+
+.hero-title {
+    font-size: 3.25rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+}
+
+.hero-title span {
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+    max-width: 520px;
+}
+
+/* ==========================================================================
+   5. Animated CTA Button
+   Keyframes: ctaPulse, shimmerSweep, transform: scale()
+   ========================================================================== */
+.cta-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-launch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.9rem 2.2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    /* Infinite pulse animation */
+    animation: ctaPulse 2s infinite;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover: scale and lift */
+.btn-launch:hover {
+    transform: scale(1.06) translateY(-2px);
+}
+
+/* Shimmer overlay sweep */
+.btn-launch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: shimmerSweep 3s infinite ease-in-out;
+}
+
+/* ==========================================================================
+   6. Flying Rocket Visual Element
+   Pure CSS SVG Artwork with Floating & Thruster Keyframes
+   ========================================================================== */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orbit-stage {
+    position: relative;
+    width: 380px;
+    height: 380px;
+}
+
+/* Rotating outer planetary ring */
+.orbit-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(99, 102, 241, 0.3);
+    border-radius: 50%;
+    animation: orbitSpin 25s linear infinite;
+}
+
+.orbit-satellite {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #38bdf8;
+}
+
+/* Rocket Container with Flight Animation */
+.rocket-ship {
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 200px;
+    animation: rocketFly 4s ease-in-out infinite;
+}
+
+.thruster-flame {
+    animation: flameThrust 0.3s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+/* ==========================================================================
+   7. Product Transformations Grid (Translate, Scale, Rotate, Skew)
+   ========================================================================== */
+.features-section {
+    max-width: 1200px;
+    margin: 3rem auto 6rem auto;
+    padding: 0 2rem;
+}
+
+.section-title-wrap {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2.25rem 1.75rem;
+    position: relative;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+}
+
+/* Transform Demo 1: Scale + TranslateY Lift */
+.card-scale:hover {
+    transform: translateY(-10px) scale(1.04);
+    border-color: #38bdf8;
+    box-shadow: 0 20px 30px -10px rgba(56, 189, 248, 0.25);
+}
+
+/* Transform Demo 2: Rotate + TranslateY */
+.card-rotate:hover {
+    transform: translateY(-10px) rotate(2deg);
+    border-color: #818cf8;
+    box-shadow: 0 20px 30px -10px rgba(129, 140, 248, 0.25);
+}
+
+/* Transform Demo 3: Skew + Scale */
+.card-skew:hover {
+    transform: translateY(-10px) skewX(-2deg) scale(1.02);
+    border-color: #f472b6;
+    box-shadow: 0 20px 30px -10px rgba(244, 114, 182, 0.25);
+}
+
+.card-icon-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.card-scale:hover .card-icon-box {
+    transform: scale(1.2);
+}
+
+.card-rotate:hover .card-icon-box {
+    transform: rotate(360deg);
+}
+
+.card-skew:hover .card-icon-box {
+    transform: skewX(12deg) scale(1.1);
+}
+
+.icon-cyan { background-color: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+.icon-indigo { background-color: rgba(99, 102, 241, 0.15); color: #818cf8; }
+.icon-pink { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; }
+
+.card-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+}
+
+.card-body-text {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   8. Responsive Adjustments
+   ========================================================================== */
+@media screen and (max-width: 900px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-desc {
+        margin: 0 auto 2rem auto;
+    }
+
+    .cta-group {
+        justify-content: center;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
