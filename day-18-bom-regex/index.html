@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 18 - Smart Registration & Browser Info App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-title">
+                <h1>CyberPortal: Registration &amp; BOM Inspector</h1>
+                <p>Advanced Regex Client Validation paired with Browser Object Model (BOM) Diagnostics</p>
+            </div>
+            <div class="online-status-badge">
+                <span id="status-dot" class="status-dot"></span>
+                <span id="online-badge-text">Checking Status...</span>
+            </div>
+        </header>
+
+        <!-- Main Split Grid -->
+        <div class="main-grid">
+
+            <!-- Panel 1: Smart Regex Registration Form -->
+            <section class="portal-card">
+                <div class="card-title-bar">
+                    <h2>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Smart Regex Registration
+                    </h2>
+                    <span class="badge-pill badge-regex">RegEx Engine</span>
+                </div>
+
+                <div class="card-content">
+                    <form id="smart-register-form" class="regex-form" novalidate>
+                        
+                        <!-- Username -->
+                        <div class="form-field">
+                            <div class="field-label-row">
+                                <label for="reg-username">Username</label>
+                                <span class="regex-pattern-tag">/^[a-zA-Z][a-zA-Z0-9_]{3,15}$/</span>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="reg-username" 
+                                class="input-box" 
+                                placeholder="e.g., alex_dev99"
+                                autocomplete="username"
+                                required
+                            >
+                            <div id="hint-username" class="validation-hint">Must start with a letter, 4-16 alphanumeric chars.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-field">
+                            <div class="field-label-row">
+                                <label for="reg-email">Email Address</label>
+                                <span class="regex-pattern-tag">/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/</span>
+                            </div>
+                            <input 
+                                type="email" 
+                                id="reg-email" 
+                                class="input-box" 
+                                placeholder="e.g., alex.coder@company.org"
+                                autocomplete="email"
+                                required
+                            >
+                            <div id="hint-email" class="validation-hint">Standard user@domain.tld structure.</div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-field">
+                            <div class="field-label-row">
+                                <label for="reg-phone">Phone Number</label>
+                                <span class="regex-pattern-tag">/^\+?(\d{1,3})?[-. ]?\(?\d{3}\)?...$/</span>
+                            </div>
+                            <input 
+                                type="tel" 
+                                id="reg-phone" 
+                                class="input-box" 
+                                placeholder="e.g., +1 (555) 234-5678 or 9876543210"
+                                autocomplete="tel"
+                                required
+                            >
+                            <div id="hint-phone" class="validation-hint">Supports national or international formatted numbers.</div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-field">
+                            <div class="field-label-row">
+                                <label for="reg-password">Password</label>
+                                <span class="regex-pattern-tag">/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)...{8,}/</span>
+                            </div>
+                            <input 
+                                type="password" 
+                                id="reg-password" 
+                                class="input-box" 
+                                placeholder="••••••••••••"
+                                autocomplete="new-password"
+                                required
+                            >
+                            <div id="hint-password" class="validation-hint">Min 8 chars: 1 upper, 1 lower, 1 digit, 1 special symbol.</div>
+                        </div>
+
+                        <button type="submit" class="btn-register">Audit &amp; Register Account</button>
+
+                        <div id="form-result-box" class="form-result-box"></div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Panel 2: Browser Object Model (BOM) Diagnostics -->
+            <section class="portal-card">
+                <div class="card-title-bar">
+                    <h2>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        BOM Environment Diagnostics
+                    </h2>
+                    <span class="badge-pill badge-bom">BOM APIs</span>
+                </div>
+
+                <div class="card-content">
+                    <div class="bom-sections">
+                        
+                        <!-- Navigator Info -->
+                        <div class="info-category">
+                            <h3>🌐 Navigator Information (<code>navigator</code>)</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Browser:</span>
+                                    <span id="nav-browser" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Language:</span>
+                                    <span id="nav-language" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">OS Platform:</span>
+                                    <span id="nav-platform" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Cookies:</span>
+                                    <span id="nav-cookies" class="info-val">Detecting...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Screen & Window Info -->
+                        <div class="info-category">
+                            <h3>🖥️ Screen &amp; Window Viewport (<code>screen</code> &amp; <code>window</code>)</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Screen Resolution:</span>
+                                    <span id="scr-resolution" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Available Space:</span>
+                                    <span id="scr-available" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Color Depth:</span>
+                                    <span id="scr-colordepth" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Live Viewport:</span>
+                                    <span id="win-viewport" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Device Pixel Ratio:</span>
+                                    <span id="win-dpr" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Screen Orientation:</span>
+                                    <span id="scr-orientation" class="info-val">Detecting...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location & History Info -->
+                        <div class="info-category">
+                            <h3>📍 Current URL &amp; History (<code>location</code> &amp; <code>history</code>)</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Protocol:</span>
+                                    <span id="loc-protocol" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Host:</span>
+                                    <span id="loc-host" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Pathname:</span>
+                                    <span id="loc-pathname" class="info-val">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Session Entries:</span>
+                                    <span id="hist-count" class="info-val">Detecting...</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="info-label">Full URL (href):</span>
+                                <div id="loc-href" class="info-val" style="font-size:0.75rem; color:#4f46e5; margin-top:0.2rem;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Controls -->
+                        <div class="info-category">
+                            <h3>🕹️ BOM Navigation Controls</h3>
+                            <div class="bom-nav-actions">
+                                <button type="button" id="btn-hist-back" class="btn-bom">← history.back()</button>
+                                <button type="button" id="btn-hist-forward" class="btn-bom">history.forward() →</button>
+                                <button type="button" id="btn-loc-reload" class="btn-bom">location.reload()</button>
+                                <button type="button" id="btn-loc-hash" class="btn-bom">Append #Hash</button>
+                            </div>
+                            <div style="margin-top: 0.6rem;">
+                                <button type="button" id="btn-win-popup" class="btn-bom btn-primary-bom" style="width: 100%;">
+                                    Open MDN Regex Guide via window.open()
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <span>Day 18 Focus: Regular Expressions (<code>test()</code>, <code>\d</code>, <code>\w</code>, <code>{min,max}</code>) and Browser Object Model (<code>window</code>, <code>screen</code>, <code>navigator</code>, <code>location</code>, <code>history</code>).</span>
+        </footer>
+
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
