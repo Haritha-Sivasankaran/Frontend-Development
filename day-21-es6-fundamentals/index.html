@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 21 - Modern Shopping Cart (ES6 Fundamentals)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="store-container">
+        
+        <!-- Header -->
+        <header class="store-header">
+            <div class="header-title">
+                <h1>ApexStore: Modern Shopping Cart</h1>
+                <p>Engineered entirely with modern ES6 syntax (Arrow Functions, Spread, Rest &amp; Destructuring)</p>
+            </div>
+            <div class="cart-pill-badge">
+                <span>🛒</span>
+                <span id="cart-badge-count">0 Items</span>
+            </div>
+        </header>
+
+        <!-- ES6 Feature Bar -->
+        <section class="es6-features-bar">
+            <span class="es6-label">ES6 Syntax Employed:</span>
+            <span class="es6-pill">const &amp; let</span>
+            <span class="es6-pill">`template ${literals}`</span>
+            <span class="es6-pill">() =&gt; arrow functions</span>
+            <span class="es6-pill">...rest parameters</span>
+            <span class="es6-pill">{ ...spread }</span>
+            <span class="es6-pill">const { obj } destructuring</span>
+            <span class="es6-pill">const [ arr ] destructuring</span>
+        </section>
+
+        <!-- Main Two-Column Grid -->
+        <div class="store-grid">
+            
+            <!-- Left: Product Catalog -->
+            <section class="catalog-section">
+                <div class="section-title">
+                    <span>Premium Hardware Catalog</span>
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Direct Object Destructuring</span>
+                </div>
+                
+                <div id="products-grid" class="products-grid">
+                    <!-- Populated dynamically via renderCatalog() -->
+                </div>
+            </section>
+
+            <!-- Right: Interactive Shopping Cart -->
+            <aside class="cart-panel">
+                <div class="section-title">
+                    <span>Your Shopping Bag</span>
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Spread Array State</span>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-list" class="cart-items-list">
+                    <!-- Populated dynamically via updateCartUI() -->
+                </div>
+
+                <!-- Coupon Section (Demonstrates Rest Operator) -->
+                <div class="coupon-box">
+                    <label class="coupon-label" for="coupon-input">Promo Discounts (...coupons):</label>
+                    <div class="coupon-row">
+                        <input 
+                            type="text" 
+                            id="coupon-input" 
+                            class="coupon-input" 
+                            placeholder="Try: SAVE10, APEX20, VIP5"
+                        >
+                        <button type="button" id="btn-apply-coupon" class="btn-coupon">Apply</button>
+                    </div>
+                    <div id="applied-coupons-tags" class="applied-coupons-tags"></div>
+                </div>
+
+                <!-- Summary Breakdown -->
+                <div class="summary-breakdown">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Promo Discounts:</span>
+                        <span id="summary-discount" style="color: #10b981;">-$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Due:</span>
+                        <span id="summary-total">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Live ES6 Destructuring Analysis Card -->
+                <div id="destructuring-insight" class="destructuring-insight">
+                    <!-- Populated via renderArrayDestructuringInsight() -->
+                </div>
+
+                <!-- Checkout Trigger Button -->
+                <button type="button" id="btn-checkout" class="btn-checkout" disabled>
+                    Proceed to Checkout
+                </button>
+            </aside>
+
+        </div>
+
+    </div>
+
+    <!-- Receipt Modal (Demonstrating Multi-line Template Literals) -->
+    <div id="receipt-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>ES6 Checkout Receipt</h3>
+                <span style="font-size: 0.8rem; color: #10b981; font-weight: 700;">✓ Payment Processed</span>
+            </div>
+            <pre id="receipt-content" class="receipt-content"></pre>
+            <button type="button" id="btn-close-modal" class="btn-close-modal">Start New Session</button>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
