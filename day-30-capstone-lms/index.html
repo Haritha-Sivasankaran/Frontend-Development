@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ednue LMS | React + TypeScript Final Project (Day 30)</title>
+  <meta name="description" content="Ednue Learning Management System - The Complete 30-Day Frontend Development Curriculum Capstone built with React 18, TypeScript, and REST APIs.">
+  <link rel="stylesheet" href="src/styles.css">
+
+  <!-- React 18 & ReactDOM 18 CDN for Instant Zero-Setup Browser Execution -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel Standalone configured for React + TypeScript Compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <!-- React Root Mount Point -->
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react,typescript">
+    const { useState, useEffect, useMemo } = React;
+
+    // =========================================================================
+    // 1. TypeScript Interfaces & Data Models
+    // =========================================================================
+    type CourseLevel = 'Beginner' | 'Intermediate' | 'Advanced';
+    type CourseCategory =
+      | 'Web Development'
+      | 'Cloud & DevOps'
+      | 'Data Science & AI'
+      | 'UI/UX Design'
+      | 'Mobile Development'
+      | 'Cyber Security';
+    type EnrollmentStatus = 'In Progress' | 'Completed' | 'Dropped';
+    type NavigationTab = 'home' | 'courses' | 'details' | 'dashboard' | 'register' | 'profile';
+
+    interface Lesson {
+      id: string;
+      title: string;
+      duration: string;
+      description: string;
+      order: number;
+    }
+
+    interface Instructor {
+      id: string;
+      name: string;
+      role: string;
+      bio: string;
+      avatar: string;
+      rating: number;
+      studentsCount: number;
+      coursesCount: number;
+    }
+
+    interface Course {
+      id: string;
+      title: string;
+      slug: string;
+      category: CourseCategory;
+      level: CourseLevel;
+      duration: string;
+      price: number;
+      originalPrice: number;
+      rating: number;
+      reviewCount: number;
+      description: string;
+      learningOutcomes: string[];
+      instructor: Instructor;
+      syllabus: Lesson[];
+      thumbnail: string;
+      featured: boolean;
+      tags: string[];
+      totalHours: number;
+    }
+
+    interface Student {
+      id: string;
+      name: string;
+      email: string;
+      phone: string;
+      bio: string;
+      avatar: string;
+      registeredDate: string;
+      interests: CourseCategory[];
+      skills: string[];
+      githubUsername?: string;
+    }
+
+    interface Enrollment {
+      courseId: string;
+      enrolledAt: string;
+      completedLessons: string[];
+      progress: number;
+      status: EnrollmentStatus;
+      lastAccessedAt: string;
+      certificateIssued?: boolean;
+    }
+
+    interface ApiResponse<T> {
+      success: boolean;
+      data: T;
+      message?: string;
+      timestamp: string;
+    }
+
+    // =========================================================================
+    // 2. Initial Data Catalog
+    // =========================================================================
+    const CATEGORIES: CourseCategory[] = [
+      'Web Development',
+      'Cloud & DevOps',
+      'Data Science & AI',
+      'UI/UX Design',
+      'Mobile Development',
+      'Cyber Security'
+    ];
+
+    const INITIAL_COURSES: Course[] = [
+      {
+        id: 'course-101',
+        title: 'Full-Stack Web Engineering: React 18, Node & PostgreSQL',
+        slug: 'fullstack-web-react-node',
+        category: 'Web Development',
+        level: 'Intermediate',
+        duration: '10 Weeks',
+        price: 349,
+        originalPrice: 499,
+        rating: 4.9,
+        reviewCount: 1420,
+        description: 'Master end-to-end full-stack development. Build production-grade single-page applications with React 18, TypeScript, RESTful Node.js Express APIs, and PostgreSQL databases.',
+        learningOutcomes: [
+          'Architect robust React SPAs with TypeScript and modern hooks',
+          'Design relational database schemas and write optimized SQL queries',
+          'Build scalable REST and GraphQL APIs with Node.js and Express',
+          'Deploy full-stack applications with Docker and CI/CD pipelines'
+        ],
+        instructor: {
+          id: 'inst-01',
+          name: 'Elena Rostova',
+          role: 'Principal Frontend Architect',
+          bio: 'Ex-Senior Engineer at Spotify with 12+ years of full-stack web application engineering experience.',
+          avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+          rating: 4.95,
+          studentsCount: 38400,
+          coursesCount: 6
+        },
+        syllabus: [
+          { id: 'les-101-1', title: 'Modern React 18 & Component Mental Models', duration: '45 mins', description: 'Reconciliation, functional purity, and custom hooks architecture.', order: 1 },
+          { id: 'les-101-2', title: 'TypeScript Fundamentals in React Projects', duration: '60 mins', description: 'Strong typing for props, states, events, and API payloads.', order: 2 },
+          { id: 'les-101-3', title: 'Node.js & Express RESTful API Engineering', duration: '55 mins', description: 'Routing, middleware chains, error boundaries, and input validation.', order: 3 },
+          { id: 'les-101-4', title: 'PostgreSQL Database Integration & ORM', duration: '50 mins', description: 'Schema migrations, indexing, joins, and transaction management.', order: 4 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+        featured: true,
+        tags: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+        totalHours: 42
+      },
+      {
+        id: 'course-102',
+        title: 'Cloud Architecture & DevOps with AWS & Kubernetes',
+        slug: 'cloud-devops-aws-kubernetes',
+        category: 'Cloud & DevOps',
+        level: 'Advanced',
+        duration: '8 Weeks',
+        price: 399,
+        originalPrice: 549,
+        rating: 4.85,
+        reviewCount: 980,
+        description: 'Learn cloud infrastructure design, containerization, and orchestration. Build resilient cloud-native architectures on AWS with Terraform, Docker, and Kubernetes.',
+        learningOutcomes: [
+          'Provision AWS VPC, EC2, ECS, and S3 using Terraform IaC',
+          'Containerize microservices and optimize multi-stage Docker builds',
+          'Deploy and orchestrate high-availability Kubernetes clusters'
+        ],
+        instructor: {
+          id: 'inst-02',
+          name: 'Marcus Vance',
+          role: 'Staff DevOps Consultant',
+          bio: 'AWS Certified Solutions Architect with over a decade of enterprise cloud experience.',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+          rating: 4.88,
+          studentsCount: 22100,
+          coursesCount: 4
+        },
+        syllabus: [
+          { id: 'les-102-1', title: 'AWS Core Networking & Virtual Private Clouds', duration: '50 mins', description: 'Subnets, route tables, and security groups.', order: 1 },
+          { id: 'les-102-2', title: 'Docker Containerization Best Practices', duration: '45 mins', description: 'Multi-stage builds and layer caching.', order: 2 },
+          { id: 'les-102-3', title: 'Kubernetes Pods, Deployments & Services', duration: '70 mins', description: 'Declarative YAML manifests and rolling updates.', order: 3 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+        featured: true,
+        tags: ['AWS', 'Docker', 'Kubernetes', 'DevOps'],
+        totalHours: 36
+      },
+      {
+        id: 'course-103',
+        title: 'Data Science & Machine Learning with Python & PyTorch',
+        slug: 'data-science-machine-learning-python',
+        category: 'Data Science & AI',
+        level: 'Intermediate',
+        duration: '12 Weeks',
+        price: 369,
+        originalPrice: 489,
+        rating: 4.92,
+        reviewCount: 1650,
+        description: 'From statistical exploration to neural networks. Clean data with Pandas, build interactive predictive models, and train deep learning vision and NLP networks.',
+        learningOutcomes: [
+          'Manipulate datasets using NumPy and Pandas vectorization',
+          'Train supervised and unsupervised machine learning models',
+          'Build convolutional neural networks (CNNs) in PyTorch'
+        ],
+        instructor: {
+          id: 'inst-03',
+          name: 'Dr. Arvind Patel',
+          role: 'Head of AI Research',
+          bio: 'PhD in Computer Science from Stanford; published author in deep learning architectures.',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+          rating: 4.96,
+          studentsCount: 41200,
+          coursesCount: 5
+        },
+        syllabus: [
+          { id: 'les-103-1', title: 'Python for Data Analysis: NumPy & Pandas', duration: '55 mins', description: 'Vectorized transforms and missing data imputation.', order: 1 },
+          { id: 'les-103-2', title: 'Exploratory Data Analysis & Statistical Inference', duration: '50 mins', description: 'Distributions and hypothesis testing.', order: 2 },
+          { id: 'les-103-3', title: 'Scikit-Learn Machine Learning Pipelines', duration: '65 mins', description: 'Cross-validation and hyperparameter tuning.', order: 3 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+        featured: true,
+        tags: ['Python', 'Machine Learning', 'PyTorch', 'Data Science'],
+        totalHours: 48
+      },
+      {
+        id: 'course-104',
+        title: 'Design Systems & Enterprise UI/UX with Figma',
+        slug: 'ui-ux-design-systems-figma',
+        category: 'UI/UX Design',
+        level: 'Beginner',
+        duration: '6 Weeks',
+        price: 279,
+        originalPrice: 389,
+        rating: 4.79,
+        reviewCount: 780,
+        description: 'Learn how top product companies create cohesive design systems. Master Figma variables, auto-layout 5.0, responsive components, accessibility, and developer handoff.',
+        learningOutcomes: [
+          'Construct scalable Figma component libraries using design tokens',
+          'Design WCAG AAA compliant accessible interfaces',
+          'Produce interactive micro-interaction prototypes'
+        ],
+        instructor: {
+          id: 'inst-04',
+          name: 'Zara Al-Mansoor',
+          role: 'Staff Product Designer',
+          bio: 'Design Systems Lead with former experience leading design infrastructure at fintech scale-ups.',
+          avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
+          rating: 4.82,
+          studentsCount: 18900,
+          coursesCount: 3
+        },
+        syllabus: [
+          { id: 'les-104-1', title: 'Design Thinking & UX Architecture Fundamentals', duration: '40 mins', description: 'User journeys and wireframing.', order: 1 },
+          { id: 'les-104-2', title: 'Figma Auto-Layout & Adaptive Components', duration: '55 mins', description: 'Slots, constraints, and component variants.', order: 2 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80',
+        featured: false,
+        tags: ['Figma', 'UI/UX', 'Design Systems'],
+        totalHours: 26
+      },
+      {
+        id: 'course-105',
+        title: 'Modern TypeScript & Scalable Frontend Architecture',
+        slug: 'typescript-scalable-frontend-architecture',
+        category: 'Web Development',
+        level: 'Advanced',
+        duration: '8 Weeks',
+        price: 329,
+        originalPrice: 449,
+        rating: 4.94,
+        reviewCount: 1120,
+        description: 'Master advanced TypeScript type-level programming, conditional types, generic constraints, AST transforms, and clean frontend architectural patterns.',
+        learningOutcomes: [
+          'Master advanced generics and mapped types',
+          'Implement Clean Architecture in React applications',
+          'Optimize bundle performance with code splitting'
+        ],
+        instructor: {
+          id: 'inst-01',
+          name: 'Elena Rostova',
+          role: 'Principal Frontend Architect',
+          bio: 'Ex-Senior Engineer at Spotify with 12+ years of full-stack experience.',
+          avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
+          rating: 4.95,
+          studentsCount: 38400,
+          coursesCount: 6
+        },
+        syllabus: [
+          { id: 'les-105-1', title: 'Advanced Generics & Type-Level Programming', duration: '60 mins', description: 'Infer keyword and conditional narrowing.', order: 1 },
+          { id: 'les-105-2', title: 'Clean Architecture & Domain Design in React', duration: '65 mins', description: 'Decoupling business rules from UI adapters.', order: 2 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
+        featured: true,
+        tags: ['TypeScript', 'Architecture', 'Clean Code'],
+        totalHours: 34
+      },
+      {
+        id: 'course-106',
+        title: 'Cyber Security Operations & Penetration Testing',
+        slug: 'cyber-security-penetration-testing',
+        category: 'Cyber Security',
+        level: 'Intermediate',
+        duration: '10 Weeks',
+        price: 379,
+        originalPrice: 519,
+        rating: 4.88,
+        reviewCount: 890,
+        description: 'Learn how to think like both an attacker and a defender. Master network reconnaissance, vulnerability assessment, OWASP Top 10 web exploits, and cryptography.',
+        learningOutcomes: [
+          'Audit web application vulnerabilities against OWASP Top 10',
+          'Remediate SQL Injection, XSS, and CSRF vulnerabilities',
+          'Implement cryptographic safeguards'
+        ],
+        instructor: {
+          id: 'inst-05',
+          name: 'David Chen',
+          role: 'Lead Information Security Officer',
+          bio: 'CISSP & CEH certified penetration tester advising Fortune 500 teams.',
+          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+          rating: 4.9,
+          studentsCount: 26500,
+          coursesCount: 3
+        },
+        syllabus: [
+          { id: 'les-106-1', title: 'Networking Fundamentals & Traffic Analysis', duration: '50 mins', description: 'TCP/IP, DNS, and packet inspection.', order: 1 },
+          { id: 'les-106-2', title: 'Web Application Hacking: OWASP Top 10', duration: '70 mins', description: 'Hands-on exploitation of SQLi and XSS.', order: 2 }
+        ],
+        thumbnail: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+        featured: false,
+        tags: ['Security', 'OWASP', 'Penetration Testing'],
+        totalHours: 40
+      }
+    ];
+
+    const DEFAULT_STUDENT: Student = {
+      id: 'STU-42091',
+      name: 'Haritha Sivasankaran',
+      email: 'haritha@ednue.edu',
+      phone: '+91 98401 55678',
+      bio: 'Frontend enthusiast & software developer building high-impact web apps.',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+      registeredDate: '2025-11-10',
+      interests: ['Web Development', 'Cloud & DevOps'],
+      skills: ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React 18', 'Git'],
+      githubUsername: 'Haritha-Sivasankaran'
+    };
+
+    const INITIAL_ENROLLMENTS: Enrollment[] = [
+      {
+        courseId: 'course-101',
+        enrolledAt: '2026-01-15',
+        completedLessons: ['les-101-1', 'les-101-2'],
+        progress: 50,
+        status: 'In Progress',
+        lastAccessedAt: '2026-03-10'
+      },
+      {
+        courseId: 'course-104',
+        enrolledAt: '2026-02-01',
+        completedLessons: ['les-104-1', 'les-104-2'],
+        progress: 100,
+        status: 'Completed',
+        lastAccessedAt: '2026-03-01',
+        certificateIssued: true
+      }
+    ];
+
+    // =========================================================================
+    // 3. Storage & API Services
+    // =========================================================================
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const storage = {
+      getStudent(): Student | null {
+        try {
+          const d = localStorage.getItem('ednue_lms_student');
+          return d ? JSON.parse(d) : DEFAULT_STUDENT;
+        } catch {
+          return DEFAULT_STUDENT;
+        }
+      },
+      setStudent(s: Student) {
+        localStorage.setItem('ednue_lms_student', JSON.stringify(s));
+      },
+      getEnrollments(): Enrollment[] {
+        try {
+          const d = localStorage.getItem('ednue_lms_enrollments');
+          return d ? JSON.parse(d) : INITIAL_ENROLLMENTS;
+        } catch {
+          return INITIAL_ENROLLMENTS;
+        }
+      },
+      setEnrollments(e: Enrollment[]) {
+        localStorage.setItem('ednue_lms_enrollments', JSON.stringify(e));
+      },
+      getFavorites(): string[] {
+        try {
+          const d = localStorage.getItem('ednue_lms_favorites');
+          return d ? JSON.parse(d) : ['course-101', 'course-103', 'course-105'];
+        } catch {
+          return ['course-101', 'course-103', 'course-105'];
+        }
+      },
+      setFavorites(f: string[]) {
+        localStorage.setItem('ednue_lms_favorites', JSON.stringify(f));
+      }
+    };
+
+    const api = {
+      async fetchCourses(): Promise<ApiResponse<Course[]>> {
+        await delay(450);
+        return {
+          success: true,
+          data: [...INITIAL_COURSES],
+          timestamp: new Date().toISOString()
+        };
+      },
+      async registerStudent(input: any): Promise<ApiResponse<Student>> {
+        await delay(350);
+        const newStudent: Student = {
+          id: `STU-${Math.floor(10000 + Math.random() * 90000)}`,
+          name: input.name,
+          email: input.email.toLowerCase(),
+          phone: input.phone,
+          bio: input.bio || 'Eager learner expanding technology skills.',
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(input.name)}`,
+          registeredDate: new Date().toISOString().split('T')[0],
+          interests: [input.interest],
+          skills: ['HTML5', 'CSS3', 'JavaScript'],
+          githubUsername: input.githubUsername
+        };
+        return {
+          success: true,
+          data: newStudent,
+          timestamp: new Date().toISOString()
+        };
+      }
+    };
+
+    // =========================================================================
+    // 4. Common Presentation Components
+    // =========================================================================
+    function Badge({ variant = 'primary', children }: { variant?: string; children: React.ReactNode }) {
+      return <span className={`badge badge-${variant}`}>{children}</span>;
+    }
+
+    function ProgressBar({ progress }: { progress: number }) {
+      const clamped = Math.min(Math.max(Math.round(progress), 0), 100);
+      const isComplete = clamped === 100;
+      return (
+        <div className="progress-track-wrapper">
+          <div className="progress-track-labels">
+            <span>{isComplete ? 'Completed 🎉' : 'Course Progress'}</span>
+            <span>{clamped}%</span>
+          </div>
+          <div className="progress-bar-bg">
+            <div
+              className={`progress-bar-fill ${isComplete ? 'completed' : ''}`}
+              style={{ width: `${clamped}%` }}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    function LoadingSpinner({ message = 'Loading Courses...' }: { message?: string }) {
+      return (
+        <div className="spinner-container">
+          <div className="spinner-circle"></div>
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--gray-800)' }}>{message}</h3>
+            <p style={{ fontSize: '0.85rem', color: 'var(--gray-500)', marginTop: '0.25rem' }}>
+              Connecting to Ednue catalog microservice
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // 5. Domain Components (Navbar, CourseCard, CourseList, Details, Dashboard, Form, Profile, Footer)
+    // =========================================================================
+    function Navbar({ activeTab, onNavigate, enrolledCount, favoritesCount, student, mobileMenuOpen, onToggleMobileMenu }: any) {
+      return (
+        <nav className="navbar" role="navigation">
+          <div className="nav-container">
+            <div className="nav-brand" onClick={() => onNavigate('home')}>
+              <div className="brand-icon">🎓</div>
+              <div className="brand-info">
+                <h1>Ednue LMS</h1>
+                <span>React + TypeScript</span>
+              </div>
+            </div>
+
+            <ul className="nav-links">
+              <li>
+                <button className={`nav-link-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => onNavigate('home')}>
+                  🏠 Home
+                </button>
+              </li>
+              <li>
+                <button className={`nav-link-btn ${activeTab === 'courses' ? 'active' : ''}`} onClick={() => onNavigate('courses')}>
+                  📚 Courses
+                </button>
+              </li>
+              <li>
+                <button className={`nav-link-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => onNavigate('dashboard')}>
+                  📊 Dashboard
+                  {enrolledCount > 0 && <span className="nav-counter">{enrolledCount}</span>}
+                </button>
+              </li>
+              <li>
+                <button className={`nav-link-btn ${activeTab === 'register' ? 'active' : ''}`} onClick={() => onNavigate('register')}>
+                  📝 Register
+                </button>
+              </li>
+            </ul>
+
+            <div className="nav-actions">
+              {student ? (
+                <div className="user-profile-badge" onClick={() => onNavigate('profile')}>
+                  <img src={student.avatar} alt={student.name} className="user-avatar-mini" />
+                  <span className="user-name-mini">{student.name}</span>
+                </div>
+              ) : (
+                <button className="btn btn-primary btn-sm" onClick={() => onNavigate('register')}>
+                  Join LMS
+                </button>
+              )}
+              <button className="mobile-toggle-btn" onClick={onToggleMobileMenu}>
+                {mobileMenuOpen ? '✕' : '☰'}
+              </button>
+            </div>
+          </div>
+
+          <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+            <ul className="mobile-nav-links">
+              <li><button className="nav-link-btn" onClick={() => onNavigate('home')}>🏠 Home</button></li>
+              <li><button className="nav-link-btn" onClick={() => onNavigate('courses')}>📚 Courses ({favoritesCount} Favs)</button></li>
+              <li><button className="nav-link-btn" onClick={() => onNavigate('dashboard')}>📊 Dashboard ({enrolledCount} Enrolled)</button></li>
+              <li><button className="nav-link-btn" onClick={() => onNavigate('register')}>📝 Register</button></li>
+              <li><button className="nav-link-btn" onClick={() => onNavigate('profile')}>👤 Profile</button></li>
+            </ul>
+          </div>
+        </nav>
+      );
+    }
+
+    function CourseCard({ course, isEnrolled, isFavorite, onSelectCourse, onToggleFavorite, onEnroll }: any) {
+      return (
+        <article className="course-card">
+          <div className="card-media-wrapper">
+            <img src={course.thumbnail} alt={course.title} className="card-media-img" />
+            <div className="card-badges-overlay">
+              <Badge variant="primary">{course.level}</Badge>
+              <Badge variant="neutral">{course.duration}</Badge>
+            </div>
+            <button
+              className="favorite-btn-overlay"
+              onClick={(e) => { e.stopPropagation(); onToggleFavorite(course.id); }}
+            >
+              {isFavorite ? '❤️' : '🤍'}
+            </button>
+          </div>
+
+          <div className="card-body">
+            <div className="card-meta-top">
+              <span style={{ fontWeight: 600, color: 'var(--primary)', fontSize: '0.8rem' }}>{course.category}</span>
+              <div className="card-rating-stars">
+                <span>⭐ {course.rating.toFixed(1)}</span>
+                <span style={{ color: 'var(--gray-400)', fontWeight: 400 }}>({course.reviewCount})</span>
+              </div>
+            </div>
+
+            <h3 className="card-title" onClick={() => onSelectCourse(course.id)} style={{ cursor: 'pointer' }}>
+              {course.title}
+            </h3>
+            <p className="card-description">{course.description}</p>
+
+            <div className="card-instructor-row">
+              <img src={course.instructor.avatar} alt={course.instructor.name} className="instructor-avatar-xs" />
+              <div className="instructor-text">
+                <h4>{course.instructor.name}</h4>
+                <p>{course.instructor.role}</p>
+              </div>
+            </div>
+
+            <div className="card-footer">
+              <div className="price-container">
+                <span className="current-price">${course.price}</span>
+                <span className="original-price">${course.originalPrice}</span>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.4rem' }}>
+                <button className="btn btn-secondary btn-sm" onClick={() => onSelectCourse(course.id)}>
+                  Details
+                </button>
+                {isEnrolled ? (
+                  <button className="btn btn-outline btn-sm" onClick={() => onSelectCourse(course.id)}>
+                    ✅ Enrolled
+                  </button>
+                ) : (
+                  <button className="btn btn-primary btn-sm" onClick={() => onEnroll(course.id)}>
+                    Enroll
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      );
+    }
+
+    function Home({ courses, enrolledCourseIds, favoriteCourseIds, onNavigate, onSelectCourse, onToggleFavorite, onEnroll }: any) {
+      const featured = courses.filter((c: any) => c.featured);
+      return (
+        <div className="home-container">
+          <section className="hero-section">
+            <div className="hero-content">
+              <div className="hero-tag"><span>✨</span> 30-Day Frontend Capstone Project</div>
+              <h2 className="hero-title">Master High-Impact Tech Skills with <span>Ednue LMS</span></h2>
+              <p className="hero-subtitle">
+                An enterprise-grade Single-Page Application engineered with React 18, TypeScript, RESTful Fetch API, and responsive modern CSS.
+              </p>
+              <div className="hero-cta-group">
+                <button className="btn btn-primary btn-lg" onClick={() => onNavigate('courses')}>
+                  <span>📚</span> Browse All Courses
+                </button>
+                <button className="btn btn-secondary btn-lg" onClick={() => onNavigate('dashboard')}>
+                  <span>📊</span> Student Dashboard
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section className="stats-bar-grid">
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#eef2ff', color: '#4f46e5' }}>👥</div>
+              <div><div className="stats-card-val">120,000+</div><div className="stats-card-lbl">Global Tech Learners</div></div>
+            </div>
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#ecfdf5', color: '#10b981' }}>🎓</div>
+              <div><div className="stats-card-val">94.8%</div><div className="stats-card-lbl">Course Completion Rate</div></div>
+            </div>
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#fffbeb', color: '#f59e0b' }}>⭐</div>
+              <div><div className="stats-card-val">4.92 / 5.0</div><div className="stats-card-lbl">Average Student Rating</div></div>
+            </div>
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#f0f9ff', color: '#0ea5e9' }}>💼</div>
+              <div><div className="stats-card-val">8 Tracks</div><div className="stats-card-lbl">Production Ready Curricula</div></div>
+            </div>
+          </section>
+
+          <section className="featured-courses-section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">Featured Industry Tracks</h2>
+                <p className="section-subtitle">Hand-picked cohorts led by principal engineers.</p>
+              </div>
+              <button className="btn btn-outline btn-sm" onClick={() => onNavigate('courses')}>
+                View All Courses →
+              </button>
+            </div>
+            <div className="courses-grid">
+              {featured.map((course: any) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  isEnrolled={enrolledCourseIds.includes(course.id)}
+                  isFavorite={favoriteCourseIds.includes(course.id)}
+                  onSelectCourse={onSelectCourse}
+                  onToggleFavorite={onToggleFavorite}
+                  onEnroll={onEnroll}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    function CourseList({ courses, enrolledCourseIds, favoriteCourseIds, onSelectCourse, onToggleFavorite, onEnroll }: any) {
+      const [searchTerm, setSearchTerm] = useState('');
+      const [selectedCategory, setSelectedCategory] = useState('All');
+      const [selectedLevel, setSelectedLevel] = useState('All');
+      const [sortBy, setSortBy] = useState('popular');
+      const [onlyFavorites, setOnlyFavorites] = useState(false);
+
+      const filtered = useMemo(() => {
+        return courses
+          .filter((c: any) => {
+            const matchesSearch =
+              searchTerm.trim() === '' ||
+              c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              c.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              c.instructor.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCat = selectedCategory === 'All' || c.category === selectedCategory;
+            const matchesLevel = selectedLevel === 'All' || c.level === selectedLevel;
+            const matchesFav = !onlyFavorites || favoriteCourseIds.includes(c.id);
+            return matchesSearch && matchesCat && matchesLevel && matchesFav;
+          })
+          .sort((a: any, b: any) => {
+            if (sortBy === 'rating') return b.rating - a.rating;
+            if (sortBy === 'price-low') return a.price - b.price;
+            if (sortBy === 'price-high') return b.price - a.price;
+            return b.reviewCount - a.reviewCount;
+          });
+      }, [courses, searchTerm, selectedCategory, selectedLevel, onlyFavorites, favoriteCourseIds, sortBy]);
+
+      return (
+        <div className="catalog-container">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Explore Academic &amp; Tech Programs</h2>
+              <p className="section-subtitle">Accelerate your engineering abilities with real-world tracks.</p>
+            </div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)', fontWeight: 600 }}>
+              Showing {filtered.length} of {courses.length} courses
+            </div>
+          </div>
+
+          <div className="catalog-controls">
+            <div className="catalog-search-row">
+              <div className="search-input-wrapper">
+                <span>🔍</span>
+                <input
+                  type="text"
+                  className="search-input-field"
+                  placeholder="Search by course title, topic, or mentor..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <div className="filter-dropdowns">
+                <select className="select-box" value={selectedLevel} onChange={(e) => setSelectedLevel(e.target.value)}>
+                  <option value="All">All Levels</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+
+                <select className="select-box" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <option value="popular">Most Popular</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                </select>
+
+                <button
+                  className={`btn btn-sm ${onlyFavorites ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setOnlyFavorites(!onlyFavorites)}
+                >
+                  {onlyFavorites ? '❤️ Favorites Only' : '🤍 Favorites'}
+                </button>
+              </div>
+            </div>
+
+            <div className="category-pills-row">
+              <button className={`category-pill ${selectedCategory === 'All' ? 'active' : ''}`} onClick={() => setSelectedCategory('All')}>
+                All Tracks
+              </button>
+              {CATEGORIES.map((cat) => (
+                <button key={cat} className={`category-pill ${selectedCategory === cat ? 'active' : ''}`} onClick={() => setSelectedCategory(cat)}>
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {filtered.length > 0 ? (
+            <div className="courses-grid">
+              {filtered.map((course: any) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  isEnrolled={enrolledCourseIds.includes(course.id)}
+                  isFavorite={favoriteCourseIds.includes(course.id)}
+                  onSelectCourse={onSelectCourse}
+                  onToggleFavorite={onToggleFavorite}
+                  onEnroll={onEnroll}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state-card">
+              <div className="empty-icon-lg">🔎</div>
+              <h3>No Matching Courses Found</h3>
+              <p style={{ color: 'var(--gray-500)', margin: '0.5rem auto 1.5rem', maxWidth: '400px' }}>
+                Try adjusting your search filters or browse all tracks.
+              </p>
+              <button className="btn btn-primary" onClick={() => { setSearchTerm(''); setSelectedCategory('All'); setSelectedLevel('All'); }}>
+                Reset Filters
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function CourseDetails({ course, enrollment, isFavorite, onBack, onEnroll, onUnenroll, onToggleFavorite, onToggleLesson, onGoToDashboard }: any) {
+      const isEnrolled = Boolean(enrollment);
+      const completed = enrollment ? enrollment.completedLessons : [];
+      const progress = enrollment ? enrollment.progress : 0;
+
+      return (
+        <div className="details-container">
+          <div className="details-breadcrumb">
+            <button className="breadcrumb-back" onClick={onBack}>← Back to Catalog</button>
+            <span>/</span>
+            <span>{course.category}</span>
+            <span>/</span>
+            <strong style={{ color: 'var(--gray-800)' }}>{course.title}</strong>
+          </div>
+
+          <div className="details-layout">
+            <div>
+              <div className="details-hero">
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <Badge variant="primary">{course.category}</Badge>
+                  <Badge variant="neutral">{course.level}</Badge>
+                </div>
+                <h2>{course.title}</h2>
+                <p className="details-lead">{course.description}</p>
+              </div>
+
+              {isEnrolled && (
+                <div style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '12px', padding: '1.25rem', marginBottom: '2rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                    <strong>🎯 Course Progress</strong>
+                    <Badge variant={progress === 100 ? 'success' : 'primary'}>{progress === 100 ? 'Completed' : 'In Progress'}</Badge>
+                  </div>
+                  <ProgressBar progress={progress} />
+                  <p style={{ fontSize: '0.8rem', color: 'var(--gray-500)', marginTop: '0.4rem' }}>
+                    {completed.length} of {course.syllabus.length} lessons finished.
+                  </p>
+                </div>
+              )}
+
+              <section className="syllabus-box">
+                <h3>Curriculum &amp; Modules</h3>
+                <div>
+                  {course.syllabus.map((lesson: any) => {
+                    const isDone = completed.includes(lesson.id);
+                    return (
+                      <div key={lesson.id} className={`lesson-card-item ${isDone ? 'is-completed' : ''}`}>
+                        <div className="lesson-info-left">
+                          {isEnrolled ? (
+                            <input
+                              type="checkbox"
+                              className="lesson-checkbox"
+                              checked={isDone}
+                              onChange={() => onToggleLesson(course.id, lesson.id)}
+                            />
+                          ) : (
+                            <span style={{ color: 'var(--gray-400)', fontWeight: 700 }}>#{lesson.order}</span>
+                          )}
+                          <div>
+                            <h4 className="lesson-title-text" style={{ textDecoration: isDone ? 'line-through' : 'none' }}>
+                              {lesson.title}
+                            </h4>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--gray-500)' }}>{lesson.description}</p>
+                          </div>
+                        </div>
+                        <span className="lesson-duration-badge">{lesson.duration}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--gray-200)' }}>
+                <h3>Instructor</h3>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+                  <img src={course.instructor.avatar} alt={course.instructor.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover' }} />
+                  <div>
+                    <h4>{course.instructor.name}</h4>
+                    <p style={{ color: 'var(--primary)', fontSize: '0.85rem', fontWeight: 600 }}>{course.instructor.role}</p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--gray-600)', marginTop: '0.25rem' }}>{course.instructor.bio}</p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside className="details-sidebar-card">
+              <img src={course.thumbnail} alt={course.title} className="details-sidebar-img" />
+              <div className="price-container" style={{ marginBottom: '1.25rem' }}>
+                <span className="current-price" style={{ fontSize: '2rem' }}>${course.price}</span>
+                <span className="original-price" style={{ fontSize: '1.1rem' }}>${course.originalPrice}</span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {isEnrolled ? (
+                  <>
+                    <button className="btn btn-primary" onClick={onGoToDashboard}>🚀 Go to Dashboard</button>
+                    <button className="btn btn-danger-outline btn-sm" onClick={() => onUnenroll(course.id)}>Unenroll</button>
+                  </>
+                ) : (
+                  <button className="btn btn-primary btn-lg" onClick={() => onEnroll(course.id)}>Enroll in Course</button>
+                )}
+                <button className="btn btn-secondary" onClick={() => onToggleFavorite(course.id)}>
+                  {isFavorite ? '❤️ Remove Favorite' : '🤍 Save Favorite'}
+                </button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      );
+    }
+
+    function StudentDashboard({ student, courses, enrollments, onSelectCourse, onUnenroll, onToggleLesson, onNavigate }: any) {
+      const completedCount = enrollments.filter((e: any) => e.progress === 100).length;
+      return (
+        <div>
+          <div className="dashboard-header">
+            <div className="dashboard-user-greeting">
+              <img src={student?.avatar} alt={student?.name} className="student-avatar-lg" />
+              <div>
+                <h2>Welcome back, {student?.name.split(' ')[0]}! 👋</h2>
+                <p style={{ color: 'var(--gray-500)' }}>Track your course completions and certificates.</p>
+              </div>
+            </div>
+            <button className="btn btn-primary" onClick={() => onNavigate('courses')}>➕ Browse Courses</button>
+          </div>
+
+          <div className="dashboard-metrics-grid">
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#eef2ff', color: '#4f46e5' }}>📚</div>
+              <div><div className="stats-card-val">{enrollments.length}</div><div className="stats-card-lbl">Enrolled Courses</div></div>
+            </div>
+            <div className="stats-card">
+              <div className="stats-card-icon" style={{ background: '#ecfdf5', color: '#10b981' }}>🏆</div>
+              <div><div className="stats-card-val">{completedCount}</div><div className="stats-card-lbl">Completed Courses</div></div>
+            </div>
+          </div>
+
+          <div className="section-header">
+            <h3>My Active Enrollments</h3>
+          </div>
+
+          {enrollments.length > 0 ? (
+            <div className="enrolled-courses-list">
+              {enrollments.map((enr: any) => {
+                const c = courses.find((x: any) => x.id === enr.courseId);
+                if (!c) return null;
+                const isDone = enr.progress === 100;
+                return (
+                  <div key={enr.courseId} className="enrolled-course-row">
+                    <img src={c.thumbnail} alt={c.title} className="enrolled-course-img" />
+                    <div className="enrolled-course-details">
+                      <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.25rem' }}>
+                        <Badge variant={isDone ? 'success' : 'primary'}>{isDone ? 'Completed 🎉' : 'In Progress'}</Badge>
+                      </div>
+                      <h3 onClick={() => onSelectCourse(c.id)} style={{ cursor: 'pointer' }}>{c.title}</h3>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--gray-500)' }}>Mentor: {c.instructor.name}</p>
+                      <ProgressBar progress={enr.progress} />
+                      <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        {c.syllabus.map((lesson: any) => (
+                          <label key={lesson.id} style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '4px' }}>
+                            <input
+                              type="checkbox"
+                              checked={enr.completedLessons.includes(lesson.id)}
+                              onChange={() => onToggleLesson(c.id, lesson.id)}
+                            />
+                            <span>{lesson.title}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="enrolled-actions">
+                      <button className="btn btn-primary btn-sm" onClick={() => onSelectCourse(c.id)}>Resume</button>
+                      <button className="btn btn-danger-outline btn-sm" onClick={() => onUnenroll(c.id)}>Unenroll</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="empty-state-card">
+              <div className="empty-icon-lg">🎓</div>
+              <h3>No Active Enrollments</h3>
+              <button className="btn btn-primary" onClick={() => onNavigate('courses')} style={{ marginTop: '1rem' }}>Browse Catalog</button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function StudentForm({ onRegister }: any) {
+      const [formData, setFormData] = useState({ name: '', email: '', phone: '', bio: '', interest: 'Web Development', githubUsername: '' });
+      const [errors, setErrors] = useState<any>({});
+
+      const handleSubmit = (e: any) => {
+        e.preventDefault();
+        const errs: any = {};
+        if (!formData.name.trim() || formData.name.length < 3) errs.name = 'Full name (min 3 chars) is required.';
+        if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Valid email is required.';
+        if (!formData.phone.trim()) errs.phone = 'Phone number is required.';
+        if (!formData.bio.trim() || formData.bio.length < 10) errs.bio = 'Bio (min 10 chars) is required.';
+        setErrors(errs);
+        if (Object.keys(errs).length === 0) {
+          onRegister(formData);
+        }
+      };
+
+      return (
+        <div className="form-card-container">
+          <h2 className="form-header-title">Student Registration</h2>
+          <p className="form-header-sub">Create your learner account to unlock syllabus checklists and verified certificates.</p>
+
+          <form className="registration-form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label className="input-label">Full Name <span>*</span></label>
+              <input
+                type="text"
+                className={`text-input ${errors.name ? 'input-error' : ''}`}
+                placeholder="e.g. Maya Lin"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+              {errors.name && <span className="field-error-msg">⚠️ {errors.name}</span>}
+            </div>
+
+            <div className="form-grid-2">
+              <div className="input-group">
+                <label className="input-label">Email Address <span>*</span></label>
+                <input
+                  type="email"
+                  className={`text-input ${errors.email ? 'input-error' : ''}`}
+                  placeholder="maya@domain.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+                {errors.email && <span className="field-error-msg">⚠️ {errors.email}</span>}
+              </div>
+
+              <div className="input-group">
+                <label className="input-label">Phone Number <span>*</span></label>
+                <input
+                  type="tel"
+                  className={`text-input ${errors.phone ? 'input-error' : ''}`}
+                  placeholder="+1 555-0199"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+                {errors.phone && <span className="field-error-msg">⚠️ {errors.phone}</span>}
+              </div>
+            </div>
+
+            <div className="form-grid-2">
+              <div className="input-group">
+                <label className="input-label">Track Interest</label>
+                <select className="select-input" value={formData.interest} onChange={(e) => setFormData({ ...formData, interest: e.target.value as any })}>
+                  {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+                </select>
+              </div>
+              <div className="input-group">
+                <label className="input-label">GitHub Username</label>
+                <input
+                  type="text"
+                  className="text-input"
+                  placeholder="octocat"
+                  value={formData.githubUsername}
+                  onChange={(e) => setFormData({ ...formData, githubUsername: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Brief Bio <span>*</span></label>
+              <textarea
+                rows={3}
+                className={`textarea-input ${errors.bio ? 'input-error' : ''}`}
+                placeholder="Describe your technical learning goals..."
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              />
+              {errors.bio && <span className="field-error-msg">⚠️ {errors.bio}</span>}
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-lg" style={{ marginTop: '1rem' }}>
+              🚀 Complete Registration
+            </button>
+          </form>
+        </div>
+      );
+    }
+
+    function Profile({ student, courses, enrollments, onUpdateProfile, onSelectCourse }: any) {
+      const completed = enrollments.filter((e: any) => e.progress === 100);
+      return (
+        <div className="profile-card-layout">
+          <aside className="profile-sidebar">
+            <img src={student.avatar} alt={student.name} className="profile-avatar-circle" />
+            <h2>{student.name}</h2>
+            <p style={{ color: 'var(--primary)', fontWeight: 600 }}>🎓 Verified Tech Learner</p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--gray-600)', margin: '1rem 0' }}>"{student.bio}"</p>
+            <div style={{ textAlign: 'left', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div><span>Email: </span><strong>{student.email}</strong></div>
+              <div><span>Phone: </span><strong>{student.phone}</strong></div>
+              <div><span>Joined: </span><strong>{student.registeredDate}</strong></div>
+            </div>
+          </aside>
+
+          <main className="profile-main-body">
+            <h3>Technical Skills</h3>
+            <div className="skills-tags-cloud">
+              {student.skills.map((s: string) => <span key={s} className="skill-tag">{s}</span>)}
+            </div>
+
+            <h3 style={{ marginTop: '2rem' }}>Verified Certificates ({completed.length})</h3>
+            {completed.length > 0 ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                {completed.map((e: any) => {
+                  const c = courses.find((x: any) => x.id === e.courseId);
+                  return (
+                    <div key={e.courseId} style={{ border: '1px solid #a7f3d0', background: '#f0fdf4', padding: '1rem', borderRadius: '8px' }}>
+                      <span style={{ fontSize: '1.5rem' }}>🏆</span>
+                      <h4>{c?.title}</h4>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--gray-500)' }}>Issued on {e.lastAccessedAt}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p style={{ color: 'var(--gray-500)', marginTop: '0.5rem' }}>Complete 100% of any course to earn verified credentials.</p>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    function Footer({ onNavigate }: any) {
+      return (
+        <footer className="footer">
+          <div className="footer-inner">
+            <div className="footer-brand">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontSize: '1.4rem' }}>🎓</span>
+                <span style={{ fontSize: '1.15rem', fontWeight: 800 }}>Ednue LMS</span>
+              </div>
+              <p>The capstone Single-Page Application concluding the 30-Day Frontend Development Curriculum.</p>
+            </div>
+            <div className="footer-col">
+              <h4>Navigation</h4>
+              <ul>
+                <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Home</a></li>
+                <li><a href="#courses" onClick={(e) => { e.preventDefault(); onNavigate('courses'); }}>Courses</a></li>
+                <li><a href="#dashboard" onClick={(e) => { e.preventDefault(); onNavigate('dashboard'); }}>Dashboard</a></li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4>Core Stack</h4>
+              <ul>
+                <li>React 18 Hooks</li>
+                <li>TypeScript 5</li>
+                <li>REST Fetch API</li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4>Organization</h4>
+              <ul>
+                <li>Ednue Technologies</li>
+                <li>Frontend Curriculum</li>
+              </ul>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <div>&copy; 2026 Ednue Technologies. 30-Day Frontend Development Curriculum Capstone.</div>
+            <div>React 18 &bull; TypeScript &bull; Clean Architecture</div>
+          </div>
+        </footer>
+      );
+    }
+
+    // =========================================================================
+    // 6. Root Application Component
+    // =========================================================================
+    function App() {
+      const [activeTab, setActiveTab] = useState('home');
+      const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+      const [courses, setCourses] = useState<Course[]>([]);
+      const [student, setStudent] = useState<Student | null>(null);
+      const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+      const [favorites, setFavorites] = useState<string[]>([]);
+      const [isLoading, setIsLoading] = useState(true);
+      const [error, setError] = useState<string | null>(null);
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [notification, setNotification] = useState<any>(null);
+
+      useEffect(() => {
+        let isMounted = true;
+        setStudent(storage.getStudent());
+        setEnrollments(storage.getEnrollments());
+        setFavorites(storage.getFavorites());
+
+        api.fetchCourses()
+          .then((res) => {
+            if (isMounted) {
+              setCourses(res.data);
+              setIsLoading(false);
+            }
+          })
+          .catch((err) => {
+            if (isMounted) {
+              setError(err.message);
+              setIsLoading(false);
+            }
+          });
+
+        return () => { isMounted = false; };
+      }, []);
+
+      useEffect(() => {
+        if (!notification) return;
+        const timer = setTimeout(() => setNotification(null), 4000);
+        return () => clearTimeout(timer);
+      }, [notification]);
+
+      const showToast = (message: string, type = 'success') => setNotification({ message, type });
+
+      const handleNavigate = (tab: string) => {
+        setActiveTab(tab);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const handleSelectCourse = (id: string) => {
+        setSelectedCourseId(id);
+        setActiveTab('details');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const handleEnroll = (courseId: string) => {
+        const course = courses.find((c) => c.id === courseId);
+        if (!course) return;
+
+        if (enrollments.some((e) => e.courseId === courseId)) {
+          showToast(`Already enrolled in "${course.title}".`, 'info');
+          handleSelectCourse(courseId);
+          return;
+        }
+
+        const newEnr: Enrollment = {
+          courseId,
+          enrolledAt: new Date().toISOString().split('T')[0],
+          completedLessons: [],
+          progress: 0,
+          status: 'In Progress',
+          lastAccessedAt: new Date().toISOString().split('T')[0]
+        };
+
+        const updated = [newEnr, ...enrollments];
+        setEnrollments(updated);
+        storage.setEnrollments(updated);
+        showToast(`🎉 Enrolled in "${course.title}"!`, 'success');
+      };
+
+      const handleUnenroll = (courseId: string) => {
+        const course = courses.find((c) => c.id === courseId);
+        if (!window.confirm(`Unenroll from "${course?.title}"?`)) return;
+        const updated = enrollments.filter((e) => e.courseId !== courseId);
+        setEnrollments(updated);
+        storage.setEnrollments(updated);
+        showToast(`Unenrolled from "${course?.title}".`, 'info');
+      };
+
+      const handleToggleFavorite = (courseId: string) => {
+        let updated: string[];
+        if (favorites.includes(courseId)) {
+          updated = favorites.filter((id) => id !== courseId);
+          showToast('Removed from favorites.', 'info');
+        } else {
+          updated = [...favorites, courseId];
+          showToast('Added to favorites! ❤️', 'success');
+        }
+        setFavorites(updated);
+        storage.setFavorites(updated);
+      };
+
+      const handleToggleLesson = (courseId: string, lessonId: string) => {
+        const course = courses.find((c) => c.id === courseId);
+        if (!course) return;
+
+        const enr = enrollments.find((e) => e.courseId === courseId);
+        if (!enr) {
+          handleEnroll(courseId);
+          return;
+        }
+
+        const isDone = enr.completedLessons.includes(lessonId);
+        const updatedLessons = isDone
+          ? enr.completedLessons.filter((id) => id !== lessonId)
+          : [...enr.completedLessons, lessonId];
+
+        const newProgress = Math.round((updatedLessons.length / course.syllabus.length) * 100);
+        const updatedEnr: Enrollment = {
+          ...enr,
+          completedLessons: updatedLessons,
+          progress: newProgress,
+          status: newProgress === 100 ? 'Completed' : 'In Progress',
+          certificateIssued: newProgress === 100 ? true : enr.certificateIssued
+        };
+
+        const updatedAll = enrollments.map((e) => e.courseId === courseId ? updatedEnr : e);
+        setEnrollments(updatedAll);
+        storage.setEnrollments(updatedAll);
+
+        if (newProgress === 100 && !enr.certificateIssued) {
+          showToast(`🏆 Congratulations! You completed "${course.title}". Certificate unlocked!`, 'success');
+        }
+      };
+
+      const handleRegisterStudent = async (data: any) => {
+        const res = await api.registerStudent(data);
+        setStudent(res.data);
+        storage.setStudent(res.data);
+        showToast(`Welcome, ${res.data.name}! Account created.`, 'success');
+        setActiveTab('dashboard');
+      };
+
+      const handleUpdateProfile = (updated: Student) => {
+        setStudent(updated);
+        storage.setStudent(updated);
+        showToast('Profile updated!', 'success');
+      };
+
+      const selectedCourse = courses.find((c) => c.id === selectedCourseId);
+      const selectedEnrollment = enrollments.find((e) => e.courseId === selectedCourseId);
+
+      return (
+        <div className="app-root">
+          <Navbar
+            activeTab={activeTab}
+            onNavigate={handleNavigate}
+            enrolledCount={enrollments.length}
+            favoritesCount={favorites.length}
+            student={student}
+            mobileMenuOpen={mobileMenuOpen}
+            onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
+          />
+
+          <main className="main-wrapper">
+            {isLoading && <LoadingSpinner message="Connecting to Ednue LMS..." />}
+
+            {!isLoading && (
+              <>
+                {activeTab === 'home' && (
+                  <Home
+                    courses={courses}
+                    enrolledCourseIds={enrollments.map((e) => e.courseId)}
+                    favoriteCourseIds={favorites}
+                    onNavigate={handleNavigate}
+                    onSelectCourse={handleSelectCourse}
+                    onToggleFavorite={handleToggleFavorite}
+                    onEnroll={handleEnroll}
+                  />
+                )}
+
+                {activeTab === 'courses' && (
+                  <CourseList
+                    courses={courses}
+                    enrolledCourseIds={enrollments.map((e) => e.courseId)}
+                    favoriteCourseIds={favorites}
+                    onSelectCourse={handleSelectCourse}
+                    onToggleFavorite={handleToggleFavorite}
+                    onEnroll={handleEnroll}
+                  />
+                )}
+
+                {activeTab === 'details' && selectedCourse && (
+                  <CourseDetails
+                    course={selectedCourse}
+                    enrollment={selectedEnrollment}
+                    isFavorite={favorites.includes(selectedCourse.id)}
+                    onBack={() => setActiveTab('courses')}
+                    onEnroll={handleEnroll}
+                    onUnenroll={handleUnenroll}
+                    onToggleFavorite={handleToggleFavorite}
+                    onToggleLesson={handleToggleLesson}
+                    onGoToDashboard={() => setActiveTab('dashboard')}
+                  />
+                )}
+
+                {activeTab === 'dashboard' && (
+                  <StudentDashboard
+                    student={student}
+                    courses={courses}
+                    enrollments={enrollments}
+                    onSelectCourse={handleSelectCourse}
+                    onUnenroll={handleUnenroll}
+                    onToggleLesson={handleToggleLesson}
+                    onNavigate={handleNavigate}
+                  />
+                )}
+
+                {activeTab === 'register' && (
+                  <StudentForm onRegister={handleRegisterStudent} />
+                )}
+
+                {activeTab === 'profile' && student && (
+                  <Profile
+                    student={student}
+                    courses={courses}
+                    enrollments={enrollments}
+                    onUpdateProfile={handleUpdateProfile}
+                    onSelectCourse={handleSelectCourse}
+                  />
+                )}
+              </>
+            )}
+          </main>
+
+          {notification && (
+            <div className="toast-container">
+              <div className={`toast-item ${notification.type}`}>
+                <span>{notification.message}</span>
+                <button className="toast-close" onClick={() => setNotification(null)}>✕</button>
+              </div>
+            </div>
+          )}
+
+          <Footer onNavigate={handleNavigate} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+  </script>
+</body>
+</html>
