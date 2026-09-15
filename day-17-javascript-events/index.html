@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 17 - Interactive Registration Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="form-wrapper" id="form-wrapper">
+        
+        <!-- Header (Demonstrating dblclick) -->
+        <header class="form-header" id="form-header" title="Double click header to autofill demo data!">
+            <div class="header-top">
+                <h1>EventCraft Register</h1>
+                <span class="badge-tag">Day 17 • Events</span>
+            </div>
+            <p>Comprehensive interactive form demonstrating JavaScript event handling in real time.</p>
+            <span class="hint-pill">💡 Tip: Double-click this header to auto-fill sample demo data</span>
+        </header>
+
+        <!-- Live Event Monitor Bar (Demonstrating mousemove, keyup, etc.) -->
+        <div class="event-monitor">
+            <div class="monitor-item">
+                <span class="monitor-label">Mouse [mousemove]:</span>
+                <span id="monitor-mouse" class="monitor-val">X: 0px, Y: 0px</span>
+            </div>
+            <div class="monitor-item">
+                <span class="monitor-label">Key [keyup]:</span>
+                <span id="monitor-key" class="monitor-val">None</span>
+            </div>
+            <div class="monitor-item">
+                <span class="monitor-label">Last Event:</span>
+                <span id="monitor-event" class="monitor-val">Ready</span>
+            </div>
+        </div>
+
+        <!-- Registration Form (Demonstrating submit, input, change, focus, blur, keydown) -->
+        <form class="registration-form" id="registration-form" novalidate>
+
+            <!-- Row 1: Full Name & Username -->
+            <div class="form-row">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="fullname" 
+                            class="form-input" 
+                            placeholder="John Doe" 
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+                    <div id="fullname-feedback" class="feedback-text"></div>
+                </div>
+
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username" id="username-label" title="Double-click to generate random username">
+                        Username <span style="font-size:0.7rem; color:#6366f1;">(dblclick to roll)</span>
+                    </label>
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input" 
+                            placeholder="johndoe_99" 
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+                    <div id="username-feedback" class="feedback-text"></div>
+                </div>
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-container">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-input" 
+                        placeholder="john.doe@example.com" 
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+                <div id="email-feedback" class="feedback-text"></div>
+            </div>
+
+            <!-- Password & Dynamic Strength Meter -->
+            <div class="form-group" id="password-container">
+                <label for="password">
+                    Password
+                    <span style="font-size: 0.72rem; color: #64748b;">(Hover field for rules)</span>
+                </label>
+                <div class="input-container">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="••••••••••••" 
+                        autocomplete="new-password"
+                        required
+                    >
+                    <button type="button" id="toggle-password" class="btn-toggle-pw" aria-label="Toggle password visibility">
+                        👁️ Show
+                    </button>
+                </div>
+
+                <!-- Strength Bar (Updated via 'input' event) -->
+                <div class="strength-meter-container">
+                    <div class="strength-bar-bg">
+                        <div id="strength-bar-fill" class="strength-bar-fill"></div>
+                    </div>
+                    <div class="strength-labels">
+                        <span>Password Strength:</span>
+                        <span id="strength-text">None</span>
+                    </div>
+                </div>
+
+                <!-- Password Rules Checklist (Toggled via mouseenter / mouseleave) -->
+                <div id="password-rules-card" class="password-rules-card">
+                    <strong>Password Requirements:</strong>
+                    <ul>
+                        <li id="rule-len" class="rule-item">⚪ At least 8 characters</li>
+                        <li id="rule-upper" class="rule-item">⚪ Contains uppercase &amp; lowercase letters</li>
+                        <li id="rule-num" class="rule-item">⚪ Contains at least 1 number (0-9)</li>
+                        <li id="rule-special" class="rule-item">⚪ Contains a special symbol (!@#$%^&amp;*)</li>
+                    </ul>
+                </div>
+
+                <div id="password-feedback" class="feedback-text"></div>
+            </div>
+
+            <!-- Role Select (Demonstrating change event) -->
+            <div class="form-group">
+                <label for="role">Account Role</label>
+                <select id="role" class="form-select">
+                    <option value="developer">Software Developer</option>
+                    <option value="designer">UI/UX Designer</option>
+                    <option value="student" selected>Student / Learner</option>
+                    <option value="manager">Product Manager</option>
+                </select>
+            </div>
+
+            <!-- Bio Textarea (Demonstrating input & character count) -->
+            <div class="form-group">
+                <label for="bio">
+                    Short Bio
+                    <span id="bio-counter" class="char-counter">0 / 150</span>
+                </label>
+                <textarea 
+                    id="bio" 
+                    class="form-textarea" 
+                    rows="3" 
+                    maxlength="150" 
+                    placeholder="Tell us a few words about your learning goals..."
+                ></textarea>
+            </div>
+
+            <!-- Terms & Conditions Checkbox (Demonstrating change event) -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms" class="checkbox-label">
+                    I agree to the Terms of Service, Privacy Policy, and Code of Conduct.
+                </label>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+                <button type="submit" id="btn-submit" class="btn-submit" disabled>
+                    Complete Registration
+                </button>
+                <button type="reset" id="btn-reset" class="btn-reset">
+                    Reset Form
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Success Modal Overlay -->
+        <div id="success-modal" class="success-modal">
+            <div class="success-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h2>Registration Successful!</h2>
+            <p>Your account was validated and recorded via JavaScript events.</p>
+
+            <div id="summary-details" class="success-summary">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <button id="btn-close-modal" class="btn-close-modal">Register Another Account</button>
+        </div>
+
+    </main>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
