@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Evaluation Portal | Springfield Tech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="portal-container">
+
+        <header class="portal-header">
+            <h1>Springfield Institute of Technology</h1>
+            <p>Department of Computer Science &amp; Engineering &bull; Semester Examination Result System</p>
+        </header>
+
+        <!-- Input Form Card -->
+        <section class="form-card">
+
+            <div class="student-meta-grid">
+                <div class="input-field">
+                    <label for="student-name">Student Full Name *</label>
+                    <input type="text" id="student-name" placeholder="e.g. Alex Morgan" value="Alex Morgan">
+                </div>
+
+                <div class="input-field">
+                    <label for="roll-number">Registration / Roll No *</label>
+                    <input type="text" id="roll-number" placeholder="e.g. CS-2026-042" value="CS-2026-042">
+                </div>
+            </div>
+
+            <h2 class="subjects-title">Enter Subject Examination Scores (Out of 100)</h2>
+
+            <div class="subjects-grid">
+                <div class="subject-input-box">
+                    <label for="sub-html">Web Dev (HTML/CSS)</label>
+                    <input type="number" id="sub-html" min="0" max="100" value="88">
+                </div>
+
+                <div class="subject-input-box">
+                    <label for="sub-js">JavaScript Core</label>
+                    <input type="number" id="sub-js" min="0" max="100" value="92">
+                </div>
+
+                <div class="subject-input-box">
+                    <label for="sub-db">Database Systems</label>
+                    <input type="number" id="sub-db" min="0" max="100" value="76">
+                </div>
+
+                <div class="subject-input-box">
+                    <label for="sub-net">Computer Networks</label>
+                    <input type="number" id="sub-net" min="0" max="100" value="84">
+                </div>
+
+                <div class="subject-input-box">
+                    <label for="sub-os">Operating Systems</label>
+                    <input type="number" id="sub-os" min="0" max="100" value="79">
+                </div>
+            </div>
+
+            <button type="button" id="generate-btn" class="btn-generate">Generate Examination Scorecard</button>
+
+        </section>
+
+        <!-- Output Report Card (Revealed after calculation) -->
+        <section id="report-card" class="report-card" aria-live="polite">
+
+            <!-- Dynamic Pass/Fail Banner -->
+            <div id="status-banner" class="status-banner">
+                <div>
+                    <span id="status-text" class="status-badge-lg">RESULT: PENDING</span>
+                    <p id="student-summary" style="font-size: 0.85rem; margin-top: 0.25rem;"></p>
+                </div>
+                <div id="rating-stars" style="font-size: 1.25rem;"></div>
+            </div>
+
+            <!-- Quantitative Metrics Row -->
+            <div class="metrics-row">
+                <div class="metric-pill">
+                    <span>Total Marks</span>
+                    <strong id="total-marks">0 / 500</strong>
+                </div>
+
+                <div class="metric-pill">
+                    <span>Aggregate</span>
+                    <strong id="percentage">0.00%</strong>
+                </div>
+
+                <div class="metric-pill">
+                    <span>Assigned Grade</span>
+                    <strong id="grade">-</strong>
+                </div>
+
+                <div class="metric-pill">
+                    <span>Passing Criteria</span>
+                    <strong style="font-size: 1.1rem; color: #475569;">Min 40 / Sub</strong>
+                </div>
+            </div>
+
+            <!-- Subject Breakdown Table -->
+            <h3 style="margin-bottom: 0.75rem; font-size: 1.1rem;">Subject-Wise Performance Breakdown</h3>
+            <div style="overflow-x: auto;">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Subject Module</th>
+                            <th>Marks Obtained</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-tbody">
+                        <!-- Populated dynamically by JavaScript loop -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Counselor / Board Advisory Remarks (Generated via switch) -->
+            <div class="remarks-box">
+                <strong>Academic Board Remark:</strong>
+                <p id="remarks" style="margin-top: 0.25rem;"></p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- External JavaScript File -->
+    <script src="app.js"></script>
+</body>
+</html>
