@@ -1,0 +1,369 @@
+/* ==========================================================================
+   DAY 16: DOM MANIPULATION
+   Project: Dynamic Todo Application (TaskMaster)
+   ========================================================================== */
+
+/* 1. Global Reset & Box Sizing */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1e293b;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    min-height: 100vh;
+    padding: 2.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* 2. Application Container */
+.todo-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 3. Header Section */
+.card-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    padding: 2rem 2rem 1.5rem;
+    color: #ffffff;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.day-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    color: #e0e7ff;
+    font-size: 0.95rem;
+}
+
+/* 4. Stats Counter Bar */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.stat-box {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+.stat-num {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #4f46e5;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #64748b;
+}
+
+/* 5. Input Form */
+.input-section {
+    padding: 1.5rem 2rem 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+}
+
+#task-input {
+    flex: 1;
+    padding: 0.85rem 1.2rem;
+    font-size: 1rem;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#task-input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.btn-add {
+    background: #4f46e5;
+    color: #ffffff;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.btn-add:hover {
+    background: #4338ca;
+}
+
+.btn-add:active {
+    transform: scale(0.98);
+}
+
+.input-error-msg {
+    color: #ef4444;
+    font-size: 0.82rem;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+    font-weight: 600;
+}
+
+/* 6. Filter Controls */
+.filter-section {
+    padding: 0 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    color: #1e293b;
+    background-color: #f1f5f9;
+}
+
+.filter-btn.active {
+    color: #4f46e5;
+    background-color: #e0e7ff;
+}
+
+.btn-clear-completed {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.btn-clear-completed:hover {
+    background-color: #fee2e2;
+}
+
+/* 7. Todo List Items */
+.todo-list-section {
+    padding: 0.5rem 2rem 1.5rem;
+    min-height: 220px;
+}
+
+#todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.todo-item:hover {
+    border-color: #cbd5e1;
+    background-color: #f1f5f9;
+}
+
+.item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex: 1;
+    overflow: hidden;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #4f46e5;
+    cursor: pointer;
+}
+
+.task-text {
+    font-size: 1rem;
+    color: #1e293b;
+    word-break: break-word;
+    user-select: none;
+}
+
+/* Completed Task State (Manipulated via classList) */
+.todo-item.completed {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    opacity: 0.75;
+}
+
+.todo-item.completed .task-text {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+/* Action Buttons */
+.item-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.btn-action {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    color: #0284c7;
+    background-color: #e0f2fe;
+}
+
+.btn-edit:hover {
+    background-color: #bae6fd;
+}
+
+.btn-save {
+    color: #16a34a;
+    background-color: #dcfce7;
+}
+
+.btn-save:hover {
+    background-color: #bbf7d0;
+}
+
+.btn-delete {
+    color: #dc2626;
+    background-color: #fee2e2;
+}
+
+.btn-delete:hover {
+    background-color: #fecaca;
+}
+
+/* Inline Edit Input Field */
+.edit-input {
+    flex: 1;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.95rem;
+    border: 2px solid #4f46e5;
+    border-radius: 6px;
+    outline: none;
+}
+
+/* Empty State Placeholder */
+.empty-placeholder {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
+}
+
+.empty-placeholder p {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* 8. Concept Reference Footer */
+.card-footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.card-footer code {
+    background-color: #e2e8f0;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    color: #4338ca;
+    font-weight: 600;
+}
+
+@media (max-width: 540px) {
+    .stats-bar {
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+    .input-section, .filter-section, .todo-list-section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .btn-add {
+        padding: 0.85rem 1rem;
+    }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 16 - Dynamic Todo Application</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="todo-card">
+        <!-- Header -->
+        <header class="card-header">
+            <div class="header-top">
+                <h1>TaskMaster</h1>
+                <span class="day-badge">Day 16 • DOM</span>
+            </div>
+            <p class="subtitle">Real-time Task Manager powered entirely by Native DOM Manipulation</p>
+        </header>
+
+        <!-- Stats Counter Bar -->
+        <section class="stats-bar">
+            <div class="stat-box">
+                <span id="total-count" class="stat-num">0</span>
+                <span class="stat-label">Total Tasks</span>
+            </div>
+            <div class="stat-box">
+                <span id="active-count" class="stat-num">0</span>
+                <span class="stat-label">Active</span>
+            </div>
+            <div class="stat-box">
+                <span id="completed-count" class="stat-num">0</span>
+                <span class="stat-label">Completed</span>
+            </div>
+        </section>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="task-input" 
+                    placeholder="What needs to be done today?" 
+                    autocomplete="off"
+                    aria-label="New task input"
+                >
+                <button id="add-task-btn" class="btn-add">+ Add Task</button>
+            </div>
+            <div id="input-error-msg" class="input-error-msg"></div>
+        </section>
+
+        <!-- Filter & Actions Bar -->
+        <section class="filter-section">
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+            <button id="clear-completed-btn" class="btn-clear-completed" style="display: none;">
+                Clear Completed
+            </button>
+        </section>
+
+        <!-- Todo List Container -->
+        <section class="todo-list-section">
+            <ul id="todo-list">
+                <!-- Dynamically populated via document.createElement and append -->
+            </ul>
+        </section>
+
+        <!-- DOM Concept Recap Footer -->
+        <footer class="card-footer">
+            <span>Powered by <code>createElement</code>, <code>classList</code>, <code>querySelector</code> &amp; <code>remove()</code></span>
+        </footer>
+    </main>
+
+    <!-- JavaScript Application -->
+    <script src="app.js"></script>
+</body>
+</html>
