@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Admin | Cloud Analytics &amp; Operations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Master Layout: 2-Dimensional CSS Grid (.dashboard-app) -->
+    <div class="dashboard-app">
+
+        <!-- 1. Sidebar: 1-Dimensional Flexbox (flex-direction: column) -->
+        <aside class="sidebar" aria-label="Main Administration Sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="brand-icon">N</div>
+                    <span class="brand-title">Nexus Admin</span>
+                </div>
+
+                <nav>
+                    <ul class="nav-menu">
+                        <li class="nav-item active"><a href="#">📊 Overview</a></li>
+                        <li class="nav-item"><a href="#">🛒 E-Commerce</a></li>
+                        <li class="nav-item"><a href="#">👥 Customers</a></li>
+                        <li class="nav-item"><a href="#">📦 Inventory</a></li>
+                        <li class="nav-item"><a href="#">📈 Analytics</a></li>
+                        <li class="nav-item"><a href="#">⚙️ Settings</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- User Card at Bottom of Sidebar (Flexbox space-between pushes this down) -->
+            <div class="sidebar-footer">
+                <img src="https://placehold.co/80x80/3b82f6/ffffff?text=AM" alt="Alex Morgan Avatar" class="user-avatar">
+                <div class="user-details">
+                    <span class="user-name">Alex Morgan</span>
+                    <span class="user-role">Super Admin</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2. Main Application Wrapper -->
+        <div class="main-wrapper">
+
+            <!-- Topbar: 1-Dimensional Flexbox (justify-content: space-between, align-items: center) -->
+            <header class="topbar">
+                <div class="topbar-search">
+                    <span>🔍</span>
+                    <input type="search" placeholder="Search orders, clients, or SKUs..." aria-label="Dashboard search">
+                </div>
+
+                <div class="topbar-actions">
+                    <button class="action-icon-btn" title="System Notifications" aria-label="Notifications">
+                        🔔
+                        <span class="notif-badge">4</span>
+                    </button>
+                    <button class="action-icon-btn" title="Messages" aria-label="Messages">
+                        💬
+                    </button>
+                    <img src="https://placehold.co/60x60/3b82f6/ffffff?text=AM" alt="Alex Morgan Profile" class="user-avatar" style="width: 34px; height: 34px;">
+                </div>
+            </header>
+
+            <!-- 3. Dashboard Content Area (Scaffolded with CSS Grid) -->
+            <main class="dashboard-content">
+
+                <!-- 4-Column Statistics Metrics Grid: Grid grid-template-columns: repeat(4, 1fr) -->
+                <section class="stats-grid" aria-label="Key Performance Indicators">
+
+                    <!-- Stat Card 1 -->
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Total Revenue</p>
+                            <p class="stat-value">$128,430</p>
+                            <span class="stat-trend trend-up">&uarr; +14.6% vs last month</span>
+                        </div>
+                        <div class="stat-icon icon-blue">💰</div>
+                    </div>
+
+                    <!-- Stat Card 2 -->
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Active Users</p>
+                            <p class="stat-value">24,582</p>
+                            <span class="stat-trend trend-up">&uarr; +8.2% new signups</span>
+                        </div>
+                        <div class="stat-icon icon-emerald">👥</div>
+                    </div>
+
+                    <!-- Stat Card 3 -->
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Total Orders</p>
+                            <p class="stat-value">3,490</p>
+                            <span class="stat-trend trend-down">&darr; -2.4% vs last week</span>
+                        </div>
+                        <div class="stat-icon icon-amber">📦</div>
+                    </div>
+
+                    <!-- Stat Card 4 -->
+                    <div class="stat-card">
+                        <div>
+                            <p class="stat-label">Conversion Rate</p>
+                            <p class="stat-value">3.85%</p>
+                            <span class="stat-trend trend-up">&uarr; +0.4% performance</span>
+                        </div>
+                        <div class="stat-icon icon-violet">⚡</div>
+                    </div>
+
+                </section>
+
+                <!-- 2D Analytics Grid: 2fr (Chart) vs 1fr (Recent Orders) -->
+                <section class="analytics-grid">
+
+                    <!-- Panel 1: Revenue Chart Simulation (2 Fractions Wide) -->
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Revenue Trajectory (2026)</h2>
+                            <span style="font-size: 0.8rem; color: #64748b;">Monthly Earnings</span>
+                        </div>
+
+                        <!-- Simulated CSS Flex/Grid Bar Chart -->
+                        <div class="chart-container" aria-label="Monthly Revenue Bar Chart">
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 45%;" title="Jan: $45k"></div>
+                                <span class="chart-month">Jan</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 60%;" title="Feb: $60k"></div>
+                                <span class="chart-month">Feb</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 52%;" title="Mar: $52k"></div>
+                                <span class="chart-month">Mar</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 78%;" title="Apr: $78k"></div>
+                                <span class="chart-month">Apr</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 90%;" title="May: $90k"></div>
+                                <span class="chart-month">May</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" style="height: 100%;" title="Jun: $100k"></div>
+                                <span class="chart-month">Jun</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Recent Orders List (1 Fraction Wide) -->
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Recent Transactions</h2>
+                            <a href="#" style="font-size: 0.8rem; color: #2563eb; text-decoration: none;">View All</a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="order-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>#NX-9041</strong></td>
+                                        <td>Emma Watson</td>
+                                        <td>$249.00</td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#NX-9040</strong></td>
+                                        <td>Liam Miller</td>
+                                        <td>$119.50</td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#NX-9039</strong></td>
+                                        <td>Sophia Davis</td>
+                                        <td>$89.00</td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#NX-9038</strong></td>
+                                        <td>Noah Wilson</td>
+                                        <td>$430.00</td>
+                                        <td><span class="status-badge status-paid">Paid</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </main>
+
+            <!-- 4. Footer: 1-Dimensional Flexbox (justify-content: space-between) -->
+            <footer class="dashboard-footer">
+                <p>&copy; 2026 Nexus Admin Portal. Built with CSS Flexbox &amp; Grid.</p>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Status</a></li>
+                    <li><a href="#">Support Desk</a></li>
+                </ul>
+            </footer>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+/* ==========================================================================
+   DAY 10: CSS FLEXBOX AND GRID
+   Project: Responsive Admin Dashboard (Nexus Admin)
+   ========================================================================== */
+
+/* 1. Reset and System Variables */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1e293b;
+    background-color: #f1f5f9;
+}
+
+/* ==========================================================================
+   2. Master Dashboard Grid (2-Dimensional Page Shell)
+   Grid: grid-template-columns, grid-template-rows, min-height
+   ========================================================================== */
+.dashboard-app {
+    display: grid;
+    /* Column 1: 250px Fixed Sidebar; Column 2: 1fr takes all remaining fluid width */
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   3. Sidebar Navigation (Flexbox: 1-Dimensional Column Layout)
+   Flex: display:flex, flex-direction:column, justify-content:space-between, gap
+   ========================================================================== */
+.sidebar {
+    background-color: #0f172a; /* Slate 900 */
+    color: #94a3b8;
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes user profile card to very bottom */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1e293b;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.brand-title {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-item.active a,
+.nav-item a:hover {
+    background-color: #1e293b;
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #1e293b;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* ==========================================================================
+   4. Main Content Area & Topbar (Flexbox: Horizontal Row Layout)
+   Flex: justify-content:space-between, align-items:center
+   ========================================================================== */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents flex children from breaking out of container */
+}
+
+.topbar {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between; /* Search bar on left, actions on right */
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.topbar-search {
+    display: flex;
+    align-items: center;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.5rem 0.85rem;
+    width: 320px;
+}
+
+.topbar-search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding-left: 0.5rem;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.action-icon-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #ef4444;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 999px;
+}
+
+/* ==========================================================================
+   5. Dashboard Grid Panels (Grid: 2D Multi-Card Scaffolding)
+   Grid: repeat(4, 1fr), gap, grid item placement
+   ========================================================================== */
+.dashboard-content {
+    padding: 2rem;
+    flex: 1;
+}
+
+/* 4-Column Statistics Metrics Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.35rem;
+}
+
+.stat-trend {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.trend-up { color: #10b981; }
+.trend-down { color: #ef4444; }
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-blue { background-color: #eff6ff; color: #2563eb; }
+.icon-emerald { background-color: #ecfdf5; color: #059669; }
+.icon-amber { background-color: #fffbeb; color: #d97706; }
+.icon-violet { background-color: #f5f3ff; color: #7c3aed; }
+
+/* ==========================================================================
+   6. Analytics & Orders Layout (Grid Item Placement: 2fr 1fr)
+   ========================================================================== */
+.analytics-grid {
+    display: grid;
+    /* Chart spans 2 fractions (66.6%), Orders spans 1 fraction (33.3%) */
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.panel-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* Simulated CSS Grid Chart Placeholder */
+.chart-container {
+    height: 250px;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 1.5rem 1rem 0 1rem;
+    gap: 0.75rem;
+}
+
+.chart-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.chart-bar {
+    width: 80%;
+    max-width: 40px;
+    background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 100%);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease;
+}
+
+.chart-month {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+}
+
+/* Orders Table (Styled within Panel) */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.order-table th {
+    text-align: left;
+    padding: 0.6rem 0.5rem;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 600;
+}
+
+.order-table td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.status-badge {
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.status-paid { background-color: #ecfdf5; color: #059669; }
+.status-pending { background-color: #fffbeb; color: #d97706; }
+
+/* ==========================================================================
+   7. Footer (Flexbox: Space-Between Alignment)
+   ========================================================================== */
+.dashboard-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+}
+
+.footer-links a {
+    color: #64748b;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #2563eb;
+}
+
+/* ==========================================================================
+   8. Responsive Media Queries: Grid Reflow & Flex Adaptations
+   ========================================================================== */
+@media screen and (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 grid for statistics */
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr; /* Stack Chart and Orders vertically */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* Collapse Master Dashboard Grid into 1 Column */
+    .dashboard-app {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none; /* In a full app, toggled by a mobile drawer */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr; /* Single column stats on mobile */
+    }
+
+    .topbar {
+        padding: 1rem;
+    }
+
+    .topbar-search {
+        width: 180px;
+    }
+}
