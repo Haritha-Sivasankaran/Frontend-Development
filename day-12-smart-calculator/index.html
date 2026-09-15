@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Calculator &amp; JavaScript Type Inspector</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Main Calculator Shell -->
+    <main class="calculator-card">
+
+        <header class="calc-header">
+            <h1>Smart Math &amp; Type Engine</h1>
+            <p>JavaScript Variables, Type Conversion &amp; Arithmetic Inspector</p>
+        </header>
+
+        <!-- Digital Output Screen -->
+        <section class="calc-display" aria-live="polite">
+            <div class="expression-preview" id="expression-preview"></div>
+            <div class="result-output" id="result-display">0</div>
+        </section>
+
+        <!-- Input Form and Operator Grid -->
+        <div class="calc-body">
+
+            <!-- Numeric Inputs -->
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="first-number">Operand A (Number 1)</label>
+                    <input type="number" id="first-number" class="number-input" placeholder="e.g. 25.5" step="any">
+                </div>
+
+                <div class="input-group">
+                    <label for="second-number">Operand B (Number 2)</label>
+                    <input type="number" id="second-number" class="number-input" placeholder="e.g. 10" step="any">
+                </div>
+            </div>
+
+            <!-- Operator Selector -->
+            <p class="section-label">Select Arithmetic Operator</p>
+            <div class="operators-grid" role="group" aria-label="Arithmetic operators">
+                <button type="button" class="op-btn active" data-operator="+" title="Addition (+)">+</button>
+                <button type="button" class="op-btn" data-operator="-" title="Subtraction (-)">−</button>
+                <button type="button" class="op-btn" data-operator="*" title="Multiplication (×)">×</button>
+                <button type="button" class="op-btn" data-operator="/" title="Division (÷)">÷</button>
+                <button type="button" class="op-btn" data-operator="%" title="Percentage (% of base)">%</button>
+            </div>
+
+            <!-- Math Functions: Rounding Options -->
+            <div class="options-row">
+                <div class="input-group" style="grid-column: 1 / -1;">
+                    <label for="rounding-mode">Math Method (Post-Processing)</label>
+                    <select id="rounding-mode" class="select-box">
+                        <option value="none">Standard Decimal (4 Decimals Precision)</option>
+                        <option value="round">Math.round() — Round to Nearest Integer</option>
+                        <option value="floor">Math.floor() — Round Down</option>
+                        <option value="ceil">Math.ceil() — Round Up</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Execution Button -->
+            <button type="button" id="calculate-btn" class="btn-calc">Compute Result</button>
+
+            <!-- JavaScript Type & Coercion Inspector -->
+            <section class="type-inspector">
+                <div class="type-inspector-title">
+                    <span>JavaScript Execution Console</span>
+                    <span style="font-weight: normal; color: #64748b;">(DOM &amp; Engine Diagnostic)</span>
+                </div>
+                <pre id="inspector-output">// Enter two numbers and click 'Compute Result' to inspect data types and coercion.</pre>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- External JavaScript File -->
+    <script src="app.js"></script>
+</body>
+</html>
