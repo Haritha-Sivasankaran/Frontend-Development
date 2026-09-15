@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 19 - Employee Management System (OOP &amp; Prototypes)</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="ems-container">
+        
+        <!-- Header -->
+        <header class="ems-header">
+            <div class="header-text">
+                <h1>DevCorp EMS: Object-Oriented Staff Portal</h1>
+                <p>Enterprise Employee Architecture built using JavaScript Constructor Functions &amp; Prototypal Inheritance</p>
+            </div>
+            <span class="badge-tag">Day 19 • OOP &amp; Prototypes</span>
+        </header>
+
+        <!-- Metrics Summary Bar -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div id="metric-headcount" class="metric-val">0</div>
+                <div class="metric-label">Total Headcount</div>
+            </div>
+            <div class="metric-card">
+                <div id="metric-payroll" class="metric-val">$0</div>
+                <div class="metric-label">Annual Payroll</div>
+            </div>
+            <div class="metric-card">
+                <div id="metric-avg" class="metric-val">$0</div>
+                <div class="metric-label">Avg. Base Salary</div>
+            </div>
+            <div class="metric-card">
+                <div id="metric-managers" class="metric-val">0</div>
+                <div class="metric-label">Leadership Leads</div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            
+            <!-- Left Panel: Recruiter Form -->
+            <section class="card-panel">
+                <div class="panel-header">
+                    <h2>Recruit New Employee</h2>
+                    <span style="font-size:0.75rem; color:#64748b; font-weight:700;">Blueprint Instance</span>
+                </div>
+                <div class="panel-body">
+                    <form id="add-emp-form" class="emp-form">
+                        
+                        <div class="form-field">
+                            <label for="emp-name">Full Name</label>
+                            <input type="text" id="emp-name" class="input-ctrl" placeholder="e.g. Jordan Hayes" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="emp-salary">Annual Salary ($)</label>
+                            <input type="number" id="emp-salary" class="input-ctrl" placeholder="e.g. 95000" min="30000" step="1000" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="emp-department">Department</label>
+                            <input type="text" id="emp-department" class="input-ctrl" placeholder="e.g. Engineering" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="emp-role">Role Hierarchy (Inheritance)</label>
+                            <select id="emp-role" class="select-ctrl">
+                                <option value="developer">Developer (Inherits from Employee)</option>
+                                <option value="designer">Designer (Inherits from Employee)</option>
+                                <option value="manager">Manager (Inherits from Employee)</option>
+                                <option value="employee">Standard Employee (Base Class)</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Role-Specific Inputs Container -->
+                        <div id="role-specific-container" class="role-specific-container">
+                            <!-- Populated via JavaScript based on role -->
+                        </div>
+
+                        <button type="submit" class="btn-add-emp">+ Instantiate Employee</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right Panel: Employee Directory -->
+            <section class="card-panel">
+                <div class="panel-header">
+                    <h2>Staff Directory &amp; Prototype Operations</h2>
+                    <span style="font-size:0.75rem; color:#64748b; font-weight:700;">Live Instances</span>
+                </div>
+                <div class="panel-body">
+                    <div id="emp-directory" class="emp-directory-grid">
+                        <!-- Populated dynamically with cards -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- Prototype Chain Inspector Modal -->
+    <div id="proto-modal" class="modal-backdrop">
+        <div class="proto-modal-card">
+            <div class="proto-modal-header">
+                <h3>Prototype Chain Resolution Hierarchy</h3>
+                <button type="button" id="btn-close-modal" class="btn-close-modal">&times;</button>
+            </div>
+            
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.25rem;">
+                Visualizing how JavaScript resolves methods up the delegation chain: 
+                <strong>Instance &rarr; Subclass Prototype &rarr; Superclass Prototype &rarr; Object.prototype &rarr; null</strong>.
+            </p>
+
+            <div id="proto-chain-details" class="proto-chain-flow">
+                <!-- Dynamically populated prototype chain stack -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Action Feedback Box -->
+    <div id="action-toast" class="action-toast"></div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
