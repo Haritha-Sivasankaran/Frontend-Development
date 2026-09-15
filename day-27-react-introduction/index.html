@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Course Profile App | Day 27 React Introduction</title>
+    <meta name="description" content="A functional React 18 application demonstrating Component-Based Architecture, Props, JSX, Lists with Keys, and Event Handling.">
+    <link rel="stylesheet" href="src/styles.css">
+
+    <!-- React 18 & ReactDOM 18 CDN for Instant Zero-Setup Browser Execution -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Standalone to compile JSX on the fly in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <!-- React Root Mount Point -->
+    <div id="root"></div>
+
+    <!-- Standalone React 18 Functional Component Tree -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        // ==================================================================
+        // 1. Data Models (Passed Down as Props)
+        // ==================================================================
+        const instructorData = {
+            name: "Elena Vance",
+            role: "Senior Staff Frontend Architect",
+            organization: "EduSphere Engineering Academy",
+            avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=180&auto=format&fit=crop&q=80",
+            bio: "Over 12 years of production experience architecting mission-critical React applications. Active contributor to modern component design systems and author of 'Modern React Architecture'.",
+            totalStudents: "42,000+",
+            coursesCount: 6,
+            averageRating: 4.9,
+            badges: ["Verified Instructor", "Top Rated", "Staff Engineer"]
+        };
+
+        const coursesData = [
+            {
+                id: "course-101",
+                title: "React 18 Foundations: Components & JSX",
+                category: "Frontend",
+                level: "Beginner",
+                duration: "6 Weeks",
+                price: 349,
+                rating: 4.9,
+                reviews: 1420,
+                description: "Understand the Virtual DOM, master JSX expressions, component trees, props contract passing, and event handling mechanics.",
+                tags: ["React", "JSX", "Functional Components", "Props"],
+                featured: true,
+                icon: "⚛️"
+            },
+            {
+                id: "course-102",
+                title: "Production TypeScript for React Developers",
+                category: "Frontend",
+                level: "Intermediate",
+                duration: "8 Weeks",
+                price: 429,
+                rating: 4.8,
+                reviews: 980,
+                description: "Type your props, generic hooks, synthetic events, and component interfaces with compile-time safety.",
+                tags: ["TypeScript", "Generics", "Type Safety", "Interfaces"],
+                featured: false,
+                icon: "📘"
+            },
+            {
+                id: "course-103",
+                title: "Modern UI Design Systems with React & CSS",
+                category: "Design",
+                level: "All Levels",
+                duration: "5 Weeks",
+                price: 299,
+                rating: 4.9,
+                reviews: 750,
+                description: "Construct scalable, accessible component libraries from Figma design tokens using modern Flexbox, CSS Grid, and custom properties.",
+                tags: ["UI/UX", "CSS Grid", "Design Tokens", "Accessibility"],
+                featured: false,
+                icon: "🎨"
+            },
+            {
+                id: "course-104",
+                title: "Full-Stack Next.js 14 & Server Components",
+                category: "Full-Stack",
+                level: "Advanced",
+                duration: "10 Weeks",
+                price: 499,
+                rating: 4.9,
+                reviews: 1650,
+                description: "Harness React Server Components (RSC), App Router, streaming SSR, and server actions for lightning-fast performance.",
+                tags: ["Next.js", "Server Components", "SSR", "App Router"],
+                featured: true,
+                icon: "🚀"
+            },
+            {
+                id: "course-105",
+                title: "Asynchronous React: Data Fetching & APIs",
+                category: "Architecture",
+                level: "Intermediate",
+                duration: "6 Weeks",
+                price: 379,
+                rating: 4.7,
+                reviews: 620,
+                description: "Orchestrate HTTP requests, handle loading and error states, cache responses, and build resilient network pipelines.",
+                tags: ["Fetch API", "Promises", "Async", "REST APIs"],
+                featured: false,
+                icon: "🌐"
+            },
+            {
+                id: "course-106",
+                title: "React Testing Library & Jest Masterclass",
+                category: "Testing",
+                level: "Intermediate to Pro",
+                duration: "4 Weeks",
+                price: 289,
+                rating: 4.8,
+                reviews: 510,
+                description: "Write robust unit and integration tests for functional components focusing on user behaviors rather than implementation details.",
+                tags: ["Testing", "Jest", "RTL", "Code Quality"],
+                featured: false,
+                icon: "🧪"
+            }
+        ];
+
+        // ==================================================================
+        // 2. Functional Component: Header
+        // ==================================================================
+        function Header({ brandName, courseCount, onFilterCategory, activeCategory }) {
+            return (
+                <header className="navbar">
+                    <div className="container nav-container">
+                        <div className="nav-brand">
+                            <span className="react-logo-spin">⚛️</span>
+                            <span className="brand-text">{brandName}</span>
+                            <span className="react-badge">React 18</span>
+                        </div>
+
+                        <nav className="nav-controls">
+                            <button 
+                                type="button" 
+                                className={`nav-filter-btn ${activeCategory === 'All' ? 'active' : ''}`}
+                                onClick={() => onFilterCategory('All')}
+                            >
+                                All Tracks ({courseCount})
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`nav-filter-btn ${activeCategory === 'Frontend' ? 'active' : ''}`}
+                                onClick={() => onFilterCategory('Frontend')}
+                            >
+                                Frontend
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`nav-filter-btn ${activeCategory === 'Full-Stack' ? 'active' : ''}`}
+                                onClick={() => onFilterCategory('Full-Stack')}
+                            >
+                                Full-Stack
+                            </button>
+                        </nav>
+                    </div>
+                </header>
+            );
+        }
+
+        // ==================================================================
+        // 3. Functional Component: CourseCard
+        // ==================================================================
+        function CourseCard({ course, onEnroll, onPreview }) {
+            const {
+                title,
+                category,
+                level,
+                duration,
+                price,
+                rating,
+                reviews,
+                description,
+                tags,
+                featured,
+                icon
+            } = course;
+
+            return (
+                <article className={`course-card ${featured ? 'card-featured' : ''}`}>
+                    <div className="card-top-bar">
+                        <span className="course-icon">{icon}</span>
+                        <div className="card-badges">
+                            <span className="badge badge-category">{category}</span>
+                            <span className="badge badge-level">{level}</span>
+                            {featured && <span className="badge badge-featured">⭐ Featured</span>}
+                        </div>
+                    </div>
+
+                    <h3 className="course-title">{title}</h3>
+                    <p className="course-description">{description}</p>
+
+                    <div className="course-tags">
+                        {tags.map((tag) => (
+                            <span key={tag} className="tag-pill">
+                                #{tag}
+                            </span>
+                        ))}
+                    </div>
+
+                    <div className="course-metrics-row">
+                        <span className="metric-item">⏱️ {duration}</span>
+                        <span className="metric-item rating-text">
+                            ★ {rating.toFixed(1)} <small>({reviews})</small>
+                        </span>
+                    </div>
+
+                    <div className="card-footer">
+                        <div className="price-tag">${price}</div>
+                        <div className="card-action-group">
+                            <button 
+                                type="button" 
+                                className="btn-card-secondary"
+                                onClick={() => onPreview(course)}
+                            >
+                                Syllabus
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn-card-primary"
+                                onClick={() => onEnroll(course)}
+                            >
+                                Enroll Now →
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            );
+        }
+
+        // ==================================================================
+        // 4. Functional Component: InstructorCard
+        // ==================================================================
+        function InstructorCard({ instructor, onContactInstructor }) {
+            const {
+                name,
+                role,
+                organization,
+                avatar,
+                bio,
+                totalStudents,
+                coursesCount,
+                averageRating,
+                badges
+            } = instructor;
+
+            return (
+                <aside className="instructor-card">
+                    <div className="instructor-header">
+                        <img 
+                            src={avatar} 
+                            alt={name} 
+                            className="instructor-avatar"
+                        />
+                        <div className="instructor-title-group">
+                            <span className="badge badge-lead">Course Author</span>
+                            <h2 className="instructor-name">{name}</h2>
+                            <p className="instructor-role">{role}</p>
+                            <p className="instructor-org">{organization}</p>
+                        </div>
+                    </div>
+
+                    <div className="instructor-badges">
+                        {badges.map((badge) => (
+                            <span key={badge} className="badge badge-author-pill">
+                                ✓ {badge}
+                            </span>
+                        ))}
+                    </div>
+
+                    <p className="instructor-bio">{bio}</p>
+
+                    <div className="instructor-stats-grid">
+                        <div className="stat-box">
+                            <span className="stat-number">{totalStudents}</span>
+                            <span className="stat-label">Students Taught</span>
+                        </div>
+                        <div className="stat-box">
+                            <span className="stat-number">{coursesCount}</span>
+                            <span className="stat-label">Specializations</span>
+                        </div>
+                        <div className="stat-box">
+                            <span className="stat-number">★ {averageRating}</span>
+                            <span className="stat-label">Instructor Rating</span>
+                        </div>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        className="btn-instructor-contact"
+                        onClick={() => onContactInstructor(name)}
+                    >
+                        💬 Ask Instructor a Question
+                    </button>
+                </aside>
+            );
+        }
+
+        // ==================================================================
+        // 5. Functional Component: CourseList
+        // ==================================================================
+        function CourseList({ courses, onEnroll, onPreview }) {
+            if (!courses || courses.length === 0) {
+                return (
+                    <div className="empty-courses-state">
+                        <span className="empty-icon">📂</span>
+                        <h3>No Tracks Available</h3>
+                        <p>There are currently no courses matching the selected criteria.</p>
+                    </div>
+                );
+            }
+
+            return (
+                <section className="course-list-section" aria-label="Course Catalog">
+                    <div className="section-header-box">
+                        <div>
+                            <h2 className="section-heading">Curated Learning Tracks</h2>
+                            <p className="section-subheading">
+                                Showing {courses.length} specialized engineering courses.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Demonstrating List Rendering with .map() and unique 'key' */}
+                    <div className="courses-grid">
+                        {courses.map((course) => (
+                            <CourseCard
+                                key={course.id}
+                                course={course}
+                                onEnroll={onEnroll}
+                                onPreview={onPreview}
+                            />
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 6. Functional Component: Footer
+        // ==================================================================
+        function Footer({ brandName, year = 2026, studentCount }) {
+            return (
+                <footer className="footer">
+                    <div className="container footer-content">
+                        <div className="footer-left">
+                            <div className="footer-brand">
+                                <span>⚛️</span>
+                                <strong>{brandName}</strong>
+                            </div>
+                            <p className="footer-tagline">
+                                Empowering {studentCount} software engineers globally with component-driven architecture and production design patterns.
+                            </p>
+                        </div>
+
+                        <div className="footer-right">
+                            <div className="footer-meta">
+                                <span>Built with Pure React 18 Functional Components & Props</span>
+                                <p>© {year} {brandName}. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // ==================================================================
+        // 7. Root App Component (Composition & Props Passing)
+        // ==================================================================
+        function App() {
+            const [selectedCategory, setSelectedCategory] = useState('All');
+
+            const displayedCourses = selectedCategory === 'All'
+                ? coursesData
+                : coursesData.filter((c) => c.category.toLowerCase() === selectedCategory.toLowerCase());
+
+            // Event Callbacks passed via props
+            const handleEnroll = (course) => {
+                alert(`🎓 Congratulations! You are enrolling in:\n"${course.title}"\nTuition: $${course.price}\nDuration: ${course.duration}`);
+            };
+
+            const handlePreview = (course) => {
+                alert(`📖 Syllabus Preview for "${course.title}":\n${course.description}\nLevel: ${course.level}\nRating: ★ ${course.rating} (${course.reviews} reviews)`);
+            };
+
+            const handleContactInstructor = (instructorName) => {
+                alert(`✉️ Messaging ${instructorName}:\nOur staff will route your question to the instructor's weekly office hours!`);
+            };
+
+            return (
+                <div className="app-root">
+                    {/* Header Component */}
+                    <Header
+                        brandName="EduSphere Academy"
+                        courseCount={displayedCourses.length}
+                        onFilterCategory={(cat) => setSelectedCategory(cat)}
+                        activeCategory={selectedCategory}
+                    />
+
+                    {/* Hero Banner */}
+                    <section className="hero-banner">
+                        <div className="container">
+                            <h1>Learn Modern Frontend Engineering with React 18</h1>
+                            <p>
+                                Discover component-driven architecture, declarative UI design, unidirectional props flow, and synthetic event systems taught by world-class software architects.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Main Layout */}
+                    <main className="container app-layout">
+                        {/* Instructor Profile */}
+                        <InstructorCard
+                            instructor={instructorData}
+                            onContactInstructor={handleContactInstructor}
+                        />
+
+                        {/* Course List Catalog */}
+                        <CourseList
+                            courses={displayedCourses}
+                            onEnroll={handleEnroll}
+                            onPreview={handlePreview}
+                        />
+                    </main>
+
+                    {/* Educational Showcase Section */}
+                    <section className="container concepts-showcase">
+                        <div className="concepts-header">
+                            <h2>Core React Architecture Concepts in this App</h2>
+                            <p style={{ color: 'var(--text-muted)' }}>
+                                How React's fundamental mental model differs from imperative DOM manipulation.
+                            </p>
+                        </div>
+
+                        <div className="concepts-grid">
+                            <div className="concept-box">
+                                <h4>🧩 Component-Based Design</h4>
+                                <p>
+                                    UI is split into independent, reusable functional components (<code>Header</code>, <code>CourseCard</code>, <code>InstructorCard</code>, <code>Footer</code>), each responsible for rendering its slice of the DOM.
+                                </p>
+                            </div>
+
+                            <div className="concept-box">
+                                <h4>📥 Props (Properties)</h4>
+                                <p>
+                                    Data flows strictly unidirectional from parent (<code>App</code>) to children. Props are read-only and immutable to the receiving component.
+                                </p>
+                            </div>
+
+                            <div className="concept-box">
+                                <h4>🔑 The 'key' Prop in Lists</h4>
+                                <p>
+                                    React requires a unique <code>key</code> (e.g. <code>course.id</code>) on each array item to track DOM element identity efficiently during reconciliation.
+                                </p>
+                            </div>
+
+                            <div className="concept-box">
+                                <h4>⚡ Synthetic Event Handling</h4>
+                                <p>
+                                    Events like <code>onClick</code> use camelCase syntax and pass function references instead of string handlers, providing a consistent cross-browser event wrapper.
+                                </p>
+                            </div>
+
+                            <div className="concept-box">
+                                <h4>✨ Declarative JSX</h4>
+                                <p>
+                                    JSX combines JavaScript logic and HTML-like markup into a single syntax that compiles down to <code>React.createElement()</code> calls.
+                                </p>
+                            </div>
+
+                            <div className="concept-box">
+                                <h4>🌲 The Virtual DOM</h4>
+                                <p>
+                                    React maintains an in-memory representation of the UI tree. When data changes, React diffs the Virtual DOM and updates only the altered browser DOM nodes.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer Component */}
+                    <Footer
+                        brandName="EduSphere Academy"
+                        studentCount={instructorData.totalStudents}
+                        year={2026}
+                    />
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 8. Mount Root Application using React 18 createRoot
+        // ==================================================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
