@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Course Dashboard | Day 28 Components, Props & State</title>
+    <meta name="description" content="A complete React 18 application demonstrating useState, Lifting State Up, Controlled Inputs, and Conditional UI.">
+    <link rel="stylesheet" href="src/styles.css">
+
+    <!-- React 18 & ReactDOM 18 CDN for Instant Zero-Setup Browser Execution -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Standalone to compile JSX on the fly in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <!-- React Root Mount Point -->
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // ==================================================================
+        // 1. Initial Dataset
+        // ==================================================================
+        const initialCourses = [
+            {
+                id: "course-101",
+                title: "React 18 Architecture & Custom Hooks",
+                instructor: "Elena Vance",
+                category: "Frontend",
+                level: "Intermediate",
+                price: 349,
+                duration: "8 Weeks",
+                description: "Master component composition, lifting state up, controlled forms, custom hooks, and reconciliation performance.",
+                isFavorite: true,
+                icon: "⚛️"
+            },
+            {
+                id: "course-102",
+                title: "Node.js Microservices & Event Loops",
+                instructor: "Marcus Sterling",
+                category: "Backend",
+                level: "Advanced",
+                price: 399,
+                duration: "10 Weeks",
+                description: "Build high-throughput REST and GraphQL APIs, handle async pipelines, and orchestrate Docker containers.",
+                isFavorite: false,
+                icon: "🟢"
+            },
+            {
+                id: "course-103",
+                title: "Cloud-Native Kubernetes & Docker DevOps",
+                instructor: "Kavita Rao",
+                category: "Cloud",
+                level: "Intermediate",
+                price: 449,
+                duration: "8 Weeks",
+                description: "Containerize multi-tier architectures, configure CI/CD deployment pipelines, and scale Kubernetes clusters.",
+                isFavorite: false,
+                icon: "☁️"
+            },
+            {
+                id: "course-104",
+                title: "Python & Pandas for Data Science",
+                instructor: "Dr. Arvind Patel",
+                category: "Data",
+                level: "Beginner to Pro",
+                price: 329,
+                duration: "6 Weeks",
+                description: "Analyze datasets, build vectorized numerical transforms, and generate interactive data visualizations with Python.",
+                isFavorite: true,
+                icon: "🐍"
+            },
+            {
+                id: "course-105",
+                title: "Full-Stack Next.js 14 App Router",
+                instructor: "Elena Vance",
+                category: "Frontend",
+                level: "Advanced",
+                price: 479,
+                duration: "10 Weeks",
+                description: "Harness React Server Components (RSC), server actions, streaming SSR, and SEO-optimized caching.",
+                isFavorite: false,
+                icon: "🚀"
+            },
+            {
+                id: "course-106",
+                title: "UI/UX Component Design Systems in Figma",
+                instructor: "Sophia Laurent",
+                category: "Design",
+                level: "All Levels",
+                price: 279,
+                duration: "5 Weeks",
+                description: "Translate design tokens, scalable typography ladders, and responsive Figma components into production CSS.",
+                isFavorite: false,
+                icon: "🎨"
+            }
+        ];
+
+        const courseCategories = ["All", "Frontend", "Backend", "Cloud", "Data", "Design"];
+
+        // ==================================================================
+        // 2. Component: Navbar
+        // ==================================================================
+        function Navbar({ totalCourses, favoriteCount, onToggleForm, isFormOpen }) {
+            return (
+                <header className="navbar">
+                    <div className="container nav-container">
+                        <div className="nav-brand">
+                            <span className="react-logo-spin">⚛️</span>
+                            <div>
+                                <span className="brand-text">EduSphere</span>
+                                <span className="brand-sub">Course Dashboard</span>
+                            </div>
+                        </div>
+
+                        <div className="nav-actions">
+                            <div className="nav-stats-badges">
+                                <span className="stat-pill">
+                                    📦 <strong>{totalCourses}</strong> Total
+                                </span>
+                                <span className="stat-pill favorite-pill">
+                                    ❤️ <strong>{favoriteCount}</strong> Saved
+                                </span>
+                            </div>
+
+                            <button 
+                                type="button" 
+                                className={`btn-toggle-form ${isFormOpen ? 'btn-active' : ''}`}
+                                onClick={onToggleForm}
+                            >
+                                {isFormOpen ? '✕ Close Form' : '➕ Add Course'}
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // ==================================================================
+        // 3. Component: CourseStats
+        // ==================================================================
+        function CourseStats({ courses }) {
+            const totalCount = courses.length;
+            const favoriteCount = courses.filter((c) => c.isFavorite).length;
+
+            const totalPrice = courses.reduce((sum, c) => sum + Number(c.price || 0), 0);
+            const avgPrice = totalCount > 0 ? Math.round(totalPrice / totalCount) : 0;
+
+            const categoryCounts = {};
+            courses.forEach((c) => {
+                categoryCounts[c.category] = (categoryCounts[c.category] || 0) + 1;
+            });
+
+            let topCategory = "N/A";
+            let maxCount = 0;
+            Object.keys(categoryCounts).forEach((cat) => {
+                if (categoryCounts[cat] > maxCount) {
+                    maxCount = categoryCounts[cat];
+                    topCategory = cat;
+                }
+            });
+
+            return (
+                <section className="stats-dashboard" aria-label="Catalog Overview">
+                    <div className="stat-card">
+                        <div className="stat-header">
+                            <span>Total Courses</span>
+                            <span>📚</span>
+                        </div>
+                        <div className="stat-value">{totalCount}</div>
+                        <div className="stat-subtext">Active curriculum tracks</div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-header">
+                            <span>Favorited</span>
+                            <span>❤️</span>
+                        </div>
+                        <div className="stat-value" style={{ color: '#e11d48' }}>
+                            {favoriteCount}
+                        </div>
+                        <div className="stat-subtext">Saved by student interest</div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-header">
+                            <span>Average Tuition</span>
+                            <span>💵</span>
+                        </div>
+                        <div className="stat-value" style={{ color: '#0284c7' }}>
+                            ${avgPrice}
+                        </div>
+                        <div className="stat-subtext">Across all specializations</div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-header">
+                            <span>Top Domain</span>
+                            <span>⭐</span>
+                        </div>
+                        <div className="stat-value" style={{ fontSize: '1.4rem' }}>
+                            {topCategory}
+                        </div>
+                        <div className="stat-subtext">{maxCount} published programs</div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 4. Component: CourseControls
+        // ==================================================================
+        function CourseControls({
+            searchTerm,
+            onSearchChange,
+            selectedCategory,
+            onCategoryChange,
+            categories,
+            showFavoritesOnly,
+            onToggleFavoritesOnly,
+            onResetFilters
+        }) {
+            return (
+                <section className="controls-panel" aria-label="Search and Filter Controls">
+                    <div className="search-box">
+                        <span className="search-icon">🔎</span>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="Search by course title or instructor..."
+                            value={searchTerm}
+                            onChange={(e) => onSearchChange(e.target.value)}
+                        />
+                        {searchTerm && (
+                            <button 
+                                type="button" 
+                                className="btn-clear-search"
+                                onClick={() => onSearchChange('')}
+                                title="Clear search"
+                            >
+                                ✕
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="category-chips-group">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                type="button"
+                                className={`chip-btn ${selectedCategory === cat ? 'active' : ''}`}
+                                onClick={() => onCategoryChange(cat)}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="actions-group">
+                        <button
+                            type="button"
+                            className={`btn-filter-favorite ${showFavoritesOnly ? 'active' : ''}`}
+                            onClick={onToggleFavoritesOnly}
+                        >
+                            {showFavoritesOnly ? '❤️ Showing Favorites' : '🤍 Favorites Only'}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="btn-reset-filters"
+                            onClick={onResetFilters}
+                            title="Reset all search and category filters"
+                        >
+                            🔄 Reset
+                        </button>
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 5. Component: AddCourseForm (Controlled Component)
+        // ==================================================================
+        function AddCourseForm({ onAddCourse, onCloseForm }) {
+            const [title, setTitle] = useState('');
+            const [instructor, setInstructor] = useState('');
+            const [category, setCategory] = useState('Frontend');
+            const [level, setLevel] = useState('Beginner');
+            const [price, setPrice] = useState('');
+            const [duration, setDuration] = useState('');
+            const [description, setDescription] = useState('');
+            const [errorMessage, setErrorMessage] = useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+
+                if (!title.trim() || !instructor.trim() || !price || !duration.trim() || !description.trim()) {
+                    setErrorMessage('Please fill out all required fields with valid details.');
+                    return;
+                }
+
+                const numericPrice = parseFloat(price);
+                if (isNaN(numericPrice) || numericPrice <= 0) {
+                    setErrorMessage('Tuition price must be a positive number.');
+                    return;
+                }
+
+                const iconMap = {
+                    Frontend: '⚛️',
+                    Backend: '🟢',
+                    Cloud: '☁️',
+                    Data: '🐍',
+                    Design: '🎨'
+                };
+
+                const newCourse = {
+                    id: `course-${Date.now()}`,
+                    title: title.trim(),
+                    instructor: instructor.trim(),
+                    category,
+                    level,
+                    price: Math.round(numericPrice),
+                    duration: duration.trim(),
+                    description: description.trim(),
+                    isFavorite: false,
+                    icon: iconMap[category] || '📘'
+                };
+
+                // Lift State Up: Dispatch to parent App component
+                onAddCourse(newCourse);
+
+                setTitle('');
+                setInstructor('');
+                setCategory('Frontend');
+                setLevel('Beginner');
+                setPrice('');
+                setDuration('');
+                setDescription('');
+                setErrorMessage('');
+            };
+
+            return (
+                <section className="form-modal-panel">
+                    <div className="form-card">
+                        <div className="form-header">
+                            <h3>➕ Add New Curriculum Program</h3>
+                            <button 
+                                type="button" 
+                                className="btn-close-form" 
+                                onClick={onCloseForm}
+                                aria-label="Close form"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {errorMessage && (
+                            <div className="form-error-banner">
+                                ⚠️ {errorMessage}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-grid-2">
+                                <div className="form-group">
+                                    <label htmlFor="course-title">Course Title *</label>
+                                    <input
+                                        id="course-title"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="e.g. Full-Stack GraphQL Architecture"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="course-instructor">Lead Instructor *</label>
+                                    <input
+                                        id="course-instructor"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="e.g. Dr. Alex Mercer"
+                                        value={instructor}
+                                        onChange={(e) => setInstructor(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-grid-4">
+                                <div className="form-group">
+                                    <label htmlFor="course-category">Domain Category *</label>
+                                    <select
+                                        id="course-category"
+                                        className="form-control"
+                                        value={category}
+                                        onChange={(e) => setCategory(e.target.value)}
+                                    >
+                                        <option value="Frontend">Frontend</option>
+                                        <option value="Backend">Backend</option>
+                                        <option value="Cloud">Cloud</option>
+                                        <option value="Data">Data</option>
+                                        <option value="Design">Design</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="course-level">Skill Level *</label>
+                                    <select
+                                        id="course-level"
+                                        className="form-control"
+                                        value={level}
+                                        onChange={(e) => setLevel(e.target.value)}
+                                    >
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="All Levels">All Levels</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="course-price">Tuition ($) *</label>
+                                    <input
+                                        id="course-price"
+                                        type="number"
+                                        min="1"
+                                        className="form-control"
+                                        placeholder="399"
+                                        value={price}
+                                        onChange={(e) => setPrice(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="course-duration">Duration *</label>
+                                    <input
+                                        id="course-duration"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="e.g. 8 Weeks"
+                                        value={duration}
+                                        onChange={(e) => setDuration(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="course-desc">Syllabus Overview *</label>
+                                <textarea
+                                    id="course-desc"
+                                    className="form-control"
+                                    rows="3"
+                                    placeholder="Describe core technologies, projects, and learning outcomes..."
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="form-actions-row">
+                                <button type="button" className="btn-cancel" onClick={onCloseForm}>
+                                    Cancel
+                                </button>
+                                <button type="submit" className="btn-submit">
+                                    Save Course to Catalog →
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 6. Component: CourseCard
+        // ==================================================================
+        function CourseCard({ course, onToggleFavorite, onDeleteCourse }) {
+            const {
+                id,
+                title,
+                instructor,
+                category,
+                level,
+                price,
+                duration,
+                description,
+                isFavorite,
+                icon
+            } = course;
+
+            return (
+                <article className={`course-card ${isFavorite ? 'card-favorited' : ''}`}>
+                    {isFavorite && (
+                        <div className="favorite-banner">
+                            <span>❤️ Bookmarked Track</span>
+                        </div>
+                    )}
+
+                    <div className="card-top-row">
+                        <span className="card-icon">{icon}</span>
+                        <div className="badge-group">
+                            <span className="badge badge-category">{category}</span>
+                            <span className="badge badge-level">{level}</span>
+                        </div>
+                    </div>
+
+                    <h3 className="card-title">{title}</h3>
+                    <p className="card-instructor">By {instructor}</p>
+                    <p className="card-description">{description}</p>
+
+                    <div className="card-meta-row">
+                        <span className="meta-item">⏱️ {duration}</span>
+                        <span className="meta-item price-badge">${price}</span>
+                    </div>
+
+                    <div className="card-footer">
+                        <button
+                            type="button"
+                            className={`btn-favorite-toggle ${isFavorite ? 'is-favorited' : ''}`}
+                            onClick={() => onToggleFavorite(id)}
+                            title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                            {isFavorite ? '❤️ Favorited' : '🤍 Favorite'}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="btn-delete-course"
+                            onClick={() => onDeleteCourse(id)}
+                            title="Remove course from catalog"
+                        >
+                            🗑️ Remove
+                        </button>
+                    </div>
+                </article>
+            );
+        }
+
+        // ==================================================================
+        // 7. Component: CourseList (List & Conditional Rendering)
+        // ==================================================================
+        function CourseList({ courses, onToggleFavorite, onDeleteCourse, onResetFilters }) {
+            if (!courses || courses.length === 0) {
+                return (
+                    <div className="empty-results-box">
+                        <span className="empty-icon">🔍</span>
+                        <h3>No Matching Courses Found</h3>
+                        <p>
+                            We couldn't find any courses matching your active search keywords or category filters.
+                        </p>
+                        <button 
+                            type="button" 
+                            className="btn-reset-empty" 
+                            onClick={onResetFilters}
+                        >
+                            Reset Filters & View All
+                        </button>
+                    </div>
+                );
+            }
+
+            return (
+                <section className="course-list-container" aria-label="Available Courses">
+                    <div className="list-meta-header">
+                        <span className="results-count">
+                            Showing <strong>{courses.length}</strong> curriculum programs
+                        </span>
+                    </div>
+
+                    <div className="courses-grid">
+                        {courses.map((course) => (
+                            <CourseCard
+                                key={course.id}
+                                course={course}
+                                onToggleFavorite={onToggleFavorite}
+                                onDeleteCourse={onDeleteCourse}
+                            />
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 8. Component: Footer
+        // ==================================================================
+        function Footer({ totalCourses, favoriteCount, year = 2026 }) {
+            return (
+                <footer className="footer">
+                    <div className="container footer-container">
+                        <div className="footer-left">
+                            <div className="footer-brand">
+                                <span>⚛️</span>
+                                <strong>EduSphere Course Dashboard</strong>
+                            </div>
+                            <p className="footer-text">
+                                Managing {totalCourses} technical training tracks with {favoriteCount} bookmarked courses using React functional components, props, and useState.
+                            </p>
+                        </div>
+
+                        <div className="footer-right">
+                            <p>© {year} EduSphere Institute. All rights reserved.</p>
+                            <small style={{ color: '#64748b' }}>React 18 • Declarative Component Architecture</small>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // ==================================================================
+        // 9. Root App Component (Lifting State Up Orchestrator)
+        // ==================================================================
+        function App() {
+            const [courses, setCourses] = useState(initialCourses);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedCategory, setSelectedCategory] = useState('All');
+            const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+            const [isFormOpen, setIsFormOpen] = useState(false);
+
+            // Derived State: Computed dynamically on each render
+            const filteredCourses = courses.filter((course) => {
+                const matchesSearch = searchTerm === '' ||
+                    course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    course.instructor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    course.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+                const matchesCategory = selectedCategory === 'All' ||
+                    course.category.toLowerCase() === selectedCategory.toLowerCase();
+
+                const matchesFavorite = !showFavoritesOnly || course.isFavorite;
+
+                return matchesSearch && matchesCategory && matchesFavorite;
+            });
+
+            // State Updaters
+            const handleAddCourse = (newCourse) => {
+                setCourses([newCourse, ...courses]);
+                setIsFormOpen(false);
+            };
+
+            const handleDeleteCourse = (courseId) => {
+                const courseToDelete = courses.find((c) => c.id === courseId);
+                const name = courseToDelete ? courseToDelete.title : 'this course';
+
+                if (window.confirm(`Are you sure you want to remove "${name}" from the curriculum catalog?`)) {
+                    setCourses(courses.filter((c) => c.id !== courseId));
+                }
+            };
+
+            const handleToggleFavorite = (courseId) => {
+                setCourses(
+                    courses.map((course) =>
+                        course.id === courseId
+                            ? { ...course, isFavorite: !course.isFavorite }
+                            : course
+                    )
+                );
+            };
+
+            const handleResetFilters = () => {
+                setSearchTerm('');
+                setSelectedCategory('All');
+                setShowFavoritesOnly(false);
+            };
+
+            const favoriteCount = courses.filter((c) => c.isFavorite).length;
+
+            return (
+                <div className="app-root">
+                    <Navbar
+                        totalCourses={courses.length}
+                        favoriteCount={favoriteCount}
+                        isFormOpen={isFormOpen}
+                        onToggleForm={() => setIsFormOpen(!isFormOpen)}
+                    />
+
+                    <section className="dashboard-hero">
+                        <div className="container">
+                            <h1>Enterprise Course Management Dashboard</h1>
+                            <p>
+                                Explore reactive user interfaces built with React 18 functional components, declarative props, lifting state up, and the <code>useState</code> hook.
+                            </p>
+                        </div>
+                    </section>
+
+                    <main className="container">
+                        <CourseStats courses={courses} />
+
+                        {isFormOpen && (
+                            <AddCourseForm
+                                onAddCourse={handleAddCourse}
+                                onCloseForm={() => setIsFormOpen(false)}
+                            />
+                        )}
+
+                        <CourseControls
+                            searchTerm={searchTerm}
+                            onSearchChange={setSearchTerm}
+                            selectedCategory={selectedCategory}
+                            onCategoryChange={setSelectedCategory}
+                            categories={courseCategories}
+                            showFavoritesOnly={showFavoritesOnly}
+                            onToggleFavoritesOnly={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                            onResetFilters={handleResetFilters}
+                        />
+
+                        <CourseList
+                            courses={filteredCourses}
+                            onToggleFavorite={handleToggleFavorite}
+                            onDeleteCourse={handleDeleteCourse}
+                            onResetFilters={handleResetFilters}
+                        />
+
+                        <section className="state-architecture-section">
+                            <div className="architecture-header">
+                                <h2>React State & Component Architecture Explained</h2>
+                                <p style={{ color: 'var(--text-muted)' }}>
+                                    Core architectural patterns demonstrated in this Course Dashboard.
+                                </p>
+                            </div>
+
+                            <div className="architecture-grid">
+                                <div className="concept-card">
+                                    <h4><span>🔄</span> useState Hook</h4>
+                                    <p>
+                                        Preserves component state across re-renders. When <code>setCourses(...)</code> or <code>setSearchTerm(...)</code> is called, React schedules a re-render with updated values.
+                                    </p>
+                                </div>
+
+                                <div className="concept-card">
+                                    <h4><span>⬆️</span> Lifting State Up</h4>
+                                    <p>
+                                        State lives in the nearest common ancestor (<code>App</code>) and flows down via props. Child components trigger state updates by invoking parent callback functions.
+                                    </p>
+                                </div>
+
+                                <div className="concept-card">
+                                    <h4><span>✨</span> Immutable State Updates</h4>
+                                    <p>
+                                        State is never mutated directly (e.g. <code>courses.push()</code> is forbidden). Instead, we produce new array/object copies using <code>[...courses]</code>, <code>.filter()</code>, and <code>.map()</code>.
+                                    </p>
+                                </div>
+
+                                <div className="concept-card">
+                                    <h4><span>🧮</span> Derived State</h4>
+                                    <p>
+                                        Rather than keeping a redundant <code>filteredCourses</code> state variable, we calculate filtered items on the fly during render, avoiding state synchronization bugs.
+                                    </p>
+                                </div>
+
+                                <div className="concept-card">
+                                    <h4><span>🎭</span> Conditional Rendering</h4>
+                                    <p>
+                                        We employ inline logical operators (<code>isFormOpen && &lt;AddCourseForm /&gt;</code>) and ternary operators to display form drawers and empty state notices dynamically.
+                                    </p>
+                                </div>
+
+                                <div className="concept-card">
+                                    <h4><span>🎮</span> Controlled Inputs</h4>
+                                    <p>
+                                        Form inputs bind their <code>value</code> directly to state and synchronize via <code>onChange</code>, keeping React as the single source of truth for all form data.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+
+                    <Footer
+                        totalCourses={courses.length}
+                        favoriteCount={favoriteCount}
+                        year={2026}
+                    />
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 10. Mount Root Application
+        // ==================================================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
