@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Student Management App | Day 29 React Hooks & API Integration</title>
+    <meta name="description" content="A complete React 18 application mastering useState, useEffect, REST API fetch, loading spinners, error states, controlled components, and form validation.">
+    <link rel="stylesheet" href="src/styles.css">
+
+    <!-- React 18, ReactDOM 18, and Babel Standalone for Instant Zero-Setup Browser Execution -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <!-- React Root Mount Point -->
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ==================================================================
+        // 1. API Service & Dataset
+        // ==================================================================
+        const COURSES = [
+            'Full Stack Web',
+            'Cloud & DevOps',
+            'Data Science & AI',
+            'Cyber Security',
+            'UI/UX Design'
+        ];
+
+        const STATUSES = ['Active', 'Enrolled', 'On Leave', 'Graduated'];
+
+        const FALLBACK_STUDENTS = [
+            {
+                id: 'STU-1001',
+                name: 'Aarav Sharma',
+                email: 'aarav.sharma@edusphere.edu',
+                phone: '+91 98765 43210',
+                course: 'Full Stack Web',
+                gpa: 3.85,
+                status: 'Active',
+                enrollmentDate: '2025-08-15'
+            },
+            {
+                id: 'STU-1002',
+                name: 'Priya Sundaram',
+                email: 'priya.s@edusphere.edu',
+                phone: '+91 98451 23456',
+                course: 'Data Science & AI',
+                gpa: 3.92,
+                status: 'Active',
+                enrollmentDate: '2025-09-01'
+            },
+            {
+                id: 'STU-1003',
+                name: 'David Chen',
+                email: 'david.chen@edusphere.edu',
+                phone: '+1 415-555-0182',
+                course: 'Cloud & DevOps',
+                gpa: 3.45,
+                status: 'Enrolled',
+                enrollmentDate: '2026-01-10'
+            },
+            {
+                id: 'STU-1004',
+                name: 'Zara Al-Mansoor',
+                email: 'zara.m@edusphere.edu',
+                phone: '+971 50 123 4567',
+                course: 'Cyber Security',
+                gpa: 3.78,
+                status: 'Active',
+                enrollmentDate: '2025-07-20'
+            },
+            {
+                id: 'STU-1005',
+                name: 'Elena Rostova',
+                email: 'elena.r@edusphere.edu',
+                phone: '+44 20 7946 0912',
+                course: 'UI/UX Design',
+                gpa: 3.65,
+                status: 'On Leave',
+                enrollmentDate: '2025-03-12'
+            },
+            {
+                id: 'STU-1006',
+                name: 'Marcus Vance',
+                email: 'marcus.v@edusphere.edu',
+                phone: '+1 617-555-0143',
+                course: 'Full Stack Web',
+                gpa: 3.95,
+                status: 'Graduated',
+                enrollmentDate: '2024-06-01'
+            },
+            {
+                id: 'STU-1007',
+                name: 'Ananya Deshmukh',
+                email: 'ananya.d@edusphere.edu',
+                phone: '+91 97654 32109',
+                course: 'Data Science & AI',
+                gpa: 3.72,
+                status: 'Active',
+                enrollmentDate: '2025-10-15'
+            },
+            {
+                id: 'STU-1008',
+                name: 'Liam O’Connor',
+                email: 'liam.oc@edusphere.edu',
+                phone: '+353 1 496 0123',
+                course: 'Cloud & DevOps',
+                gpa: 3.55,
+                status: 'Enrolled',
+                enrollmentDate: '2026-02-01'
+            }
+        ];
+
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const studentApi = {
+            async fetchStudents(forceError = false) {
+                await delay(600); // Latency to demonstrate loading state
+
+                if (forceError) {
+                    throw new Error('HTTP 503: Service Unavailable. The academic record server failed to respond.');
+                }
+
+                try {
+                    const response = await fetch('https://jsonplaceholder.typicode.com/users?_limit=8', {
+                        signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP Error ${response.status}: Failed to retrieve student records.`);
+                    }
+
+                    const rawUsers = await response.json();
+                    return rawUsers.map((user, index) => ({
+                        id: `STU-100${user.id}`,
+                        name: user.name,
+                        email: user.email.toLowerCase(),
+                        phone: user.phone.split(' ')[0],
+                        course: COURSES[index % COURSES.length],
+                        gpa: Number((3.2 + (index * 0.11) % 0.8).toFixed(2)),
+                        status: STATUSES[index % STATUSES.length],
+                        enrollmentDate: `2025-0${(index % 9) + 1}-15`
+                    }));
+                } catch (err) {
+                    console.warn('[studentApi] Remote fetch failed or offline; using local fallback dataset.', err.message);
+                    return [...FALLBACK_STUDENTS];
+                }
+            },
+
+            async createStudent(studentData) {
+                await delay(300);
+                return {
+                    ...studentData,
+                    id: `STU-${Math.floor(1000 + Math.random() * 9000)}`,
+                    enrollmentDate: new Date().toISOString().split('T')[0]
+                };
+            },
+
+            async updateStudent(id, updatedFields) {
+                await delay(300);
+                return {
+                    ...updatedFields,
+                    id
+                };
+            },
+
+            async deleteStudent(id) {
+                await delay(300);
+                return { success: true, id };
+            },
+
+            COURSES,
+            STATUSES
+        };
+
+        // ==================================================================
+        // 2. Header Component
+        // ==================================================================
+        function Header({ onOpenAddModal, onRefresh, onSimulateError, isError, isLoading }) {
+            return (
+                <header className="header">
+                    <div className="header-container">
+                        <div className="brand-wrapper">
+                            <div className="brand-logo" aria-hidden="true">🎓</div>
+                            <div>
+                                <h1 className="brand-title">EduSphere SIS</h1>
+                                <p className="brand-subtitle">React Hooks &amp; REST API Student Management</p>
+                            </div>
+                        </div>
+
+                        <div className="header-actions">
+                            <div className={`api-status-badge ${isError ? 'error' : ''}`}>
+                                <span className="status-dot"></span>
+                                <span>{isError ? 'API Error' : isLoading ? 'Syncing...' : 'API Live (REST)'}</span>
+                            </div>
+
+                            <button
+                                className="btn btn-secondary btn-sm"
+                                onClick={onRefresh}
+                                disabled={isLoading}
+                                title="Re-run useEffect fetch request"
+                            >
+                                🔄 Refresh API
+                            </button>
+
+                            <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={onSimulateError}
+                                disabled={isLoading}
+                                title="Simulate network failure to test error state handling"
+                            >
+                                ⚡ Test Error State
+                            </button>
+
+                            <button
+                                className="btn btn-primary"
+                                onClick={onOpenAddModal}
+                            >
+                                <span>➕</span>
+                                <span>Register Student</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // ==================================================================
+        // 3. StudentStats Component
+        // ==================================================================
+        function StudentStats({ students }) {
+            const totalStudents = students.length;
+            const activeCount = students.filter(
+                (s) => s.status === 'Active' || s.status === 'Enrolled'
+            ).length;
+
+            const avgGpa = totalStudents > 0
+                ? (students.reduce((acc, s) => acc + Number(s.gpa), 0) / totalStudents).toFixed(2)
+                : '0.00';
+
+            const uniqueCourses = new Set(students.map((s) => s.course)).size;
+
+            return (
+                <section className="stats-grid" aria-label="Student Overview Metrics">
+                    <div className="stat-card">
+                        <div className="stat-icon-wrapper stat-icon-primary">👥</div>
+                        <div className="stat-content">
+                            <span className="stat-label">Total Students</span>
+                            <span className="stat-value">{totalStudents}</span>
+                            <span className="stat-detail">Registered in system</span>
+                        </div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-icon-wrapper stat-icon-success">⚡</div>
+                        <div className="stat-content">
+                            <span className="stat-label">Active Enrolled</span>
+                            <span className="stat-value">{activeCount}</span>
+                            <span className="stat-detail">
+                                {totalStudents > 0 ? Math.round((activeCount / totalStudents) * 100) : 0}% Active rate
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-icon-wrapper stat-icon-warning">⭐</div>
+                        <div className="stat-content">
+                            <span className="stat-label">Average GPA</span>
+                            <span className="stat-value">{avgGpa}</span>
+                            <span className="stat-detail">Across all cohorts</span>
+                        </div>
+                    </div>
+
+                    <div className="stat-card">
+                        <div className="stat-icon-wrapper stat-icon-secondary">📚</div>
+                        <div className="stat-content">
+                            <span className="stat-label">Active Programs</span>
+                            <span className="stat-value">{uniqueCourses}</span>
+                            <span className="stat-detail">Degree tracks</span>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ==================================================================
+        // 4. SearchBar Component
+        // ==================================================================
+        function SearchBar({
+            searchTerm,
+            onSearchChange,
+            selectedCourse,
+            onCourseChange,
+            selectedStatus,
+            onStatusChange,
+            courses,
+            statuses,
+            onResetFilters
+        }) {
+            const isFiltered = searchTerm !== '' || selectedCourse !== 'All' || selectedStatus !== 'All';
+
+            return (
+                <div className="controls-card">
+                    <div className="search-box-wrapper">
+                        <span className="search-icon" aria-hidden="true">🔍</span>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="Search by student name, ID, or email..."
+                            value={searchTerm}
+                            onChange={(e) => onSearchChange(e.target.value)}
+                            aria-label="Search students"
+                        />
+                    </div>
+
+                    <div className="filters-group">
+                        <select
+                            className="select-filter"
+                            value={selectedCourse}
+                            onChange={(e) => onCourseChange(e.target.value)}
+                            aria-label="Filter by course"
+                        >
+                            <option value="All">All Courses</option>
+                            {courses.map((c) => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
+                        </select>
+
+                        <select
+                            className="select-filter"
+                            value={selectedStatus}
+                            onChange={(e) => onStatusChange(e.target.value)}
+                            aria-label="Filter by status"
+                        >
+                            <option value="All">All Statuses</option>
+                            {statuses.map((s) => (
+                                <option key={s} value={s}>{s}</option>
+                            ))}
+                        </select>
+
+                        {isFiltered && (
+                            <button
+                                className="btn btn-secondary btn-sm"
+                                onClick={onResetFilters}
+                                title="Clear search and filters"
+                            >
+                                ✕ Clear Filters
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 5. StudentTable Component
+        // ==================================================================
+        function StudentTable({
+            students,
+            isLoading,
+            error,
+            onRetry,
+            onEditStudent,
+            onDeleteStudent
+        }) {
+            if (isLoading) {
+                return (
+                    <div className="table-container">
+                        <div className="loading-container">
+                            <div className="spinner" role="status" aria-label="Loading"></div>
+                            <div>
+                                <p className="loading-text">Fetching Student Records from API...</p>
+                                <p className="loading-subtext">Executing useEffect asynchronous fetch request</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (error) {
+                return (
+                    <div className="error-card">
+                        <div className="error-icon">⚠️</div>
+                        <h3 className="error-title">Failed to Load Student Records</h3>
+                        <p className="error-message">{error}</p>
+                        <div className="error-actions">
+                            <button className="btn btn-primary" onClick={onRetry}>
+                                🔄 Try Again
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (students.length === 0) {
+                return (
+                    <div className="table-container">
+                        <div className="empty-state">
+                            <div className="empty-icon">📂</div>
+                            <h3 className="empty-title">No Students Found</h3>
+                            <p className="empty-description">
+                                No student records match your current search query or filter selection.
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
+
+            const getInitials = (name) => {
+                return name
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')
+                    .slice(0, 2)
+                    .toUpperCase();
+            };
+
+            const getGpaClass = (gpa) => {
+                const num = Number(gpa);
+                if (num >= 3.7) return 'gpa-badge gpa-high';
+                if (num >= 3.2) return 'gpa-badge gpa-medium';
+                return 'gpa-badge gpa-low';
+            };
+
+            const getStatusClass = (status) => {
+                switch (status) {
+                    case 'Active': return 'status-pill status-active';
+                    case 'Enrolled': return 'status-pill status-enrolled';
+                    case 'On Leave': return 'status-pill status-on-leave';
+                    case 'Graduated': return 'status-pill status-graduated';
+                    default: return 'status-pill';
+                }
+            };
+
+            return (
+                <div className="table-container">
+                    <div className="table-header-info">
+                        <h3 className="table-title">Student Directory</h3>
+                        <span className="table-count-badge">
+                            Showing {students.length} {students.length === 1 ? 'Student' : 'Students'}
+                        </span>
+                    </div>
+
+                    <table className="responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Contact Information</th>
+                                <th>Course / Track</th>
+                                <th>GPA</th>
+                                <th>Status</th>
+                                <th>Enrolled Date</th>
+                                <th style={{ textAlign: 'right' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {students.map((student) => (
+                                <tr key={student.id}>
+                                    <td>
+                                        <div className="student-identity">
+                                            <div className="student-avatar" aria-hidden="true">
+                                                {getInitials(student.name)}
+                                            </div>
+                                            <div>
+                                                <span className="student-name">{student.name}</span>
+                                                <span className="student-id">{student.id}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="contact-cell">
+                                            <span className="contact-email">{student.email}</span>
+                                            <span className="contact-phone">{student.phone}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="course-tag">
+                                            <span>📖</span> {student.course}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className={getGpaClass(student.gpa)}>
+                                            {Number(student.gpa).toFixed(2)}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className={getStatusClass(student.status)}>
+                                            ● {student.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span style={{ color: 'var(--gray-500)', fontSize: '0.8rem' }}>
+                                            {student.enrollmentDate}
+                                        </span>
+                                    </td>
+                                    <td style={{ textAlign: 'right' }}>
+                                        <div className="action-buttons-cell" style={{ justifyContent: 'flex-end' }}>
+                                            <button
+                                                className="btn btn-secondary btn-sm"
+                                                onClick={() => onEditStudent(student)}
+                                                title={`Edit ${student.name}`}
+                                                aria-label={`Edit ${student.name}`}
+                                            >
+                                                ✏️ Edit
+                                            </button>
+                                            <button
+                                                className="btn btn-outline-danger btn-sm"
+                                                onClick={() => onDeleteStudent(student.id, student.name)}
+                                                title={`Delete ${student.name}`}
+                                                aria-label={`Delete ${student.name}`}
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 6. StudentFormModal Component
+        // ==================================================================
+        function StudentFormModal({
+            isOpen,
+            onClose,
+            onSubmit,
+            editingStudent,
+            courses,
+            statuses
+        }) {
+            const isEditMode = Boolean(editingStudent);
+
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                phone: '',
+                course: courses[0] || 'Full Stack Web',
+                gpa: '3.50',
+                status: statuses[0] || 'Active'
+            });
+
+            const [errors, setErrors] = useState({});
+            const [touched, setTouched] = useState({});
+
+            useEffect(() => {
+                if (editingStudent) {
+                    setFormData({
+                        name: editingStudent.name || '',
+                        email: editingStudent.email || '',
+                        phone: editingStudent.phone || '',
+                        course: editingStudent.course || courses[0],
+                        gpa: String(editingStudent.gpa || '3.50'),
+                        status: editingStudent.status || statuses[0]
+                    });
+                } else {
+                    setFormData({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        course: courses[0] || 'Full Stack Web',
+                        gpa: '3.50',
+                        status: 'Active'
+                    });
+                }
+                setErrors({});
+                setTouched({});
+            }, [editingStudent, isOpen, courses, statuses]);
+
+            const validateField = (name, value) => {
+                let error = '';
+                switch (name) {
+                    case 'name':
+                        if (!value.trim()) {
+                            error = 'Full name is required.';
+                        } else if (value.trim().length < 3) {
+                            error = 'Name must be at least 3 characters.';
+                        } else if (!/^[a-zA-Z\s.'-]+$/.test(value)) {
+                            error = 'Name can only contain letters, spaces, and hyphens.';
+                        }
+                        break;
+                    case 'email':
+                        if (!value.trim()) {
+                            error = 'Email address is required.';
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+                            error = 'Please enter a valid email address (e.g. name@domain.com).';
+                        }
+                        break;
+                    case 'phone':
+                        if (!value.trim()) {
+                            error = 'Contact phone number is required.';
+                        } else if (value.replace(/[^0-9]/g, '').length < 8) {
+                            error = 'Phone number must contain at least 8 digits.';
+                        }
+                        break;
+                    case 'course':
+                        if (!value) error = 'Please select an academic course.';
+                        break;
+                    case 'gpa':
+                        const gpaNum = parseFloat(value);
+                        if (value === '' || isNaN(gpaNum)) {
+                            error = 'GPA is required.';
+                        } else if (gpaNum < 0.0 || gpaNum > 4.0) {
+                            error = 'GPA must be between 0.0 and 4.0.';
+                        }
+                        break;
+                    case 'status':
+                        if (!value) error = 'Please select an enrollment status.';
+                        break;
+                    default:
+                        break;
+                }
+                return error;
+            };
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData((prev) => ({ ...prev, [name]: value }));
+
+                if (touched[name]) {
+                    const errorMsg = validateField(name, value);
+                    setErrors((prev) => ({ ...prev, [name]: errorMsg }));
+                }
+            };
+
+            const handleBlur = (e) => {
+                const { name, value } = e.target;
+                setTouched((prev) => ({ ...prev, [name]: true }));
+                const errorMsg = validateField(name, value);
+                setErrors((prev) => ({ ...prev, [name]: errorMsg }));
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+
+                const newTouched = {
+                    name: true, email: true, phone: true,
+                    course: true, gpa: true, status: true
+                };
+                setTouched(newTouched);
+
+                const newErrors = {};
+                let isValid = true;
+
+                Object.keys(formData).forEach((field) => {
+                    const error = validateField(field, formData[field]);
+                    if (error) {
+                        newErrors[field] = error;
+                        isValid = false;
+                    }
+                });
+
+                setErrors(newErrors);
+                if (!isValid) return;
+
+                onSubmit({
+                    ...formData,
+                    gpa: parseFloat(formData.gpa)
+                });
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3 className="modal-title">
+                                {isEditMode ? '✏️ Edit Student Record' : '📝 Register New Student'}
+                            </h3>
+                            <button className="modal-close-btn" onClick={onClose} aria-label="Close dialog">
+                                ✕
+                            </button>
+                        </div>
+
+                        <form className="student-form" onSubmit={handleSubmit} noValidate>
+                            {/* Full Name */}
+                            <div className="form-group">
+                                <label className="form-label" htmlFor="modal-student-name">
+                                    Full Name <span className="required-star">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="modal-student-name"
+                                    name="name"
+                                    className={`form-input ${touched.name && errors.name ? 'has-error' : ''}`}
+                                    placeholder="e.g. Maya Lin"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    autoFocus
+                                />
+                                {touched.name && errors.name && (
+                                    <span className="error-feedback">⚠️ {errors.name}</span>
+                                )}
+                            </div>
+
+                            {/* Email & Phone Grid */}
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label className="form-label" htmlFor="modal-student-email">
+                                        Email Address <span className="required-star">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="modal-student-email"
+                                        name="email"
+                                        className={`form-input ${touched.email && errors.email ? 'has-error' : ''}`}
+                                        placeholder="name@domain.com"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.email && errors.email && (
+                                        <span className="error-feedback">⚠️ {errors.email}</span>
+                                    )}
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="form-label" htmlFor="modal-student-phone">
+                                        Phone Number <span className="required-star">*</span>
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="modal-student-phone"
+                                        name="phone"
+                                        className={`form-input ${touched.phone && errors.phone ? 'has-error' : ''}`}
+                                        placeholder="+1 555-0199"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {touched.phone && errors.phone && (
+                                        <span className="error-feedback">⚠️ {errors.phone}</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Course & Status Grid */}
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label className="form-label" htmlFor="modal-student-course">
+                                        Academic Program <span className="required-star">*</span>
+                                    </label>
+                                    <select
+                                        id="modal-student-course"
+                                        name="course"
+                                        className={`form-select ${touched.course && errors.course ? 'has-error' : ''}`}
+                                        value={formData.course}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    >
+                                        {courses.map((course) => (
+                                            <option key={course} value={course}>{course}</option>
+                                        ))}
+                                    </select>
+                                    {touched.course && errors.course && (
+                                        <span className="error-feedback">⚠️ {errors.course}</span>
+                                    )}
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="form-label" htmlFor="modal-student-status">
+                                        Enrollment Status <span className="required-star">*</span>
+                                    </label>
+                                    <select
+                                        id="modal-student-status"
+                                        name="status"
+                                        className={`form-select ${touched.status && errors.status ? 'has-error' : ''}`}
+                                        value={formData.status}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    >
+                                        {statuses.map((status) => (
+                                            <option key={status} value={status}>{status}</option>
+                                        ))}
+                                    </select>
+                                    {touched.status && errors.status && (
+                                        <span className="error-feedback">⚠️ {errors.status}</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* GPA */}
+                            <div className="form-group">
+                                <label className="form-label" htmlFor="modal-student-gpa">
+                                    Cumulative GPA (0.00 - 4.00) <span className="required-star">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="modal-student-gpa"
+                                    name="gpa"
+                                    step="0.01"
+                                    min="0.00"
+                                    max="4.00"
+                                    className={`form-input ${touched.gpa && errors.gpa ? 'has-error' : ''}`}
+                                    value={formData.gpa}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                {touched.gpa && errors.gpa && (
+                                    <span className="error-feedback">⚠️ {errors.gpa}</span>
+                                )}
+                            </div>
+
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={onClose}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    {isEditMode ? '💾 Save Changes' : '➕ Register Student'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 7. Footer Component
+        // ==================================================================
+        function Footer({ totalCount, filteredCount }) {
+            return (
+                <footer className="footer">
+                    <p>
+                        <strong>Day 29: React Hooks &amp; API Integration</strong> — Built with{' '}
+                        <code>useState</code>, <code>useEffect</code>, and RESTful asynchronous <code>fetch()</code>.
+                    </p>
+                    <p style={{ marginTop: '0.4rem', color: 'var(--gray-400)' }}>
+                        Displaying {filteredCount} of {totalCount} total students in memory &bull; Zero external UI libraries.
+                    </p>
+                </footer>
+            );
+        }
+
+        // ==================================================================
+        // 8. Root App Component
+        // ==================================================================
+        function App() {
+            const [students, setStudents] = useState([]);
+            const [isLoading, setIsLoading] = useState(true);
+            const [error, setError] = useState(null);
+
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedCourse, setSelectedCourse] = useState('All');
+            const [selectedStatus, setSelectedStatus] = useState('All');
+
+            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [editingStudent, setEditingStudent] = useState(null);
+
+            const [notification, setNotification] = useState(null);
+            const [reloadTrigger, setReloadTrigger] = useState(0);
+            const [simulateNetworkError, setSimulateNetworkError] = useState(false);
+
+            // Lifecycle Data Fetching
+            useEffect(() => {
+                let isMounted = true;
+                setIsLoading(true);
+                setError(null);
+
+                studentApi.fetchStudents(simulateNetworkError)
+                    .then((data) => {
+                        if (isMounted) {
+                            setStudents(data);
+                            setIsLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        if (isMounted) {
+                            setError(err.message || 'An unexpected error occurred while fetching student data.');
+                            setIsLoading(false);
+                        }
+                    });
+
+                return () => {
+                    isMounted = false;
+                };
+            }, [reloadTrigger, simulateNetworkError]);
+
+            // Notification auto-dismiss timer
+            useEffect(() => {
+                if (!notification) return;
+                const timer = setTimeout(() => {
+                    setNotification(null);
+                }, 4000);
+                return () => clearTimeout(timer);
+            }, [notification]);
+
+            const showToast = (message, type = 'success') => {
+                setNotification({ message, type });
+            };
+
+            const handleSaveStudent = async (formData) => {
+                try {
+                    if (editingStudent) {
+                        const updated = await studentApi.updateStudent(editingStudent.id, formData);
+                        setStudents((prev) =>
+                            prev.map((s) => (s.id === editingStudent.id ? { ...s, ...updated } : s))
+                        );
+                        showToast(`Student record for "${formData.name}" updated successfully!`, 'success');
+                    } else {
+                        const created = await studentApi.createStudent(formData);
+                        setStudents((prev) => [created, ...prev]);
+                        showToast(`New student "${formData.name}" registered successfully!`, 'success');
+                    }
+                    setIsModalOpen(false);
+                    setEditingStudent(null);
+                } catch (err) {
+                    showToast(`Failed to save record: ${err.message}`, 'warning');
+                }
+            };
+
+            const handleDeleteStudent = async (id, name) => {
+                const confirmed = window.confirm(
+                    `Are you sure you want to delete the student record for "${name}"?\nThis action cannot be undone.`
+                );
+
+                if (!confirmed) return;
+
+                try {
+                    await studentApi.deleteStudent(id);
+                    setStudents((prev) => prev.filter((s) => s.id !== id));
+                    showToast(`Student record for "${name}" has been removed.`, 'info');
+                } catch (err) {
+                    showToast(`Failed to delete record: ${err.message}`, 'warning');
+                }
+            };
+
+            const handleOpenAddModal = () => {
+                setEditingStudent(null);
+                setIsModalOpen(true);
+            };
+
+            const handleOpenEditModal = (student) => {
+                setEditingStudent(student);
+                setIsModalOpen(true);
+            };
+
+            const handleCloseModal = () => {
+                setIsModalOpen(false);
+                setEditingStudent(null);
+            };
+
+            const handleResetFilters = () => {
+                setSearchTerm('');
+                setSelectedCourse('All');
+                setSelectedStatus('All');
+            };
+
+            const handleRefresh = () => {
+                setSimulateNetworkError(false);
+                setReloadTrigger((prev) => prev + 1);
+                showToast('Refreshing student records from API...', 'info');
+            };
+
+            const handleSimulateError = () => {
+                setSimulateNetworkError(true);
+                setReloadTrigger((prev) => prev + 1);
+            };
+
+            // Filtered derived list
+            const filteredStudents = students.filter((student) => {
+                const matchesSearch =
+                    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    student.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+                const matchesCourse =
+                    selectedCourse === 'All' || student.course === selectedCourse;
+
+                const matchesStatus =
+                    selectedStatus === 'All' || student.status === selectedStatus;
+
+                return matchesSearch && matchesCourse && matchesStatus;
+            });
+
+            return (
+                <div className="app-container">
+                    <Header
+                        onOpenAddModal={handleOpenAddModal}
+                        onRefresh={handleRefresh}
+                        onSimulateError={handleSimulateError}
+                        isError={Boolean(error)}
+                        isLoading={isLoading}
+                    />
+
+                    <main className="main-content">
+                        {notification && (
+                            <div className={`notification-banner ${notification.type}`} role="alert">
+                                <span>{notification.message}</span>
+                                <button
+                                    className="notification-close"
+                                    onClick={() => setNotification(null)}
+                                    aria-label="Dismiss notification"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
+
+                        <StudentStats students={students} />
+
+                        <SearchBar
+                            searchTerm={searchTerm}
+                            onSearchChange={setSearchTerm}
+                            selectedCourse={selectedCourse}
+                            onCourseChange={setSelectedCourse}
+                            selectedStatus={selectedStatus}
+                            onStatusChange={setSelectedStatus}
+                            courses={studentApi.COURSES}
+                            statuses={studentApi.STATUSES}
+                            onResetFilters={handleResetFilters}
+                        />
+
+                        <StudentTable
+                            students={filteredStudents}
+                            isLoading={isLoading}
+                            error={error}
+                            onRetry={handleRefresh}
+                            onEditStudent={handleOpenEditModal}
+                            onDeleteStudent={handleDeleteStudent}
+                        />
+
+                        <section className="pedagogy-section">
+                            <h3 className="pedagogy-title">
+                                <span>💡</span> React Hooks &amp; Architecture Concepts in this Module
+                            </h3>
+                            <div className="pedagogy-grid">
+                                <div className="pedagogy-card">
+                                    <h4><span>⚡</span> <code>useEffect</code> Data Lifecycle</h4>
+                                    <p>
+                                        Data is loaded after component mount via <code>useEffect(..., [])</code>.
+                                        A cleanup function sets <code>isMounted = false</code> to avoid memory leaks if unmounted before fetch returns.
+                                    </p>
+                                </div>
+
+                                <div className="pedagogy-card">
+                                    <h4><span>⏳</span> Loading &amp; Error States</h4>
+                                    <p>
+                                        Distinct states (<code>isLoading</code>, <code>error</code>, and data) ensure the UI never crashes or flashes empty screens during asynchronous network requests.
+                                    </p>
+                                </div>
+
+                                <div className="pedagogy-card">
+                                    <h4><span>📝</span> Controlled Form Validation</h4>
+                                    <p>
+                                        Every form field maps to component state (<code>value=&#123;formData.name&#125;</code>) and syncs via <code>onChange</code>. Real-time regex validates on blur and submit.
+                                    </p>
+                                </div>
+
+                                <div className="pedagogy-card">
+                                    <h4><span>🔄</span> Immutable State Updates</h4>
+                                    <p>
+                                        Array spreading (<code>[created, ...prev]</code>), <code>map</code> for updates, and <code>filter</code> for deletions maintain strict immutability for predictable React reconciliation.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+
+                    <StudentFormModal
+                        isOpen={isModalOpen}
+                        onClose={handleCloseModal}
+                        onSubmit={handleSaveStudent}
+                        editingStudent={editingStudent}
+                        courses={studentApi.COURSES}
+                        statuses={studentApi.STATUSES}
+                    />
+
+                    <Footer
+                        totalCount={students.length}
+                        filteredCount={filteredStudents.length}
+                    />
+                </div>
+            );
+        }
+
+        // ==================================================================
+        // 9. Mount Root Application
+        // ==================================================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
