@@ -1,0 +1,514 @@
+/* ==========================================================================
+   DAY 9: RESPONSIVE WEB DESIGN
+   Project: FastBite Food Delivery Portal
+   ========================================================================== */
+
+/* 1. Global Box Sizing & Root Typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* rem is calculated relative to this root font-size (16px default) */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1f2937;
+    background-color: #fcfbf9;
+}
+
+/* Utility Fluid Container with max-width */
+.container {
+    width: 90%; /* Percentage width: fluid with viewport */
+    max-width: 1200px; /* max-width constraint prevents over-stretching on 4K displays */
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   2. Responsive Navigation (Desktop, Tablet, Mobile)
+   ========================================================================== */
+.site-nav {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.brand-logo {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 800;
+    color: #ea580c; /* Orange accent */
+    text-decoration: none;
+}
+
+/* Hidden checkbox for zero-JS mobile hamburger toggle */
+.nav-toggle-checkbox {
+    display: none;
+}
+
+.hamburger-btn {
+    display: none; /* Hidden on desktop */
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: #1f2937;
+    user-select: none;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: #ea580c;
+}
+
+.cart-btn {
+    background-color: #ea580c;
+    color: #ffffff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.cart-btn:hover {
+    background-color: #c2410c;
+}
+
+/* ==========================================================================
+   3. Hero Section (Dynamic Units: vh, vw, rem, em)
+   ========================================================================== */
+.hero {
+    min-height: 70vh; /* Viewport height: spans at least 70% of screen height */
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    padding: 4rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.hero-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-badge {
+    display: inline-block;
+    background-color: #ffedd5;
+    color: #ea580c;
+    border: 1px solid #fed7aa;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Fluid responsive typography using rem */
+.hero-title {
+    font-size: 2.75rem; /* 44px on desktop */
+    line-height: 1.15;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1.25rem;
+}
+
+.hero-title span {
+    color: #ea580c;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 2rem;
+    max-width: 480px;
+}
+
+.hero-cta-btn {
+    display: inline-block;
+    background-color: #ea580c;
+    color: #ffffff;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.hero-cta-btn:hover {
+    background-color: #c2410c;
+    transform: translateY(-2px);
+}
+
+.hero-image-box {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image-box img {
+    width: 100%;
+    max-width: 460px; /* Prevents image from blowing up */
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   4. Categories Section
+   ========================================================================== */
+.categories-section {
+    padding: 3.5rem 0 2rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.section-header p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 across on desktop */
+    gap: 1.25rem;
+}
+
+.category-card {
+    background-color: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    border-color: #fed7aa;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #374151;
+}
+
+/* ==========================================================================
+   5. Food Cards Catalog (Fluid Responsive Columns)
+   ========================================================================== */
+.food-section {
+    padding: 2rem 0 5rem 0;
+}
+
+.food-grid {
+    display: grid;
+    /* Desktop default: 4 equal fluid columns */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.food-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.food-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.food-img-wrap {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.food-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-img-wrap img {
+    transform: scale(1.06);
+}
+
+.delivery-time {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(17, 24, 39, 0.85);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+}
+
+.food-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.food-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.35rem;
+}
+
+.food-desc {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.food-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 0.75rem;
+}
+
+.food-price {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ea580c;
+}
+
+.order-btn {
+    background-color: #f3f4f6;
+    color: #1f2937;
+    border: none;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.order-btn:hover {
+    background-color: #ea580c;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   6. Multi-Column Footer
+   ========================================================================== */
+.site-footer {
+    background-color: #111827;
+    color: #9ca3af;
+    padding: 4rem 0 2rem 0;
+}
+
+.footer-grid {
+    display: grid;
+    /* Desktop default: 4 columns */
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-col h3 {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-col p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-col ul a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.footer-col ul a:hover {
+    color: #ea580c;
+}
+
+.footer-bottom {
+    border-top: 1px solid #1f2937;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   7. MEDIA QUERIES: TABLET BREAKPOINT (max-width: 1024px)
+   ========================================================================== */
+@media screen and (max-width: 1024px) {
+    html {
+        font-size: 15px; /* Slight scaling down of rem baseline */
+    }
+
+    .hero-title {
+        font-size: 2.25rem;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+    }
+
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on tablet */
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr; /* 2 columns in tablet footer */
+        gap: 2rem;
+    }
+}
+
+/* ==========================================================================
+   8. MEDIA QUERIES: MOBILE BREAKPOINT (max-width: 640px)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+    html {
+        font-size: 14px; /* Mobile font baseline */
+    }
+
+    /* Mobile Navigation Hamburger Drawer */
+    .hamburger-btn {
+        display: block; /* Reveal hamburger icon */
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        gap: 1rem;
+        display: none; /* Hidden until checkbox is checked */
+    }
+
+    /* CSS Checkbox Hack: When toggle is checked, show mobile nav menu */
+    .nav-toggle-checkbox:checked ~ .nav-menu {
+        display: flex;
+    }
+
+    .nav-menu li {
+        width: 100%;
+    }
+
+    .cart-btn {
+        display: inline-block;
+        margin-top: 0.5rem;
+    }
+
+    /* Hero Stacks Vertically on Mobile */
+    .hero {
+        min-height: auto;
+        padding: 2.5rem 0;
+    }
+
+    .hero-grid {
+        flex-direction: column-reverse; /* Puts text above image or vice versa */
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .hero-description {
+        margin: 0 auto 1.5rem auto;
+    }
+
+    /* Categories: 2 columns on mobile */
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    /* Food Cards: 1 card per row (Full Width) on mobile */
+    .food-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    /* Footer Stacks Vertically into 1 column */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+}

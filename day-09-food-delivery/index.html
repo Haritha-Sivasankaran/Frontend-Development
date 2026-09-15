@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Critical Viewport Meta Tag for Responsive Scaling -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastBite | Fresh Food Delivered Fast</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Responsive Navbar -->
+    <header class="site-nav">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo">FastBite 🍕</a>
+
+            <!-- Hidden Checkbox & Hamburger Label for Pure CSS Mobile Drawer -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+            <label for="nav-toggle" class="hamburger-btn" aria-label="Toggle navigation menu">&#9776;</label>
+
+            <!-- Navigation Links -->
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#categories" class="nav-link">Categories</a></li>
+                <li><a href="#deals" class="nav-link">Popular Dishes</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#cart" class="cart-btn">Cart (2)</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 2. Responsive Hero Section: Dynamic Units (vh, vw, rem, em) -->
+    <section class="hero" id="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <span class="hero-badge">🚀 Free Delivery on First 3 Orders</span>
+                <h1 class="hero-title">Delicious Meals Delivered to <span>Your Doorstep</span> in Minutes.</h1>
+                <p class="hero-description">
+                    Choose from over 500+ top-rated local artisan chefs and restaurants. Fresh, organic ingredients 
+                    prepared on-demand and delivered hot.
+                </p>
+                <a href="#deals" class="hero-cta-btn">Order Food Now &rarr;</a>
+            </div>
+            <div class="hero-image-box">
+                <img src="https://placehold.co/600x450/ea580c/ffffff?text=Artisan+Gourmet+Burger" alt="Delicious gourmet burger with crisp fries and dipping sauce">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Food Categories: Responsive Grid (6 cols Desktop -> 3 Tablet -> 2 Mobile) -->
+    <section class="categories-section" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Browse by Category</h2>
+                <p>Explore your favorite cuisines prepared by verified culinary experts</p>
+            </div>
+
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">🍔</div>
+                    <div class="category-name">Burgers</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍕</div>
+                    <div class="category-name">Artisan Pizza</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍣</div>
+                    <div class="category-name">Sushi Rolls</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🥗</div>
+                    <div class="category-name">Fresh Bowls</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍜</div>
+                    <div class="category-name">Ramen</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍰</div>
+                    <div class="category-name">Desserts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Featured Food Cards: Responsive Grid (4 cols Desktop -> 2 Tablet -> 1 Mobile) -->
+    <section class="food-section" id="deals">
+        <div class="container">
+            <div class="section-header">
+                <h2>Most Popular Dishes</h2>
+                <p>Loved by thousands of foodies across the city</p>
+            </div>
+
+            <div class="food-grid">
+
+                <!-- Food Card 1 -->
+                <article class="food-card">
+                    <div class="food-img-wrap">
+                        <img src="https://placehold.co/400x300/c2410c/ffffff?text=Double+Truffle+Burger" alt="Double Truffle Burger">
+                        <span class="delivery-time">⏱ 20-30 min</span>
+                    </div>
+                    <div class="food-card-body">
+                        <h3 class="food-title">Double Truffle Wagyu Burger</h3>
+                        <p class="food-desc">Aged wagyu beef patty, black truffle aioli, melted sharp cheddar on brioche.</p>
+                        <div class="food-footer">
+                            <span class="food-price">$16.50</span>
+                            <button class="order-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Food Card 2 -->
+                <article class="food-card">
+                    <div class="food-img-wrap">
+                        <img src="https://placehold.co/400x300/9a3412/ffffff?text=Margherita+Pizza" alt="Wood-fired Margherita Pizza">
+                        <span class="delivery-time">⏱ 25-35 min</span>
+                    </div>
+                    <div class="food-card-body">
+                        <h3 class="food-title">Wood-Fired Neapolitan Pizza</h3>
+                        <p class="food-desc">San Marzano tomatoes, fresh buffalo mozzarella, aromatic sweet basil, olive oil.</p>
+                        <div class="food-footer">
+                            <span class="food-price">$18.00</span>
+                            <button class="order-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Food Card 3 -->
+                <article class="food-card">
+                    <div class="food-img-wrap">
+                        <img src="https://placehold.co/400x300/b45309/ffffff?text=Salmon+Poke+Bowl" alt="Fresh Salmon Poke Bowl">
+                        <span class="delivery-time">⏱ 15-25 min</span>
+                    </div>
+                    <div class="food-card-body">
+                        <h3 class="food-title">Pacific Salmon Poke Bowl</h3>
+                        <p class="food-desc">Sashimi-grade salmon, organic quinoa, ripe avocado, edamame, ponzu sesame glaze.</p>
+                        <div class="food-footer">
+                            <span class="food-price">$15.75</span>
+                            <button class="order-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Food Card 4 -->
+                <article class="food-card">
+                    <div class="food-img-wrap">
+                        <img src="https://placehold.co/400x300/78350f/ffffff?text=Tonkotsu+Ramen" alt="Rich Tonkotsu Pork Ramen">
+                        <span class="delivery-time">⏱ 30-40 min</span>
+                    </div>
+                    <div class="food-card-body">
+                        <h3 class="food-title">Tokyo Tonkotsu Pork Ramen</h3>
+                        <p class="food-desc">16-hour simmered pork bone broth, tender chashu pork belly, marinated soft-boiled egg.</p>
+                        <div class="food-footer">
+                            <span class="food-price">$14.25</span>
+                            <button class="order-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Responsive Footer (4 cols Desktop -> 2 Tablet -> 1 Mobile) -->
+    <footer class="site-footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>FastBite Delivery Inc.</h3>
+                    <p>
+                        Delivering culinary happiness to your home and office since 2024. 
+                        Committed to sustainable packaging and zero-emission electric bike fleets.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#categories">Food Categories</a></li>
+                        <li><a href="#deals">Popular Specials</a></li>
+                        <li><a href="#contact">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Legal &amp; Safety</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Food Allergen Guide</a></li>
+                        <li><a href="#">Courier Safety</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>
+                        Support Line: (800) 555-FOOD<br>
+                        Email: help@fastbite.example.com<br>
+                        San Francisco, California
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastBite Inc. All rights reserved. Responsive design compliant.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
