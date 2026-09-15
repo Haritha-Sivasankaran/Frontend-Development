@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 23 - jQuery Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Load jQuery 3.7.1 from Official CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        
+        <!-- Collapsible Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="brand-logo" style="cursor: pointer;" title="Click on mobile to toggle">
+                        <span>⚡</span>
+                        <span class="brand-text">NexusAdmin</span>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="menu-item active">
+                        <a href="#users">
+                            <span>👥</span>
+                            <span>Users Management</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#analytics">
+                            <span>📊</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#settings">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <span>Powered by jQuery v3.7.1</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Layout -->
+        <div class="main-content">
+            
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="nav-left">
+                    <button id="btn-toggle-sidebar" class="btn-toggle-sidebar" title="Toggle Sidebar">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <span id="sidebar-toggle-text">Collapse</span>
+                    </button>
+                    <div class="page-heading">
+                        <h2>User Accounts Directory</h2>
+                    </div>
+                </div>
+
+                <div class="nav-right">
+                    <span id="user-count-badge" class="jquery-version-badge">0 Registered Users</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="dashboard-view">
+
+                <!-- Table Controls (Search, AJAX load, Add User) -->
+                <section class="table-controls">
+                    <div class="search-wrap">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="search-users" 
+                            class="search-input" 
+                            placeholder="Filter users by name, email, or role..."
+                        >
+                    </div>
+
+                    <div class="action-buttons-group">
+                        <button id="btn-ajax-load" class="btn-ctrl btn-ajax-load">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 4v6h-6M1 20v-6h6"/>
+                                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                            </svg>
+                            Reload via $.ajax
+                        </button>
+                        <button id="btn-open-add-modal" class="btn-ctrl btn-add-user">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            + Add User Row
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Users Table Card -->
+                <div class="table-card">
+                    <table id="user-table" class="user-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Email Address</th>
+                                <th>Access Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-tbody">
+                            <!-- Populated dynamically via $.ajax and $.append -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Modal 1: Add User -->
+    <div id="modal-add-user" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header-row">
+                <h3>Create New User Row</h3>
+                <button type="button" class="btn-close-modal">&times;</button>
+            </div>
+            <form id="form-add-user" class="modal-form">
+                <div class="modal-field">
+                    <label for="add-user-name">Full Name</label>
+                    <input type="text" id="add-user-name" class="modal-input" placeholder="e.g. Jordan Mitchell" required>
+                </div>
+                <div class="modal-field">
+                    <label for="add-user-email">Email Address</label>
+                    <input type="email" id="add-user-email" class="modal-input" placeholder="e.g. j.mitchell@corp.io" required>
+                </div>
+                <div class="modal-field">
+                    <label for="add-user-role">Access Role</label>
+                    <select id="add-user-role" class="modal-select">
+                        <option value="Admin">Admin</option>
+                        <option value="Editor" selected>Editor</option>
+                        <option value="Viewer">Viewer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-modal-submit">Prepend Row to Table</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Edit User -->
+    <div id="modal-edit-user" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header-row">
+                <h3>Update User Record</h3>
+                <button type="button" class="btn-close-modal">&times;</button>
+            </div>
+            <form id="form-edit-user" class="modal-form">
+                <div class="modal-field">
+                    <label for="edit-user-name">Full Name</label>
+                    <input type="text" id="edit-user-name" class="modal-input" required>
+                </div>
+                <div class="modal-field">
+                    <label for="edit-user-email">Email Address</label>
+                    <input type="email" id="edit-user-email" class="modal-input" required>
+                </div>
+                <div class="modal-field">
+                    <label for="edit-user-role">Access Role</label>
+                    <select id="edit-user-role" class="modal-select">
+                        <option value="Admin">Admin</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Viewer">Viewer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-modal-submit">Save &amp; Update Row</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-notice" class="toast-notice"></div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
