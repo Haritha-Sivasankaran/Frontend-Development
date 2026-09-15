@@ -1,0 +1,116 @@
+[
+  {
+    "id": "course-101",
+    "title": "Modern Frontend Engineering with React & Next.js",
+    "category": "frontend",
+    "level": "Intermediate",
+    "duration": "10 Weeks",
+    "price": 499,
+    "rating": 4.9,
+    "reviewsCount": 240,
+    "instructor": "Elena Vance (Senior Staff Engineer)",
+    "description": "Master component architectures, custom hooks, SSR with Next.js, TypeScript, and state management.",
+    "curriculum": [
+      "HTML5 & Modern Responsive CSS Grid / Flexbox",
+      "JavaScript ES6+, Asynchronous Pipelines & Promises",
+      "React Foundations, Hooks, and Component Trees",
+      "Full-stack Next.js App Router & API Integrations"
+    ],
+    "icon": "⚛️"
+  },
+  {
+    "id": "course-102",
+    "title": "Full-Stack Node.js & Microservices Architecture",
+    "category": "backend",
+    "level": "Advanced",
+    "duration": "12 Weeks",
+    "price": 549,
+    "rating": 4.8,
+    "reviewsCount": 185,
+    "instructor": "Marcus Sterling (Principal Architect)",
+    "description": "Build high-throughput REST & GraphQL APIs, distributed messaging with Kafka, and PostgreSQL data modeling.",
+    "curriculum": [
+      "Node.js Runtime Internals & Event Loop",
+      "Express.js & NestJS Production Architecture",
+      "Database Schema Design & Query Optimization",
+      "Microservices, Docker Containers & Redis Caching"
+    ],
+    "icon": "🟢"
+  },
+  {
+    "id": "course-103",
+    "title": "Cloud Native DevOps & Kubernetes Mastery",
+    "category": "cloud",
+    "level": "Intermediate",
+    "duration": "8 Weeks",
+    "price": 479,
+    "rating": 4.9,
+    "reviewsCount": 310,
+    "instructor": "Kavita Rao (Cloud Solutions Lead)",
+    "description": "Automate CI/CD pipelines, containerize architectures with Docker, and orchestrate clusters on AWS & Kubernetes.",
+    "curriculum": [
+      "Linux Server Administration & Shell Scripting",
+      "Docker Containerization & Image Security",
+      "Kubernetes Cluster Setup, Pods, Services & Ingress",
+      "Terraform Infrastructure as Code & AWS Deployments"
+    ],
+    "icon": "☁️"
+  },
+  {
+    "id": "course-104",
+    "title": "Data Science & Applied Machine Learning with Python",
+    "category": "datascience",
+    "level": "Beginner to Pro",
+    "duration": "14 Weeks",
+    "price": 599,
+    "rating": 4.7,
+    "reviewsCount": 420,
+    "instructor": "Dr. Aris Thorne (AI Research Scientist)",
+    "description": "Practical data analysis with Pandas, interactive visualizations, feature engineering, and scikit-learn models.",
+    "curriculum": [
+      "Python for Data Science & Vector Math",
+      "Exploratory Data Analysis with Pandas & Seaborn",
+      "Supervised & Unsupervised Machine Learning Algorithms",
+      "Model Evaluation, Hyperparameter Tuning & Deployment"
+    ],
+    "icon": "📊"
+  },
+  {
+    "id": "course-105",
+    "title": "Mobile App Development with Flutter & Dart",
+    "category": "frontend",
+    "level": "Beginner",
+    "duration": "8 Weeks",
+    "price": 399,
+    "rating": 4.8,
+    "reviewsCount": 160,
+    "instructor": "Chloe Bennett (Mobile Lead)",
+    "description": "Develop multi-platform iOS and Android apps using single-codebase Flutter widgets, animations, and Firebase.",
+    "curriculum": [
+      "Dart Programming Language Essentials",
+      "Flutter Stateful & Stateless Widget Trees",
+      "State Management with Provider & Bloc",
+      "Native Device APIs & App Store Publishing"
+    ],
+    "icon": "📱"
+  },
+  {
+    "id": "course-106",
+    "title": "Enterprise Cybersecurity & Ethical Hacking",
+    "category": "cloud",
+    "level": "Advanced",
+    "duration": "10 Weeks",
+    "price": 529,
+    "rating": 4.9,
+    "reviewsCount": 195,
+    "instructor": "Nate Ross (Certified Ethical Hacker)",
+    "description": "Penetration testing methodologies, network protocol vulnerability analysis, cryptography, and defense defense.",
+    "curriculum": [
+      "Network Protocols (TCP/IP, DNS) & Packet Analysis",
+      "Web Application Security (OWASP Top 10)",
+      "Vulnerability Scanning & Penetration Testing",
+      "Incident Response & Zero-Trust Architecture"
+    ],
+    "icon": "🛡️"
+  }
+]

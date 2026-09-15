@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Institute | Modern Professional Tech Academy</title>
+    <meta name="description" content="EduSphere Institute offers premier hands-on certification bootcamps in Frontend, Backend, Cloud DevOps, and Data Science.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Header & Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#home" class="nav-brand">
+                <span class="logo-icon">🎓</span>
+                <span>EduSphere</span>
+            </a>
+
+            <button class="btn-hamburger" id="hamburger-btn" aria-label="Toggle Navigation Menu" aria-expanded="false">
+                ☰
+            </button>
+
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#courses" class="nav-link">Courses</a></li>
+                    <li><a href="#testimonials" class="nav-link">Alumni</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="#registration" class="btn-nav-cta">Apply Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 2. Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1>Accelerate Your Career with <span class="gradient-text">Next-Gen Tech Skills</span></h1>
+                    <p>
+                        Master software engineering, cloud systems, and data intelligence with project-driven curriculum guided by senior practitioners from tier-1 tech companies.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#courses" class="btn-primary">Explore Courses ↓</a>
+                        <a href="#registration" class="btn-secondary">Apply for Cohort</a>
+                    </div>
+                </div>
+
+                <div class="hero-stats-card">
+                    <div class="stat-item">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-desc">Graduated Alumni</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">94%</span>
+                        <span class="stat-desc">Placement Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1:1</span>
+                        <span class="stat-desc">Staff Mentorship</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9/5</span>
+                        <span class="stat-desc">Average Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Why EduSphere</span>
+                <h2>Built for Engineers, by Engineers</h2>
+                <p>We bridge the gap between academic theory and real-world production engineering through rigorous hands-on delivery.</p>
+            </div>
+
+            <div class="about-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Production-Grade Projects</h3>
+                    <p>No toy examples. You build scalable microservices, high-traffic React web apps, and automated Kubernetes cloud pipelines from day one.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3>Senior Staff Mentors</h3>
+                    <p>Get weekly line-by-line pull request reviews and 1-on-1 code walkthroughs from principal architects working in top-tier tech organizations.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">💼</div>
+                    <h3>Dedicated Career Launchpad</h3>
+                    <p>Access resume refinement, technical mock interviews, behavioral workshops, and direct hiring partner referrals at 120+ leading employers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Courses Catalog Section -->
+    <section class="section" id="courses" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Certification Programs</span>
+                <h2>Explore In-Demand Specializations</h2>
+                <p>Curated curriculums designed to elevate beginners to job-ready professionals.</p>
+            </div>
+
+            <!-- Controls: Category Chips & Search Bar -->
+            <div class="courses-controls">
+                <div class="category-chips" id="category-chips">
+                    <button class="chip-btn active" data-category="all" type="button">All Tracks</button>
+                    <button class="chip-btn" data-category="frontend" type="button">Frontend</button>
+                    <button class="chip-btn" data-category="backend" type="button">Backend</button>
+                    <button class="chip-btn" data-category="cloud" type="button">Cloud & DevOps</button>
+                    <button class="chip-btn" data-category="data" type="button">Data & AI</button>
+                </div>
+
+                <div class="search-wrapper">
+                    <span class="search-icon-svg">🔎</span>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search by course or topic..." aria-label="Search courses">
+                </div>
+            </div>
+
+            <!-- Dynamic Courses Grid -->
+            <div class="courses-grid" id="courses-grid">
+                <!-- Dynamically populated by app.js from courses.json -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Registration / Enrollment Form Section -->
+    <section class="section registration-section" id="registration">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Admissions Open</span>
+                <h2>Secure Your Cohort Seat</h2>
+                <p>Limited seats per track to guarantee personalized instructor attention and code review fidelity.</p>
+            </div>
+
+            <div class="enroll-wrapper">
+                <form id="registration-form" novalidate>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="full-name">Full Name *</label>
+                            <input type="text" id="full-name" class="form-control" placeholder="e.g. Alex Henderson" required>
+                            <span class="field-error" id="full-name-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" class="form-control" placeholder="alex@company.com" required>
+                            <span class="field-error" id="email-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="e.g. +1 (555) 234-5678" required>
+                            <span class="field-error" id="phone-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="course-select">Select Program *</label>
+                            <select id="course-select" class="form-control" required>
+                                <option value="">Loading available programs...</option>
+                            </select>
+                            <span class="field-error" id="course-select-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience-level">Current Technical Background *</label>
+                        <select id="experience-level" class="form-control" required>
+                            <option value="">-- Select Your Experience Level --</option>
+                            <option value="beginner">Beginner (No prior coding experience)</option>
+                            <option value="some-coding">Self-Taught / Basic Syntax Familiarity</option>
+                            <option value="intermediate">Junior Developer (1-2 years experience)</option>
+                            <option value="professional">Mid-Senior Engineer transitioning domains</option>
+                        </select>
+                        <span class="field-error" id="experience-level-error"></span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: flex-start; gap: 0.6rem; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" id="terms-check" style="margin-top: 0.25rem;">
+                            <span style="font-size: 0.88rem; color: var(--text-muted);">
+                                I agree to the cohort enrollment conditions, code of conduct, and refund policy.
+                            </span>
+                        </label>
+                        <span class="field-error" id="terms-check-error"></span>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn-submit-enroll">
+                        Submit Application & Enroll Now →
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Alumni Testimonials Section (Remote API Data) -->
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Student Feedback</span>
+                <h2>Alumni Success Stories</h2>
+                <p>Live reviews synchronized from verified bootcamp graduates worldwide.</p>
+            </div>
+
+            <div class="testimonials-grid" id="testimonials-container">
+                <!-- Dynamically loaded via Fetch API -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Contact & Frequently Asked Questions -->
+    <section class="section" id="contact" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Inquiries & Support</span>
+                <h2>Get in Touch & Frequently Asked Questions</h2>
+                <p>Have questions regarding financing, schedules, or prerequisites? We're here to help.</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Contact Info Panel -->
+                <div class="contact-info-panel">
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <div class="info-text">
+                            <h4>Institute Campus</h4>
+                            <p>100 Innovation Parkway, Suite 400<br>Silicon Valley, CA 94025</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">✉️</div>
+                        <div class="info-text">
+                            <h4>Admissions Desk</h4>
+                            <p>admissions@edusphere.institute<br>support@edusphere.institute</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📞</div>
+                        <div class="info-text">
+                            <h4>Phone & Hotline</h4>
+                            <p>+1 (800) 555-TECH<br>Mon – Fri, 9am – 6pm PST</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion FAQ -->
+                <div class="faq-accordion">
+                    <details open>
+                        <summary>What are the class timings and time commitment?</summary>
+                        <p>Cohorts are structured for working professionals with live evening lectures (twice weekly) and weekend interactive build sessions, requiring roughly 8-12 hours per week.</p>
+                    </details>
+
+                    <details>
+                        <summary>Are payment installments or employer sponsorships supported?</summary>
+                        <p>Yes! We provide zero-interest split installment plans, ISA options for eligible domestic students, and formal invoices formatted for corporate tuition reimbursement.</p>
+                    </details>
+
+                    <details>
+                        <summary>Will I receive an industry-recognized certificate?</summary>
+                        <p>Upon satisfactory completion of all modules, code reviews, and the capstone project defense, you receive an accredited verifiable credential with a cryptographic hash.</p>
+                    </details>
+
+                    <details>
+                        <summary>What equipment or software is required?</summary>
+                        <p>A modern laptop (macOS, Windows 10/11, or Linux) with at least 8GB RAM, Git, Node.js LTS, and VS Code installed. All cloud credits and lab sandboxes are provided.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Course Details & Success Modal -->
+    <div class="modal-backdrop" id="course-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <button class="btn-close-modal" id="modal-close-btn" aria-label="Close dialog">✕</button>
+            <div id="modal-content">
+                <!-- Populated dynamically by app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>🎓 EduSphere Institute</h3>
+                    <p>
+                        EduSphere is an engineering institute committed to bridging tech talent gaps through production-grade, immersive curricula and personalized staff mentorship.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Tracks</h4>
+                    <ul>
+                        <li><a href="#courses">Frontend Engineering</a></li>
+                        <li><a href="#courses">Backend Microservices</a></li>
+                        <li><a href="#courses">Cloud & DevOps</a></li>
+                        <li><a href="#courses">Data & Machine Learning</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#about">About EduSphere</a></li>
+                        <li><a href="#registration">Cohort Application</a></li>
+                        <li><a href="#testimonials">Graduate Reviews</a></li>
+                        <li><a href="#contact">Campus FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 EduSphere Institute of Technology. All rights reserved. Built with Semantic HTML5, Modern CSS Grid/Flexbox, and ES6 JavaScript.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
