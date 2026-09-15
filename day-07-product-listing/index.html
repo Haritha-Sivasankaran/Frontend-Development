@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechVault | Developer Gear &amp; Hardware</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Fixed Header: Demonstrating position: fixed -->
+    <header class="fixed-header">
+        <div class="brand-logo">TechVault Hardware</div>
+        <div class="cart-indicator" title="Shopping Cart">
+            🛒 Cart
+            <!-- Absolute badge inside relative cart container -->
+            <span class="cart-count-badge">3</span>
+        </div>
+    </header>
+
+    <!-- 2. Announcement Banner: Demonstrating float and clearfix -->
+    <div class="promo-banner clearfix">
+        <!-- Floated element -->
+        <div class="promo-icon-box">⚡</div>
+        <div class="promo-content">
+            <h3>Flash Summer Hardware Clearance</h3>
+            <p>
+                Save up to 40% on developer workstations, 4K monitors, and ergonomic mechanical keyboards. 
+                Free shipping applied on all orders exceeding $99.
+            </p>
+        </div>
+    </div>
+
+    <!-- 3. Sticky Category Filter: Demonstrating position: sticky and overflow-x: auto -->
+    <nav class="sticky-filter-bar" aria-label="Product Categories">
+        <div class="category-scroll-wrapper">
+            <a href="#" class="category-pill active">All Hardware</a>
+            <a href="#" class="category-pill">Mechanical Keyboards</a>
+            <a href="#" class="category-pill">High-DPI Mice</a>
+            <a href="#" class="category-pill">Curved Monitors</a>
+            <a href="#" class="category-pill">Noise-Canceling Audio</a>
+            <a href="#" class="category-pill">Standing Desks</a>
+            <a href="#" class="category-pill">Thunderbolt Docks</a>
+            <a href="#" class="category-pill">Webcams &amp; Lighting</a>
+        </div>
+    </nav>
+
+    <!-- 4. Main Product Catalog: Demonstrating Box Model, Inline-Block, and Positioning -->
+    <main class="main-layout">
+        <h1 class="page-title">Featured Developer Equipment</h1>
+
+        <div class="product-grid">
+
+            <!-- Product Card 1: Sale Badge -->
+            <article class="product-card">
+                <!-- Absolute Badge -->
+                <span class="product-badge badge-sale">-25% OFF</span>
+                <button class="wishlist-btn" title="Add to Wishlist" aria-label="Add to wishlist">♥</button>
+
+                <!-- Image container with overflow: hidden -->
+                <div class="product-image-box">
+                    <img src="https://placehold.co/400x300/1e293b/ffffff?text=Mechanical+Keyboard" alt="Custom RGB mechanical keyboard with hot-swappable tactile switches">
+                </div>
+
+                <p class="product-category">Keyboards</p>
+                <!-- Text with text-overflow: ellipsis -->
+                <h2 class="product-title" title="ApexPro 75% Wireless Mechanical Keyboard with Hot-Swap Switches">
+                    ApexPro 75% Wireless Mechanical Keyboard with Hot-Swap Switches
+                </h2>
+                <!-- Description with overflow: hidden -->
+                <p class="product-desc">
+                    Custom tuned tactile switches with aluminum top-plate, gasket mount, and south-facing RGB lighting.
+                </p>
+
+                <div class="price-row">
+                    <span class="current-price">$149.99</span>
+                    <span class="old-price">$199.99</span>
+                </div>
+
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </article>
+
+            <!-- Product Card 2: Hot / Bestseller Badge -->
+            <article class="product-card">
+                <span class="product-badge badge-hot">HOT</span>
+                <button class="wishlist-btn" title="Add to Wishlist" aria-label="Add to wishlist">♥</button>
+
+                <div class="product-image-box">
+                    <img src="https://placehold.co/400x300/334155/ffffff?text=Ergonomic+Mouse" alt="Wireless ergonomic vertical mouse with thumb rest">
+                </div>
+
+                <p class="product-category">Mice &amp; Pointers</p>
+                <h2 class="product-title" title="PrecisionPro Ergo Wireless Master Mouse">
+                    PrecisionPro Ergo Wireless Master Mouse
+                </h2>
+                <p class="product-desc">
+                    57-degree natural vertical handshake angle to reduce wrist fatigue during long coding marathons.
+                </p>
+
+                <div class="price-row">
+                    <span class="current-price">$89.50</span>
+                    <span class="old-price">$105.00</span>
+                </div>
+
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </article>
+
+            <!-- Product Card 3: New Arrival Badge -->
+            <article class="product-card">
+                <span class="product-badge badge-new">NEW</span>
+                <button class="wishlist-btn" title="Add to Wishlist" aria-label="Add to wishlist">♥</button>
+
+                <div class="product-image-box">
+                    <img src="https://placehold.co/400x300/0f172a/ffffff?text=4K+Monitor" alt="Ultra-wide 34-inch curved developer monitor">
+                </div>
+
+                <p class="product-category">Displays</p>
+                <h2 class="product-title" title="UltraView 34-Inch Curved IPS Display 144Hz">
+                    UltraView 34-Inch Curved IPS Display 144Hz
+                </h2>
+                <p class="product-desc">
+                    WQHD resolution (3440 x 1440) with 99% sRGB color accuracy, USB-C 90W charging, and KVM switch.
+                </p>
+
+                <div class="price-row">
+                    <span class="current-price">$499.00</span>
+                </div>
+
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </article>
+
+            <!-- Product Card 4: Standard without Badge -->
+            <article class="product-card">
+                <button class="wishlist-btn" title="Add to Wishlist" aria-label="Add to wishlist">♥</button>
+
+                <div class="product-image-box">
+                    <img src="https://placehold.co/400x300/475569/ffffff?text=ANC+Headset" alt="Studio-grade noise canceling wireless headphones">
+                </div>
+
+                <p class="product-category">Audio</p>
+                <h2 class="product-title" title="AcousticStudio ANC Wireless Noise-Canceling Headphones">
+                    AcousticStudio ANC Wireless Noise-Canceling Headphones
+                </h2>
+                <p class="product-desc">
+                    Hybrid active noise cancellation for complete concentration in open-office tech environments.
+                </p>
+
+                <div class="price-row">
+                    <span class="current-price">$229.00</span>
+                    <span class="old-price">$279.00</span>
+                </div>
+
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </article>
+
+        </div>
+    </main>
+
+</body>
+</html>
