@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Product Manager | Day 25 Fundamentals</title>
+    <meta name="description" content="A comprehensive TypeScript application demonstrating type annotations, interfaces, union types, tuples, and compile-time error prevention.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="brand-title">
+                <span class="ts-badge">TS</span>
+                <span>TypeScript Product Manager</span>
+            </div>
+            <div class="header-subtitle">
+                Day 25: Type Annotations • Interfaces • Union Types • Tuples • Compile-Time Safety
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. Stats Dashboard -->
+        <section class="stats-grid" aria-label="Catalog Statistics">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Total Products</span>
+                    <span>📦</span>
+                </div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-subtext">Active items in catalog</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>In-Stock Items</span>
+                    <span>✓</span>
+                </div>
+                <div class="stat-value" id="stat-available" style="color: var(--success);">0</div>
+                <div class="stat-subtext">Ready for immediate fulfillment</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Average Price</span>
+                    <span>💵</span>
+                </div>
+                <div class="stat-value" id="stat-avg-price">$0.00</div>
+                <div class="stat-subtext">Per catalog unit</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Inventory Valuation</span>
+                    <span>📈</span>
+                </div>
+                <div class="stat-value" id="stat-valuation" style="color: var(--primary);">$0</div>
+                <div class="stat-subtext">Total unit value in warehouse</div>
+            </div>
+        </section>
+
+        <!-- Category Breakdown Chips -->
+        <div class="category-breakdown-panel">
+            <span class="cat-breakdown-label">
+                <span>🏷️</span>
+                <span>Category Distribution:</span>
+            </span>
+            <div id="category-breakdown" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <!-- Populated dynamically by TypeScript -->
+            </div>
+        </div>
+
+        <!-- 2. Main Two-Column Work Area -->
+        <div class="main-layout">
+            <!-- Left Column: Add Product Form -->
+            <aside class="panel">
+                <div class="panel-header">
+                    <h3><span>➕</span> Add New Product</h3>
+                    <span class="ts-badge" style="font-size: 0.72rem;">Typed Contract</span>
+                </div>
+                <div class="panel-body">
+                    <form id="add-product-form" novalidate>
+                        <div class="form-group">
+                            <label for="prod-name">Product Name *</label>
+                            <input type="text" id="prod-name" class="form-control" placeholder="e.g. 4K Ultra-Wide Monitor" required>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="prod-price">Price ($) *</label>
+                                <input type="number" id="prod-price" class="form-control" step="0.01" min="0.01" placeholder="499.99" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod-category">Category *</label>
+                                <select id="prod-category" class="form-control" required>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Home">Home</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tuple Inputs: Supplier Code & Stock Units -->
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label for="prod-supplier">Supplier Code <small>(Tuple 0)</small> *</label>
+                                <input type="text" id="prod-supplier" class="form-control" placeholder="e.g. SUP-EL-105" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod-stock">Stock Units <small>(Tuple 1)</small> *</label>
+                                <input type="number" id="prod-stock" class="form-control" min="0" placeholder="25" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prod-tags">Tags <small>(Comma-separated string[])</small></label>
+                            <input type="text" id="prod-tags" class="form-control" placeholder="monitor, display, 4k">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="prod-available" checked>
+                                <span>Available for Purchase</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">
+                            <span>💾 Add to Catalog</span>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Right Column: Filters & Data Table -->
+            <section class="panel">
+                <div class="panel-header">
+                    <h3><span>📋</span> Product Catalog</h3>
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Strict Interface Compliance</span>
+                </div>
+                <div class="panel-body">
+                    <!-- Filter Toolbar -->
+                    <div class="filter-toolbar">
+                        <select id="filter-category" aria-label="Filter by category">
+                            <option value="All">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Books">Books</option>
+                            <option value="Food">Food</option>
+                            <option value="Home">Home</option>
+                        </select>
+
+                        <input type="text" id="filter-search" placeholder="Search by name, tags, or supplier...">
+
+                        <input type="number" id="filter-min-price" placeholder="Min $" style="width: 85px;" min="0">
+                        <input type="number" id="filter-max-price" placeholder="Max $" style="width: 85px;" min="0">
+
+                        <label class="checkbox-label" style="font-size: 0.8rem;">
+                            <input type="checkbox" id="filter-available">
+                            <span>In-Stock Only</span>
+                        </label>
+
+                        <button type="button" id="btn-reset-filters" class="btn-secondary">Reset</button>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div class="table-responsive">
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Details</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Inventory Status</th>
+                                    <th>Available</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Populated dynamically by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. Educational Section: How TypeScript Catches Errors Before Runtime -->
+        <section class="error-sandbox-section">
+            <div class="section-title-box">
+                <h2><span>🛡️</span> How TypeScript Catches Errors Before Runtime</h2>
+                <p>
+                    In vanilla JavaScript, errors frequently lurk unnoticed until users execute buggy code in production.
+                    TypeScript's static type analyzer catches these regressions at compile time inside your code editor or build pipeline.
+                </p>
+            </div>
+
+            <div class="error-demos-grid" id="error-demos-container">
+                <!-- Populated dynamically by TypeScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Discount Calculator Modal (Demonstrating Tuples) -->
+    <div class="modal-backdrop" id="discount-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <button class="btn-close-modal" id="btn-close-discount" aria-label="Close modal">✕</button>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.25rem; color: var(--dark);">Calculate Product Discount</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                Demonstrating Typed Tuple: <code>[promoCode: string, percentage: number]</code>
+            </p>
+
+            <div style="background-color: var(--gray-bg); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; border: 1px solid var(--gray-border);">
+                <div style="font-size: 0.82rem; color: var(--text-muted);">Target Product:</div>
+                <div id="modal-product-name" style="font-weight: 700; color: var(--dark);">Product Name</div>
+                <div id="modal-product-price" style="font-size: 1.1rem; color: var(--primary); font-weight: 800;">$0.00</div>
+            </div>
+
+            <form id="discount-form">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="promo-code">Promo Code <small>(Tuple[0]: string)</small></label>
+                        <input type="text" id="promo-code" class="form-control" placeholder="SPRING25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discount-percent">Discount % <small>(Tuple[1]: number)</small></label>
+                        <input type="number" id="discount-percent" class="form-control" min="0" max="100" placeholder="25" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Apply Discount Tuple</button>
+            </form>
+
+            <div id="discount-result-container">
+                <!-- Injected after calculation -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-box" id="toast-notification"></div>
+
+    <!-- Compiled Application Module -->
+    <script type="module" src="dist/app.js"></script>
+</body>
+</html>

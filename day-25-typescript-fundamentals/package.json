@@ -1,0 +1,24 @@
+{
+  "name": "day-25-typescript-fundamentals",
+  "version": "1.0.0",
+  "description": "Day 25: TypeScript Fundamentals - TypeScript Product Manager",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/app.js",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "typescript",
+    "types",
+    "interfaces",
+    "tuples",
+    "unions",
+    "product-manager"
+  ],
+  "author": "EduSphere Curriculum",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
