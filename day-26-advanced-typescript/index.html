@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript User Management | Day 26 Advanced</title>
+    <meta name="description" content="Production-grade Advanced TypeScript User Management application demonstrating Enums, Classes, Generics, Type Narrowing, and Async APIs.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="brand-title">
+                <span class="ts-badge">TS 5.4</span>
+                <span>User Management System</span>
+            </div>
+            <div class="header-subtitle">
+                Day 26: Enums • Classes • Access Modifiers • Generics • Type Narrowing • Async/Promises
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. Stats Dashboard -->
+        <section class="stats-grid" aria-label="System Metrics">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Total Accounts</span>
+                    <span>👥</span>
+                </div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-subtext">Registered across all departments</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Active Status</span>
+                    <span>✓</span>
+                </div>
+                <div class="stat-value" id="stat-active" style="color: var(--success);">0</div>
+                <div class="stat-subtext">Authorized for system access</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Administrators</span>
+                    <span>🛡️</span>
+                </div>
+                <div class="stat-value" id="stat-admins" style="color: var(--accent);">0</div>
+                <div class="stat-subtext">Elevated privilege clearance</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Suspended</span>
+                    <span>⚠️</span>
+                </div>
+                <div class="stat-value" id="stat-suspended" style="color: var(--danger);">0</div>
+                <div class="stat-subtext">Restricted due to audit/security</div>
+            </div>
+        </section>
+
+        <!-- Department Distribution Chips -->
+        <div class="dept-panel">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 0.4rem;">
+                <span>🏢</span>
+                <span>Department Breakdown:</span>
+            </span>
+            <div id="dept-breakdown" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- 2. Controls & Search/Filter Toolbar -->
+        <section class="toolbar-panel" aria-label="Filters and Controls">
+            <div class="filter-group-left">
+                <input type="text" id="filter-search" class="search-input" placeholder="Search by name, email, or department...">
+
+                <select id="filter-role" class="select-control" aria-label="Filter by role">
+                    <option value="ALL">All Roles (Enum)</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="MANAGER">Manager</option>
+                    <option value="DEVELOPER">Developer</option>
+                    <option value="GUEST">Guest</option>
+                </select>
+
+                <select id="filter-status" class="select-control" aria-label="Filter by status">
+                    <option value="ALL">All Statuses (Enum)</option>
+                    <option value="ACTIVE">Active</option>
+                    <option value="SUSPENDED">Suspended</option>
+                    <option value="PENDING">Pending</option>
+                </select>
+
+                <select id="filter-department" class="select-control" aria-label="Filter by department">
+                    <option value="ALL">All Departments (Union)</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Design">Design</option>
+                    <option value="Product">Product</option>
+                    <option value="Operations">Operations</option>
+                    <option value="Marketing">Marketing</option>
+                </select>
+
+                <select id="sort-by" class="select-control" aria-label="Sort users">
+                    <option value="id-asc">Sort: ID (1-9)</option>
+                    <option value="id-desc">Sort: ID (9-1)</option>
+                    <option value="name-asc">Sort: Name (A-Z)</option>
+                    <option value="name-desc">Sort: Name (Z-A)</option>
+                </select>
+
+                <button type="button" id="btn-reset-filters" class="btn-secondary">Reset</button>
+            </div>
+
+            <button type="button" id="btn-open-add-modal" class="btn-primary">
+                <span>➕</span>
+                <span>Add User</span>
+            </button>
+        </section>
+
+        <!-- Loading Spinner & Error Banner -->
+        <div id="loading-spinner" class="loading-spinner" style="display: none;">
+            ⏳ Fetching user records via Typed Async API...
+        </div>
+        <div id="error-banner" class="error-banner"></div>
+
+        <!-- 3. User Cards Grid -->
+        <section class="user-grid" id="user-grid" aria-label="User Cards">
+            <!-- Dynamically populated by app.js -->
+        </section>
+
+        <!-- 4. Pagination Controls -->
+        <div class="pagination-container" id="pagination-container">
+            <!-- Dynamically populated by generic pagination utility -->
+        </div>
+
+        <!-- 5. Educational Feature Showcase -->
+        <section class="showcase-section">
+            <div class="showcase-title-box">
+                <h2>Advanced TypeScript Architecture Highlights</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    Key language features powering this enterprise user management system.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span>🏷️</span> String Enums</h4>
+                    <p>
+                        <code>UserRole</code> and <code>UserStatus</code> use string enums to prevent magic strings and guarantee strict compile-time validation while maintaining human-readable serialized values.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><span>🏛️</span> Classes & Encapsulation</h4>
+                    <p>
+                        The <code>User</code> and <code>AdminUser</code> classes demonstrate <code>public</code>, <code>private</code> (<code>_lastLoginAt</code>), <code>protected</code> (<code>failedLoginAttempts</code>), and <code>readonly</code> properties with getters.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><span>🔍</span> Type Narrowing & Guards</h4>
+                    <p>
+                        Custom type predicates like <code>isAdminUser(user): user is AdminUser</code> narrow polymorphic objects at runtime to safely unlock elevated administrator permissions without casting.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><span>⚙️</span> Generics & Key Constraints</h4>
+                    <p>
+                        Generic utility functions like <code>sortByProperty&lt;T, K extends keyof T&gt;()</code> and <code>paginateCollection&lt;T&gt;()</code> operate on any dataset with complete type safety.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><span>🌐</span> Typed API Contracts</h4>
+                    <p>
+                        Network responses use a generic container <code>ApiResponse&lt;T&gt;</code> and a discriminated union <code>ApiResult&lt;T&gt; = ApiResponse&lt;T&gt; | ApiError</code> for end-to-end type safety.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><span>🛡️</span> Strict Error Handling</h4>
+                    <p>
+                        All <code>try/catch</code> blocks treat intercepted exceptions as <code>unknown</code>, employing <code>instanceof Error</code> narrowing to safely extract diagnostic messages.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Add New User -->
+    <div class="modal-backdrop" id="add-user-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <button class="btn-close-modal" id="btn-close-add-modal" aria-label="Close dialog">✕</button>
+            <h3 style="font-size: 1.3rem; margin-bottom: 0.35rem; color: var(--dark);">Create User Account</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Instantiates a typed <code>User</code> or derived <code>AdminUser</code> class.
+            </p>
+
+            <form id="add-user-form">
+                <div class="form-group">
+                    <label for="new-name">Full Name *</label>
+                    <input type="text" id="new-name" class="form-control" placeholder="e.g. Marie Curie" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-email">Email Address *</label>
+                    <input type="email" id="new-email" class="form-control" placeholder="marie.curie@edusphere.io" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="new-role">System Role (Enum) *</label>
+                        <select id="new-role" class="form-control" required>
+                            <option value="DEVELOPER">Developer</option>
+                            <option value="MANAGER">Manager</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="GUEST">Guest</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-status">Account Status (Enum) *</label>
+                        <select id="new-status" class="form-control" required>
+                            <option value="ACTIVE">Active</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="SUSPENDED">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="new-department">Department (Union) *</label>
+                        <select id="new-department" class="form-control" required>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Design">Design</option>
+                            <option value="Product">Product</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-phone">Phone Number <small>(Optional)</small></label>
+                        <input type="tel" id="new-phone" class="form-control" placeholder="+1 (555) 012-3456">
+                    </div>
+                </div>
+
+                <!-- Conditionally displayed when Role === ADMIN -->
+                <div class="form-group" id="admin-level-group" style="display: none; background-color: #f5f3ff; border: 1px solid #ddd6fe; border-radius: var(--radius-sm); padding: 0.75rem;">
+                    <label for="new-admin-level" style="color: #5b21b6;">Admin Clearance Level (1 - 5) *</label>
+                    <input type="number" id="new-admin-level" class="form-control" min="1" max="5" value="1">
+                    <small style="color: #6b21a8; margin-top: 0.25rem;">Level 4+ grants financial audit privileges automatically.</small>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.75rem;">
+                    Create Account & Dispatch Event
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: User Profile & Admin Permissions Inspector -->
+    <div class="modal-backdrop" id="user-details-modal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <button class="btn-close-modal" id="btn-close-details-modal" aria-label="Close dialog">✕</button>
+            <div id="details-modal-content">
+                <!-- Injected dynamically by window.viewUserDetails() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-box" id="toast-box"></div>
+
+    <!-- Main Compiled Module -->
+    <script type="module" src="dist/app.js"></script>
+</body>
+</html>

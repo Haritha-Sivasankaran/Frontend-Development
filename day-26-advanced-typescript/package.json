@@ -1,0 +1,25 @@
+{
+  "name": "day-26-advanced-typescript",
+  "version": "1.0.0",
+  "description": "Day 26: Advanced TypeScript - User Management Application",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/app.js",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "typescript",
+    "advanced-typescript",
+    "generics",
+    "classes",
+    "enums",
+    "type-narrowing",
+    "async-typing"
+  ],
+  "author": "EduSphere Curriculum",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
