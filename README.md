@@ -1,4 +1,4 @@
-# 🌐 Ednue Technologies — 30-Day Professional Frontend Development Curriculum
+# 30-Day Professional Frontend Development Curriculum
 
 > **A comprehensive, zero-to-production frontend engineering curriculum and repository.**  
 > Featuring 30 standalone, real-world projects covering **HTML5 Semantics**, **CSS3 Design Systems & Responsive Layouts**, **JavaScript ES6+ & Asynchronous Programming**, **TypeScript 5.x**, and **React 18 Application Architecture**.
@@ -14,7 +14,7 @@
 
 ## 📖 Curriculum Overview
 
-The **30-Day Frontend Development Curriculum** by **Ednue Technologies** is an industry-aligned, project-driven learning journey. Designed for aspiring software engineers and full-stack developers, every single module is structured into a **60-minute time-boxed lesson** featuring:
+The **30-Day Frontend Development Curriculum**  is an industry-aligned, project-driven learning journey. Designed for aspiring software engineers and full-stack developers, every single module is structured into a **60-minute time-boxed lesson** featuring:
 - **Core Theoretical Concepts & Architectural Mental Models**
 - **Real-World Engineering Scenarios**
 - **Complete, Runnable Mini Projects with Zero TODOs or Placeholders**
@@ -174,13 +174,3 @@ Frontend-Development/
 ├── day-29-react-hooks-api/        # useEffect & Async Network Cycles
 └── day-30-capstone-lms/           # React 18 + TypeScript 5 LMS Capstone
 ```
-
----
-
-## 🎓 About Ednue Technologies
-
-This repository serves as the official frontend development syllabus and portfolio repository for all software engineering cohorts at **Ednue Technologies**.
-
-Every module is designed to reflect real-world production engineering practices, instilling strong software craftsmanship, type safety, modular architecture, and modern web standards.
-
-&copy; 2026 Ednue Technologies. All rights reserved.
